@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Yocto_Roger_2._1_For_Raspberry_PI/1.0.0": {
+        "dependencies": {
+          "System.Device.Gpio": "4.1.0"
+        },
+        "runtime": {
+          "Yocto_Roger_2._1_For_Raspberry_PI.dll": {}
+        }
+      },
+      "System.Device.Gpio/4.1.0": {
+        "runtime": {
+          "lib/net8.0/System.Device.Gpio.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.100.26.5901"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Yocto_Roger_2._1_For_Raspberry_PI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Device.Gpio/4.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ip7o1kJ8B/UL5+7/21treDxue2/5Is6bfC3KWEBEYX5LH8jvRiypL1Muoe4HdEHa728Ge6t+5PZ7x02ibPp5Jg==",
+      "path": "system.device.gpio/4.1.0",
+      "hashPath": "system.device.gpio.4.1.0.nupkg.sha512"
+    }
+  }
+}

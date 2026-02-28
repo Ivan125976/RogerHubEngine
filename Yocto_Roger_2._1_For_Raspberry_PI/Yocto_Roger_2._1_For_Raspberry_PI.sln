@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yocto_Roger_2._1_For_Raspberry_PI", "Yocto_Roger_2._1_For_Raspberry_PI\Yocto_Roger_2._1_For_Raspberry_PI.csproj", "{EAD43BE2-B05B-4086-94DC-15BD6B9EF01F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAD43BE2-B05B-4086-94DC-15BD6B9EF01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAD43BE2-B05B-4086-94DC-15BD6B9EF01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAD43BE2-B05B-4086-94DC-15BD6B9EF01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAD43BE2-B05B-4086-94DC-15BD6B9EF01F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DD460EE-5C51-4B7C-AB60-D09B4227BBBB}
+	EndGlobalSection
+EndGlobal
