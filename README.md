@@ -1,3 +1,5 @@
+[Swith to english reamde](https://github.com/Ivan125976/AI_Roger/edit/main/README-en.md)
+
 # Roger
 
 Моя нейросеть, которую я улучшаю каждый день.
