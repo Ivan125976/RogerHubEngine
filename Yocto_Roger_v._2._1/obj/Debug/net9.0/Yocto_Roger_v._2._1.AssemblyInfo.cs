@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Yocto_Roger_v._2._1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd39b2f215c8c49708b772f92dc276c47e08b2dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("Yocto_Roger_v._2._1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Yocto_Roger_v._2._1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

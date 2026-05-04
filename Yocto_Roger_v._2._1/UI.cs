@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Yocto_Roger_v._2._1;
+using Yocto_Roger;
 
-namespace Yocto_Roger_2._1
+namespace Yocto_Roger
 /* 
 Yocto Roger 2.1 ;)
 ***************
@@ -21,12 +21,12 @@ Yocto Roger 2.1 ;)
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
-            SendMessage(ConsoleColor.Magenta, "Emotion ;) 2026    Yocto Roger v.2.1");
+            SendMessage(ConsoleColor.Magenta, "Emotion ;) 2026    Yocto Roger");
             Thread.Sleep(3000);
             if (Parameters.isDebug == false)
-                SendMessage(ConsoleColor.DarkMagenta, "Welcome to the RogerHub! v.2.1.2");
+                SendMessage(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision}");
             else
-                SendMessage(ConsoleColor.DarkMagenta, "Welcome to the RogerHub! v.2.1.2 DEBUG MODE");
+                SendMessage(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEBUG MODE");
             int i = 0;
             while (true)
             {

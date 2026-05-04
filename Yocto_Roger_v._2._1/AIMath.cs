@@ -1,6 +1,6 @@
-﻿using Yocto_Roger_2._1;
+﻿using Yocto_Roger;
 
-namespace Yocto_Roger_v._2._1
+namespace Yocto_Roger
 {
 
     internal class AIMath

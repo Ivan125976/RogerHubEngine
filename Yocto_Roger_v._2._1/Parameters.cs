@@ -1,8 +1,9 @@
-﻿namespace Yocto_Roger_v._2._1
+﻿namespace Yocto_Roger
 {
     public class Parameters
     {
-        public static float version = 2.0f;
+        public static string version = "2.1.2";
+        public static char revision = 'd';
         public static bool isDebug = false;
         public static int passes = 500;
         public static float learningRate = 0.02f;
