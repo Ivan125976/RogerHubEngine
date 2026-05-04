@@ -1,0 +1,13 @@
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.AssemblyInfoInputs.cache
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.AssemblyInfo.cs
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.csproj.CoreCompileInputs.cache
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.sourcelink.json
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\bin\Debug\net9.0\Yocto_Roger_v._2._1.exe
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\bin\Debug\net9.0\Yocto_Roger_v._2._1.deps.json
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\bin\Debug\net9.0\Yocto_Roger_v._2._1.runtimeconfig.json
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\bin\Debug\net9.0\Yocto_Roger_v._2._1.dll
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.dll
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\refint\Yocto_Roger_v._2._1.dll
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\Yocto_Roger_v._2._1.genruntimeconfig.cache
+C:\Users\user\AI_Roger\Yocto_Roger_v._2._1\obj\Debug\net9.0\ref\Yocto_Roger_v._2._1.dll
