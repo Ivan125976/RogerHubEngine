@@ -1,6 +1,4 @@
-﻿using Yocto_Roger;
-
-namespace Yocto_Roger
+﻿namespace Yocto_Roger
 {
 
     internal class AIMath
@@ -45,7 +43,7 @@ namespace Yocto_Roger
                 else if (input == "save")
                     Save_Load.SaveRoger();
                 else
-                    Console.WriteLine("Incorrect input!");
+                    UI.SendError("Incorrect input!");
 
                 Console.Write("Enter second value -> ");
                 input = Console.ReadLine();
@@ -54,7 +52,7 @@ namespace Yocto_Roger
                 else if (input == "save")
                     Save_Load.SaveRoger();
                 else
-                    Console.WriteLine("Incorrect input!");
+                    UI.SendError("Incorrect input!");
             }
             if (Parameters.isDebug)
                 Console.Write("Recorded in the initial neurons - ");

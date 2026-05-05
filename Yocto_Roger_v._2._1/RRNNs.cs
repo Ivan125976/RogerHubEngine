@@ -75,9 +75,7 @@
                             break;
 
                         default:
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Incorrect input >:(");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            UI.SendError("Incorrect input >:(");
                             break;
                     }
 
@@ -88,11 +86,7 @@
                         i = 0;
                 }
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Incorrect input >:(");
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                }
+                    UI.SendError("Incorrect input >:(");
             }
         }
     }

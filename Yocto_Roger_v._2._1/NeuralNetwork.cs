@@ -1,6 +1,4 @@
-﻿using Yocto_Roger;
-
-namespace Yocto_Roger
+﻿namespace Yocto_Roger
 {
     internal class NeuralNetwork
     {

@@ -1,15 +1,12 @@
 ﻿using System.Text;
-using Yocto_Roger;
 
 namespace Yocto_Roger
 /* 
-Yocto Roger 2.1 ;)
-***************
+Yocto Roger ;)
+*****************
 *Emotion Corp ;)*
-***************
-Более умная нейросеть с поддержкой Roger API 1.0!
-Как всегда аксолотль, семечка, хамелеон, грибочек.
-По кирпичикам построим мечту!
+*****************
+Copyright 2025-2026 Emotion Corp. License
 */
 
 {
@@ -30,6 +27,7 @@ Yocto Roger 2.1 ;)
             int i = 0;
             while (true)
             {
+                SendWarning("!WARNING! This project is still in the development stage.");
                 Console.Write(" 1. Start Roger in training mode \n 2. Start Roger from the .roger file \n 3. Options for training mode \n 4. RRNNs settings \n 5. Exit of RogerHub \n >>> ");
                 if (int.TryParse(Console.ReadLine(), out int value))
                 {
@@ -47,11 +45,7 @@ Yocto Roger 2.1 ;)
                             if (File.Exists(Parameters.roger2))
                                 NeuralNetwork.StartAI(1);
                             else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Roger2 doesn't found!");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
+                                SendError("Roger2 doesn't found!");
                             break;
 
                         case 3:
@@ -68,7 +62,7 @@ Yocto Roger 2.1 ;)
                             break;
 
                         default:
-                            switch (i)
+                            switch (i++)
                             {
                                 case 0:
                                     Console.WriteLine("What?");
@@ -90,16 +84,11 @@ Yocto Roger 2.1 ;)
                                     Environment.Exit(0);
                                     break;
                             }
-                            i++;
                             break;
                     }
                 }
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Incorrect input >:(");
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                }
+                    SendError("Incorrect input >:(");
             }
         }
 
@@ -151,11 +140,7 @@ Yocto Roger 2.1 ;)
                             if (userInputChecked > 0)
                                 Parameters.middleNeuronsCount = userInputChecked;
                             else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Value out of range.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
+                                SendError("Value out of range.");
                         }
                         break;
 
@@ -169,11 +154,7 @@ Yocto Roger 2.1 ;)
                             Parameters.knowledgeFile = userInput;
                         }
                         else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Knowledge file doesn't exists");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
+                            SendError("Knowledge file doesn't exists");
                         break;
 
                     case "3":
@@ -186,18 +167,10 @@ Yocto Roger 2.1 ;)
                             if (newDrop >= 0 && newDrop <= 70)
                                 Parameters.DropOutPercent = newDrop;
                             else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Value out of range.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
+                                SendError("Value out of range.");
                         }
                         else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid input.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
+                            SendError("Invalid input.");
                         break;
 
                     case "4":
@@ -210,18 +183,10 @@ Yocto Roger 2.1 ;)
                             if (newLR > 0 && newLR <= 1.0)
                                 Parameters.learningRate = newLR;
                             else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Learning rate out of range.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
+                                SendError("Learning rate out of range.");
                         }
                         else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid input.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
+                            SendError("Invalid input.");
                         break;
 
                     case "5":
@@ -234,18 +199,10 @@ Yocto Roger 2.1 ;)
                             if (newPasses > 0)
                                 Parameters.passes = newPasses;
                             else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Passes must be greater than zero.");
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                            }
+                                SendError("Passes must be greater than zero.");
                         }
                         else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid input.");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
+                            SendError("Invalid input.");
                         break;
 
                     case "6":
@@ -253,6 +210,20 @@ Yocto Roger 2.1 ;)
                         break;
                 }
             }
+        }
+
+        public static void SendWarning(string message = "Warning!")
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public static void SendError(string message = "Error!")
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Yocto_Roger;
 
 namespace Yocto_Roger
 {
@@ -64,11 +63,7 @@ namespace Yocto_Roger
         public static void LoadRoger()
         {
             if (!File.Exists(Parameters.roger2))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Roger file not found");
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
+                UI.SendError("Roger file not found");
 
             int input = 0, middle = 0, output = 0;
             int aiVersion = -1;
