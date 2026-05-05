@@ -42,5 +42,5 @@ When using DropOut, a lower LR and a higher number of epochs are typically requi
 
 ## Reminder
 All announcements, news, and other project-related information will be posted on the Telegram channel: [Link to Channel](https://t.me/Axolotl1024)
-
+Also, our website: [Link](https://emotioncorp.site)
 Best regards, the Emotion Team ;)
