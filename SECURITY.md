@@ -12,6 +12,7 @@ AI Core
 | 2.0.x   | :x:                |
 | 2.1.x   | ✅                 |
 | 2.2.x   | ✅                |
+
 RogerHub
 | Version | Supported          |
 | ------- | ------------------ |
