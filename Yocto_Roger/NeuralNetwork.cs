@@ -22,7 +22,7 @@
             {
                 case 0:
                     Console.WriteLine("SetUp education array...");
-                    educationArray = new int[UI.CountLines(Parameters.knowledgeFile), 3];
+                    educationArray = new int[UI.CountLines(Parameters.knowledgeFile), Parameters.inputNeuronsCount]; //TODO: формат .know2
                     Console.WriteLine("Read knowledge...");
                     Training.WriteEducationArray(ref educationArray, Parameters.knowledgeFile);
                     Console.WriteLine($"Слои: {Parameters.layers}, {middleWeights.Length}");

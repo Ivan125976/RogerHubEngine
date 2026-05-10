@@ -60,8 +60,7 @@ Copyright 2025-2026 Emotion Corp. License
                             break;
 
                         case 4:
-                            SendMessage(ConsoleColor.DarkGreen, "You're in the  RRNN's settings ;)");
-                            RRNNs.SetUpPins();
+                            SendError("This function isn't ready :)");
                             break;
 
                         case 5:
@@ -132,16 +131,20 @@ Copyright 2025-2026 Emotion Corp. License
             while (i == 0)
             {
                 Console.Clear();
-                Console.Write($"RogerHub Training Options \n " +
-                    $"1. Number of input neurons...{Parameters.inputNeuronsCount} \n " +
-                    $"2. Number of middle neurons (all middle layers)...{Parameters.middleNeuronsCount} \n " +
-                    $"3. Number of output neurons...{Parameters.outputNeuronsCount} \n " +
-                    $"4. \n " +
-                    $"5. Knowledge file...{Parameters.knowledgeFile} \n " +
-                    $"6. DropOut sys percent...{Parameters.DropOutPercent}% (0% - disable DropOut)\n " +
-                    $"7. Learning Rate...{Parameters.learningRate} \n " +
-                    $"8. Passes...{Parameters.passes} \n " +
-                    $"9. Exit \n >>>");
+                Console.Write($"""
+                                        RogerHub Training Options
+                    
+                                        1. Count of input neurons...{Parameters.inputNeuronsCount}
+                                        2. Count of middle neurons (all middle layers)...{Parameters.middleNeuronsCount}
+                                        3. Count of output neurons...{Parameters.outputNeuronsCount}
+                                        4. Count of Layers...{Parameters.layers}
+                                        5. Knowledge file...{Parameters.knowledgeFile}
+                                        6. DropOut sys percent...{Parameters.DropOutPercent}% (0% - disable DropOut)
+                                        7. Learning Rate...{Parameters.learningRate}
+                                        8. Passes...{Parameters.passes}
+                                        9. Exit 
+                                        >>>
+                                        """);
                 string choice = Console.ReadLine();
                 switch (choice)
                 {
@@ -182,6 +185,20 @@ Copyright 2025-2026 Emotion Corp. License
                         {
                             if (userInputChecked3 > 0)
                                 Parameters.outputNeuronsCount = userInputChecked3;
+                            else
+                                SendError("Value out of range.");
+                        }
+                        break;
+
+                    case "4":
+                        Console.Clear();
+                        Console.WriteLine("*LAYERS PARAMETER*");
+                        Console.Write("INT32> Enter new count of layers (> 2)...");
+                        userInput = Console.ReadLine();
+                        if (int.TryParse(userInput, out int layersCount))
+                        {
+                            if (layersCount > 3)
+                                Parameters.layers = layersCount;
                             else
                                 SendError("Value out of range.");
                         }
