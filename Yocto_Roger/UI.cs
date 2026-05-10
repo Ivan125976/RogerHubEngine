@@ -60,8 +60,7 @@ Copyright 2025-2026 Emotion Corp. License
                             break;
 
                         case 4:
-                            SendMessage(ConsoleColor.DarkGreen, "You're in the  RRNN's settings ;)");
-                            RRNNs.SetUpPins();
+                            SendError("This function isn't ready :)");
                             break;
 
                         case 5:
@@ -192,25 +191,16 @@ Copyright 2025-2026 Emotion Corp. License
                         break;
 
                     case "4":
-                        Console.WriteLine("*LAYERS PARAMETERS*");
-                        Console.Write("INT32> Enter new count of layers (> 0)...");
+                        Console.Clear();
+                        Console.WriteLine("*LAYERS PARAMETER*");
+                        Console.Write("INT32> Enter new count of layers (> 2)...");
                         userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int layers))
+                        if (int.TryParse(userInput, out int layersCount))
                         {
-                            if (layers < 3)
-                            {
-                                SendError("Number can't be smallest then 3");
-                                break;
-                            }
-
-                            else if (layers > 3)
-                                Parameters.outputNeuronsCount = layers;
-
+                            if (layersCount > 3)
+                                Parameters.layers = layersCount;
                             else
-                            {
                                 SendError("Value out of range.");
-                                break;
-                            }
                         }
                         break;
 
