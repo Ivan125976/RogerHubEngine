@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <StartupObject>Yocto_Roger.UI</StartupObject>
-    <ApplicationIcon>Untitled.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Untitled.ico" />
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

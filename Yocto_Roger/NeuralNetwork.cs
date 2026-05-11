@@ -30,8 +30,12 @@
                     Console.Write("Initialization biases...");
                     Training.SetUpBiases(ref Mbias);
                     Training.SetUpBiases(ref Obias);
-                    Console.Write("done");
-                    //TODO: настройка весов
+                    Console.WriteLine("done");
+                    Console.Write("Initialization weights...");
+                    Training.SetUpWeights(ref inputWeights);
+                    Training.SetUpWeights(ref outputWeights);
+                    Training.SetUpWeights(ref middleWeights);
+                    Console.WriteLine("done");
                     while (true) { }
                     Console.WriteLine("Education. This make takes few minutes.");
                     //TODO: Обучение
