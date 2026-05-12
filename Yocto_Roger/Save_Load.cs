@@ -29,7 +29,10 @@ namespace Yocto_Roger
             writer.WriteLine();
 
             writer.WriteLine("[weights]");
-            //TODO: записывание весов
+            writer.WriteLine($"inputWeights = {NeuralNetwork.inputWeights.Length}");
+            writer.WriteLine($"inputWeights = {NeuralNetwork.middleWeights.Length}");
+            writer.WriteLine($"inputWeights = {NeuralNetwork.outputWeights.Length}");
+            // Сделал запись по аналогии с neurons
 
             writer.WriteLine("[biases]");
             //TODO: записывание сдвигов
