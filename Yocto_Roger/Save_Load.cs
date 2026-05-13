@@ -9,12 +9,11 @@ namespace Yocto_Roger
             string fileName;
             int index = 0;
 
-            do
+            while (File.Exists(fileName)) 
             {
                 fileName = $"roger{index}.roger2";
                 index++;
             }
-            while (File.Exists(fileName));
 
             using StreamWriter writer = new(fileName);
 
