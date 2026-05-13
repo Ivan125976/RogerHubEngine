@@ -23,21 +23,30 @@ namespace Yocto_Roger
             writer.WriteLine();
 
             writer.WriteLine("[neurons]");
-            writer.WriteLine($"inputNeurons = {NeuralNetwork.inputNeurons.Length}");
-            writer.WriteLine($"middleNeurons = {NeuralNetwork.middleNeurons.Length}");
-            writer.WriteLine($"outputNeurons = {NeuralNetwork.outputNeurons.Length}");
+            writer.Write("inputNeurons = "); WriteAll(NeuralNetwork.inputNeurons, writer, true);
+            writer.Write("middleNeurons = "); WriteAll(NeuralNetwork.middleNeurons, writer, true);
+            writer.Write("outputNeurons = "); WriteAll(NeuralNetwork.outputNeurons, writer, true);
             writer.WriteLine();
 
             writer.WriteLine("[weights]");
-            writer.WriteLine($"inputWeights = {NeuralNetwork.inputWeights.Length}");
-            writer.WriteLine($"inputWeights = {NeuralNetwork.middleWeights.Length}");
-            writer.WriteLine($"inputWeights = {NeuralNetwork.outputWeights.Length}");
-            // Сделал запись по аналогии с neurons
+            writer.Write("inputWeights = "); WriteAll(NeuralNetwork.inputWeights, writer, true);
+            writer.Write("middleWeights = "); WriteAll(NeuralNetwork.middleWeights, writer, true);
+            writer.Write("outputWeights = "); WriteAll(NeuralNetwork.outputWeights, writer, true);
 
             writer.WriteLine("[biases]");
+            writer.Write("Mbias = "); WriteAll(NeuralNetwork.Mbias, writer, true);
+            writer.Write("Obias = "); WriteAll(NeuralNetwork.Obias, writer, true);
             //TODO: записывание сдвигов
         }
 
+
+        private static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
+        {
+            foreach (var element in array)
+            {
+                writer.Write(element + ";");
+            }
+        }
         private static void WriteMatrix(StreamWriter writer, double[,] matrix)
         {
             for (int j = 0; j < matrix.GetLength(1); j++)
