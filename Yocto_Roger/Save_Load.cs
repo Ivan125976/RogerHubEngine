@@ -9,11 +9,12 @@ namespace Yocto_Roger
             string fileName;
             int index = 0;
 
-            while (File.Exists(fileName)) 
+            do
             {
                 fileName = $"roger{index}.roger2";
                 index++;
             }
+            while (File.Exists(fileName));
 
             using StreamWriter writer = new(fileName);
 
@@ -74,8 +75,8 @@ namespace Yocto_Roger
             writer.WriteLine();
         }
 
-        public static void LoadRoger()
-        {
+        public static void LoadRoger() // TODO: Сделать загрузку, с новых правил записи (а точнее обрабатывать числа разделённые точками с запятой)
+        {                                               
             if (!File.Exists(Parameters.roger2))
                 UI.SendError("Roger file not found");
 
