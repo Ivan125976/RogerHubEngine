@@ -42,10 +42,21 @@ namespace Yocto_Roger
 
         private static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
-            foreach (var element in array)
-            {
-                writer.Write(element + ";");
-            }
+			if (line_break == true) 
+			{
+				foreach (var element in array)
+				{
+					writer.Write(element + ";");
+				}
+				writer.WriteLine();
+			}
+			else 
+			{
+				foreach (var element in array)
+				{
+					writer.Write(element + ";");
+				}
+			}
         }
         private static void WriteMatrix(StreamWriter writer, double[,] matrix)
         {
