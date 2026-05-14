@@ -36,27 +36,17 @@ namespace Yocto_Roger
             writer.WriteLine("[biases]");
             writer.Write("Mbias = "); WriteAll(NeuralNetwork.Mbias, writer, true);
             writer.Write("Obias = "); WriteAll(NeuralNetwork.Obias, writer, true);
-            //TODO: записывание сдвигов
         }
 
 
         private static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
-			if (line_break == true) 
-			{
-				foreach (var element in array)
-				{
-					writer.Write(element + ";");
-				}
-				writer.WriteLine();
-			}
-			else 
-			{
-				foreach (var element in array)
-				{
-					writer.Write(element + ";");
-				}
-			}
+                foreach (var element in array)
+                {
+                    writer.Write(element + ";");
+                }
+                if (line_break == true)
+                    writer.WriteLine();
         }
         private static void WriteMatrix(StreamWriter writer, double[,] matrix)
         {
