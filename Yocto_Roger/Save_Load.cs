@@ -68,7 +68,7 @@ namespace Yocto_Roger
         public static void LoadRoger() // TODO: Сделать загрузку, с новых правил записи (а точнее обрабатывать числа разделённые точками с запятой)
         {                                               
             if (!File.Exists(Parameters.roger2))
-                UI.SendError("Roger file not found");
+                UI.Send("Roger file not found", "error");
         }
     }
 }

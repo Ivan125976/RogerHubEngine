@@ -75,7 +75,7 @@
                             break;
 
                         default:
-                            UI.SendError("Incorrect input >:(");
+                            UI.Send("Incorrect input >:(", "error");
                             break;
                     }
 
@@ -86,7 +86,7 @@
                         i = 0;
                 }
                 else
-                    UI.SendError("Incorrect input >:(");
+                    UI.Send("Incorrect input >:(", "error");
             }
         }
     }

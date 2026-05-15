@@ -28,8 +28,8 @@ Copyright 2025-2026 Emotion Corp. License
                     DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 else
                     DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
-                SendWarning("This project is still in the development stage.");
-                SendWarning("This is a BETA build. Some functionality may not work. Have fun testing :D");
+                Send("This project is still in the development stage.", "warning");
+                Send("This is a BETA build. Some functionality may not work. Have fun testing :D", "warning");
                 Console.Write("""
                     
                     1. Start Roger in training mode
@@ -52,10 +52,7 @@ Copyright 2025-2026 Emotion Corp. License
                             Console.Clear();
                             Console.Write("1. Place the .roger2 file in the folder with Yocto Roger.exe\n2. Enter the file name .roger2 (with extension)\n>>> ");
                             Parameters.roger2 = Console.ReadLine();
-                            if (File.Exists(Parameters.roger2))
-                                NeuralNetwork.StartAI(1);
-                            else
-                                SendError("Roger2 doesn't found!");
+                            NeuralNetwork.StartAI(1);
                             break;
 
                         case 3:
@@ -63,7 +60,7 @@ Copyright 2025-2026 Emotion Corp. License
                             break;
 
                         case 4:
-                            SendError("This function isn't ready :)");
+                            Send("This function isn't ready :)", "error");
                             break;
 
                         case 5:
@@ -97,7 +94,7 @@ Copyright 2025-2026 Emotion Corp. License
                     }
                 }
                 else
-                    SendError("Incorrect input >:(");
+                    Send("Incorrect input >:(", "error");
             }
         }
 
@@ -164,7 +161,7 @@ Copyright 2025-2026 Emotion Corp. License
                             if (userInputChecked1 > 0)
                                 Parameters.inputNeuronsCount = userInputChecked1;
                             else
-                                SendError("Value out of range.");
+                                Send("Value out of range.", "error");
                         }
                         break;
 
@@ -178,7 +175,7 @@ Copyright 2025-2026 Emotion Corp. License
                             if (userInputChecked2 > 0)
                                 Parameters.middleNeuronsCount = userInputChecked2;
                             else
-                                SendError("Value out of range.");
+                                Send("Value out of range.", "error");
                         }
                         break;
 
@@ -192,7 +189,7 @@ Copyright 2025-2026 Emotion Corp. License
                             if (userInputChecked3 > 0)
                                 Parameters.outputNeuronsCount = userInputChecked3;
                             else
-                                SendError("Value out of range.");
+                                Send("Value out of range.", "error");
                         }
                         break;
 
@@ -209,7 +206,7 @@ Copyright 2025-2026 Emotion Corp. License
                                 Parameters.Mlayers = layersCount - 2;
                             }
                             else
-                                SendError("Value out of range.");
+                                Send("Value out of range.", "error");
                         }
                         break;
 
@@ -223,7 +220,7 @@ Copyright 2025-2026 Emotion Corp. License
                             Parameters.knowledgeFile = userInput;
                         }
                         else
-                            SendError("Knowledge file doesn't exists");
+                            Send("Knowledge file doesn't exists", "error");
                         break;
 
                     case "6":
@@ -236,10 +233,10 @@ Copyright 2025-2026 Emotion Corp. License
                             if (newDrop >= 0 && newDrop <= 70)
                                 Parameters.DropOutPercent = newDrop;
                             else
-                                SendError("Value out of range.");
+                                Send("Value out of range.", "error");
                         }
                         else
-                            SendError("Invalid input.");
+                            Send("Invalid input.", "error");
                         break;
 
                     case "7":
@@ -252,10 +249,10 @@ Copyright 2025-2026 Emotion Corp. License
                             if (newLR > 0 && newLR <= 1.0)
                                 Parameters.learningRate = newLR;
                             else
-                                SendError("Learning rate out of range.");
+                                Send("Learning rate out of range.", "error");
                         }
                         else
-                            SendError("Invalid input.");
+                            Send("Invalid input.", "error");
                         break;
 
                     case "8":
@@ -268,10 +265,10 @@ Copyright 2025-2026 Emotion Corp. License
                             if (newPasses > 0)
                                 Parameters.passes = newPasses;
                             else
-                                SendError("Passes must be greater than zero.");
+                                Send("Passes must be greater than zero.", "error");
                         }
                         else
-                            SendError("Invalid input.");
+                            Send("Invalid input.", "error");
                         break;
 
                     case "9":
@@ -281,27 +278,34 @@ Copyright 2025-2026 Emotion Corp. License
             }
         }
 
-        public static void SendMessage(string message = "done")
+        public static void Send(string message, string mode)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(message + "\n");
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
+            switch (mode.ToLower())
+            {
+                case "error":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("ERROR>" + message);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                    break;
 
-        public static void SendWarning(string message = "Warning!")
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("WARNING>" + message);
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
+                case "warning":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("WARNING>" + message);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
 
-        public static void SendError(string message = "Error!")
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("ERROR>" + message);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
+                case "message":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(message + "\n");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+
+                default:
+                    Send("UI.Send>Incorrect mode! Check the UI.Send method call", "error");
+                    break;
+            }
         }
     }
 }

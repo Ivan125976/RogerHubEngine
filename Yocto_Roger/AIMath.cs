@@ -23,7 +23,7 @@
                     result += 1 << (7 - i);
             return result;
         }
-        public static int[] numToBin(ref double[] inNeurons, int? v1 = null, int? v2 = null) //конвертация десятичного числа в двиучное
+        public static int[] numToBin(ref double[] neurons, int? v1 = null, int? v2 = null) //конвертация десятичного числа в двиучное
         {
             int[] values = new int[2];
 
@@ -42,7 +42,7 @@
                 else if (input == "save")
                     Save_Load.SaveRoger();
                 else
-                    UI.SendError("Incorrect input!");
+                    UI.Send("Incorrect input!", "error");
 
                 Console.Write("Enter second value -> ");
                 input = Console.ReadLine();
@@ -51,7 +51,7 @@
                 else if (input == "save")
                     Save_Load.SaveRoger();
                 else
-                    UI.SendError("Incorrect input!");
+                    UI.Send("Incorrect input!", "error");
             }
             if (Parameters.isDebug)
                 Console.Write("Recorded in the initial neurons - ");
@@ -60,9 +60,9 @@
                 for (int j = 0; j < 7; j++)
                 {
                     int mask = 1 << (6 - j);
-                    inNeurons[i * 7 + j] = (values[i] & mask) != 0 ? 1.0 : 0.0;
+                    neurons[i * 7 + j] = (values[i] & mask) != 0 ? 1.0 : 0.0;
                     if (Parameters.isDebug)
-                        Console.Write(inNeurons[i * 7 + j]);
+                        Console.Write(neurons[i * 7 + j]);
                 }
             }
 

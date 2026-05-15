@@ -24,26 +24,26 @@
                     Console.Write("Initialization biases...");
                     Biases.Init(ref Mbias);
                     Biases.Init(ref Obias);
-                    UI.SendMessage("done");
+                    UI.Send("done", "message");
                     Console.Write("Initialization weights...");
                     Weights.Init(ref inputWeights);
                     Weights.Init(ref outputWeights);
                     Weights.Init(ref middleWeights);
-                    UI.SendMessage("done");
-                    UI.SendMessage("Initialization complete");
+                    UI.Send("done", "message");
+                    UI.Send("Initialization complete", "message");
                     Console.Write("SetUp education array...");
                     //d3ath_script: сделай инициализацию массива обучения, в зависимости от созданной нейросети, тоесть в зависимости от размера входных нейронов и выходных. Придумай свою логику, только шоб работало)
-                    UI.SendMessage("done");
+                    UI.Send("done", "message");
                     Console.Write("Read knowledge...");
                     //и еще тут запись в массив обучения из файла, json, .roger2, какой надо. Сделай только чтобы он поддерживал .roger2, надо обратную поддержку оставить с версии 2.1 на 2.2
-                    UI.SendMessage("done");
+                    UI.Send("done", "message");
                     Console.Write("Education...");
                     UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
                     //Training.Education();
-                    UI.SendMessage("done");
+                    UI.Send("done", "message");
                     Console.Write("Cleaning...");
                     //и тут после этого еще чистку массива до нуля, или если можно вообще его удаление. Давай, полагаюсь на тебя)))
-                    UI.SendMessage("done");
+                    UI.Send("done", "message");
                     break;
 
                 case 1:
