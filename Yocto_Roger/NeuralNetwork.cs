@@ -21,12 +21,6 @@
             switch (mode)
             {
                 case 0:
-                    Console.Write("SetUp education array...");
-                    educationArray = new int[UI.CountLines(Parameters.knowledgeFile), Parameters.inputNeuronsCount]; //TODO: формат .know2
-                    UI.SendMessage("done");
-                    Console.Write("Read knowledge...");
-                    Training.WriteEducationArray(ref educationArray, Parameters.knowledgeFile);
-                    UI.SendMessage("done");
                     Console.Write("Initialization biases...");
                     Biases.Init(ref Mbias);
                     Biases.Init(ref Obias);
@@ -36,13 +30,20 @@
                     Weights.Init(ref outputWeights);
                     Weights.Init(ref middleWeights);
                     UI.SendMessage("done");
-                    UI.SendMessage("\nInitialization complete");
-                    while (true) { }
-                    Console.WriteLine("Education. This make takes few minutes.");
-                    //TODO: Обучение
-                    UI.DrawLine(ConsoleColor.DarkRed, "Education Roger... This may take a few minutes.");
-                    Training.EducationWithTeacher();
-                    Array.Clear(educationArray, 0, educationArray.Length);
+                    UI.SendMessage("Initialization complete");
+                    Console.Write("SetUp education array...");
+                    //d3ath_script: сделай инициализацию массива обучения, в зависимости от созданной нейросети, тоесть в зависимости от размера входных нейронов и выходных. Придумай свою логику, только шоб работало)
+                    UI.SendMessage("done");
+                    Console.Write("Read knowledge...");
+                    //и еще тут запись в массив обучения из файла, json, .roger2, какой надо. Сделай только чтобы он поддерживал .roger2, надо обратную поддержку оставить с версии 2.1 на 2.2
+                    UI.SendMessage("done");
+                    Console.Write("Education...");
+                    UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
+                    //Training.EducationWithTeacher();
+                    UI.SendMessage("done");
+                    Console.Write("Cleaning...");
+                    //и тут после этого еще чистку массива до нуля, или если можно вообще его удаление. Давай, полагаюсь на тебя)))
+                    UI.SendMessage("done");
                     break;
 
                 case 1:
