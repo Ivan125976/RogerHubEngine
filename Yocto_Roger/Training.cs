@@ -22,8 +22,8 @@
                     Array.Clear(deltaOut, 0, deltaOut.Length);
 
                     //for (int x = 0; x < NeuralNetwork.weights2.GetLength(0); x++)
-                        //for (int y = 0; y < NeuralNetwork.weights2.GetLength(1); y++)
-                            //oldWeights[x, y] = NeuralNetwork.weights2[x, y];
+                    //for (int y = 0; y < NeuralNetwork.weights2.GetLength(1); y++)
+                    //oldWeights[x, y] = NeuralNetwork.weights2[x, y];
 
                     int[] binary = new int[8];
                     for (int j = 0; j < 8; j++)
@@ -32,12 +32,11 @@
                         binary[j] = (NeuralNetwork.educationArray[i, 2] & mask) != 0 ? 1 : 0;
                     }
 
-                    AIMath.numToBin(ref NeuralNetwork.inputNeurons, NeuralNetwork.educationArray[i, 0], NeuralNetwork.educationArray[i, 1]);
+                    //AIMath.numToBin(ref NeuralNetwork.inputNeurons, NeuralNetwork.educationArray[i, 0], NeuralNetwork.educationArray[i, 1]);
                     //NeuralNetwork.SumWeights(ref NeuralNetwork.weights1, ref NeuralNetwork.inputNeurons, ref NeuralNetwork.middleNeurons, NeuralNetwork.bias1);
-                    for (int l = 0; l < NeuralNetwork.middleNeurons.Length; l++) //DropOut 
-                    {
-                        //NeuralNetwork.middleNeurons[l] *= dropOutMasks[l];
-                    }
+                    for (int l = 0; l < Parameters.Mlayers; l++) //DropOut 
+                        for (int k = 0; k < Parameters.middleNeuronsCount; k++)
+                            NeuralNetwork.middleNeurons[l, k] *= dropOutMasks[l, k];
                     //NeuralNetwork.SumWeights(ref NeuralNetwork.weights2, ref NeuralNetwork.middleNeurons, ref NeuralNetwork.outputNeurons, NeuralNetwork.bias2);
 
 
@@ -47,7 +46,7 @@
                         deltaOut[j] = errorOut[j] * NeuralNetwork.outputNeurons[j] * (1 - NeuralNetwork.outputNeurons[j]); //дельта
 
                         for (int k = 0; k < NeuralNetwork.middleNeurons.Length; k++) { }
-                            //NeuralNetwork.weights2[k, j] -= NeuralNetwork.middleNeurons[k] * deltaOut[j] * Parameters.learningRate;
+                        //NeuralNetwork.weights2[k, j] -= NeuralNetwork.middleNeurons[k] * deltaOut[j] * Parameters.learningRate;
 
                         //NeuralNetwork.bias2[j] -= deltaOut[j] * Parameters.learningRate;
                     }

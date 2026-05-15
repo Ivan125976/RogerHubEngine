@@ -44,6 +44,7 @@
                     Console.Write("Cleaning...");
                     //и тут после этого еще чистку массива до нуля, или если можно вообще его удаление. Давай, полагаюсь на тебя)))
                     UI.Send("done", "message");
+                    AIMath.numToBin(15, 16);
                     break;
 
                 case 1:
@@ -54,8 +55,9 @@
             Console.WriteLine("Hello! I'm Roger, the MLP AI from Emotion!");
             while (true)
             {
+                Thread.Sleep(100000);
                 UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
-                AIMath.numToBin(ref inputNeurons);
+                //TODO: Запись в входной слой
                 //TODO: Складывание весов
             }
         }

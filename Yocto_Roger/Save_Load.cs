@@ -41,12 +41,12 @@ namespace Yocto_Roger
 
         private static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
-                foreach (var element in array)
-                {
-                    writer.Write(element + ";");
-                }
-                if (line_break == true)
-                    writer.WriteLine();
+            foreach (var element in array)
+            {
+                writer.Write(element + ";");
+            }
+            if (line_break == true)
+                writer.WriteLine();
         }
         private static void WriteMatrix(StreamWriter writer, double[,] matrix)
         {
@@ -66,7 +66,7 @@ namespace Yocto_Roger
         }
 
         public static void LoadRoger() // TODO: Сделать загрузку, с новых правил записи (а точнее обрабатывать числа разделённые точками с запятой)
-        {                                               
+        {
             if (!File.Exists(Parameters.roger2))
                 UI.Send("Roger file not found", "error");
         }

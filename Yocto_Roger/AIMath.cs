@@ -21,52 +21,22 @@
             for (int i = 0; i < binary.Length; i++)
                 if (binary[i] != 0.0)
                     result += 1 << (7 - i);
+            if (Parameters.isDebug)
+                Console.WriteLine("binToNum -> " + result);
             return result;
         }
-        public static int[] numToBin(ref double[] neurons, int? v1 = null, int? v2 = null) //конвертация десятичного числа в двиучное
+        public static int[] numToBin(int num, int bits) //конвертация десятичного числа в двиучное
         {
-            int[] values = new int[2];
-
-            if (v1.HasValue && v2.HasValue)
+            if(Parameters.isDebug)
+                Console.WriteLine("numToBin (" + bits + " bits) -> ");
+            int[] bin = new int[bits];
+            for (int i = 0; i < bits; i++)
             {
-                values[0] = v1.Value;
-                values[1] = v2.Value;
+                bin[bits - 1 - i] = (num >> i) & 1;
+                if (Parameters.isDebug)
+                    Console.Write(bin[bits - 1 - i] + " ");
             }
-            else
-            {
-                Console.Write("Enter first value -> ");
-                string input = Console.ReadLine();
-
-                if (int.TryParse(input, out int correctInput))
-                    values[0] = correctInput;
-                else if (input == "save")
-                    Save_Load.SaveRoger();
-                else
-                    UI.Send("Incorrect input!", "error");
-
-                Console.Write("Enter second value -> ");
-                input = Console.ReadLine();
-                if (int.TryParse(input, out int correctInput2))
-                    values[1] = correctInput2;
-                else if (input == "save")
-                    Save_Load.SaveRoger();
-                else
-                    UI.Send("Incorrect input!", "error");
-            }
-            if (Parameters.isDebug)
-                Console.Write("Recorded in the initial neurons - ");
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 7; j++)
-                {
-                    int mask = 1 << (6 - j);
-                    neurons[i * 7 + j] = (values[i] & mask) != 0 ? 1.0 : 0.0;
-                    if (Parameters.isDebug)
-                        Console.Write(neurons[i * 7 + j]);
-                }
-            }
-
-            return values;
+            return bin;
         }
     }
 }
