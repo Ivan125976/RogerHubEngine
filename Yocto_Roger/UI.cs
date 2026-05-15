@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic;
+using System.Text;
 
 namespace Yocto_Roger
 /* 
@@ -18,24 +19,27 @@ Copyright 2025-2026 Emotion Corp. License
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
-            DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026    Yocto Roger");
+            DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Yocto Roger :D");
             Thread.Sleep(3000);
             int i = 0;
             while (true)
             {
                 Console.Clear();
                 if (Parameters.isDebug == false)
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV");
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 else
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV DEBUG MODE");
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHub! v.{Parameters.version}{Parameters.revision} DEV DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 SendWarning("This project is still in the development stage.");
                 SendWarning("This is a BETA build. Some functionality may not work. Have fun testing :D");
-                Console.Write(" " +
-                    "1. Start Roger in training mode \n " +
-                    "2. Start Roger from the .roger file \n " +
-                    "3. Options for training mode \n " +
-                    "4. RRNNs settings \n " +
-                    "5. Exit of RogerHub \n >>> ");
+                Console.Write("""
+                    
+                    1. Start Roger in training mode
+                    2. Start Roger from the .roger file
+                    3. Options for training mode
+                    4. RRNNs settings
+                    5. Exit of RogerHub 
+                    >>> 
+                    """);
                 if (int.TryParse(Console.ReadLine(), out int value))
                 {
                     switch (value)
@@ -107,7 +111,7 @@ Copyright 2025-2026 Emotion Corp. License
             return count;
         }
 
-        public static void DrawLine(ConsoleColor color, string message)
+        public static void DrawLine(ConsoleColor color, string leftText, string rightText = "")
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
@@ -115,11 +119,14 @@ Copyright 2025-2026 Emotion Corp. License
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
             Console.BackgroundColor = color;
 
-            for (int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(" ");
+            Console.Write(new string(' ', Console.WindowWidth));
 
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
-            Console.Write($"{message}              {DateTime.Now:T}"); // Я знаю, это очень примитивный вывод даты но я очень долго возился и не смог сделать корректный вывод даты кроме этого варианта, там математики слишком много, я считать не умею
+            Console.Write(leftText);
+
+            Console.SetCursorPosition((Console.WindowWidth - rightText.Length - 1), Console.WindowHeight - 1);
+            Console.Write(rightText);
+
             Console.SetCursorPosition(cursorX, cursorY);
             Console.BackgroundColor = ConsoleColor.Black;
         }
@@ -143,7 +150,7 @@ Copyright 2025-2026 Emotion Corp. License
                                         7. Learning Rate...{Parameters.learningRate}
                                         8. Passes...{Parameters.passes}
                                         9. Exit 
-                                        >>>
+                                        >>> 
                                         """);
                 string choice = Console.ReadLine();
                 switch (choice)
