@@ -130,9 +130,39 @@ namespace Yocto_Roger
         {
             if (!File.Exists(Parameters.roger2))
                 UI.Send("Roger file not found", "error");
+            else // Сделал else чтобы при отсутствии файла код дальше не выполнялся
+            {
+                switch (CheckFormat())
+                {
+                    case true: // Json
+                        LoadRogerFromJson();
+                        break;
+
+                    case false: // Roger 
+                        LoadRogerFromRoger();
+                        break;
+                }
+            }
         }
 
-        private class Roger // Я сделал без под-секций, ибо они не нужны, без них удообнее и писать меньше в целом
+        /// <summary>
+        /// Проверка формата записи
+        /// </summary>
+        /// <returns>true - json формат, false - roger формат/returns>
+        private static bool CheckFormat()
+        {
+            if (Parameters.roger2.EndsWith(".json"))
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Класс который будет хранить в себе данные для загрузки/сохранения нейросети.
+        /// Данные хранятся в виде строк, поэтому их придётся конвертировать с помощью соответствующих методов (вроде все методы для этого написаны)
+        /// For Axolotl: Если каких-то данных не хватает, просто допиши их в класс 
+        /// </summary>
+        public class Roger
         { 
             public string AIversion { get; set;  }
 
@@ -142,6 +172,63 @@ namespace Yocto_Roger
 
             public string Mbias { get; set; }
             public string Obias { get; set; }
+        }
+
+        private static void LoadRogerFromRoger()
+        {
+
+        }
+
+        /// <summary>
+        /// Примечание: Проверку на json это или нет надо делать заранее, эта функция подразумевает что Paramaters.roger2 это json файл!!!
+        /// </summary>
+        /// <returns>
+        /// Возвращает обьект класса Roger со всеми нужными данными для загрузки нейросети
+        /// </returns>
+        private static void LoadRogerFromJson()
+        {
+            using (JsonDocument document = JsonDocument.Parse(Parameters.roger2))
+            {
+                JsonElement root = document.RootElement;
+
+                Roger roger = new()
+                {
+                    AIversion = root.GetProperty("AIversion").GetString(),
+
+                    inputNeurons = root.GetProperty("inputNeurons").GetString(),
+                    middleNeurons = root.GetProperty("middleNeurons").GetString(),
+                    outputNeurons = root.GetProperty("outputNeurons").GetString(),
+
+                    Mbias = root.GetProperty("Mbias").GetString(),
+                    Obias = root.GetProperty("Obias").GetString()
+                };
+            }
+        }
+
+
+        public static dynamic[,] ReadMatrixFromArray(dynamic[] obj) 
+        {
+            byte rows = 3;
+            byte columns = 2;
+
+            if (obj.Length < rows * columns)
+            {
+                throw new ArgumentException("В исходном массиве недостаточно элементов для заполнения матрицы 3х2.");
+            }
+
+            dynamic[,] matrix = new dynamic[rows, columns];
+            int index = 0;
+
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    matrix[r, c] = obj[index];
+                    index++;
+                }
+            }
+
+            return matrix;
         }
     }
 
