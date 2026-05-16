@@ -15,7 +15,7 @@
                 Console.WriteLine("Sigmoida> " + answer);
             return answer;
         }
-        public static int binToNum(double[] binary) //двиучное в десятичное
+        public static int BinToNum(double[] binary) //двиучное в десятичное
         {
             int result = 0;
             for (int i = 0; i < binary.Length; i++)
@@ -25,7 +25,7 @@
                 Console.WriteLine("binToNum -> " + result);
             return result;
         }
-        public static int[] numToBin(int num, int bits) //конвертация десятичного числа в двиучное
+        public static int[] NumToBin(int num, int bits) //конвертация десятичного числа в двиучное
         {
             if(Parameters.isDebug)
                 Console.WriteLine("numToBin (" + bits + " bits) -> ");

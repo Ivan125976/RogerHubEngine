@@ -44,7 +44,6 @@
                     Console.Write("Cleaning...");
                     //и тут после этого еще чистку массива до нуля, или если можно вообще его удаление. Давай, полагаюсь на тебя)))
                     UI.Send("done", "message");
-                    AIMath.numToBin(15, 16);
                     break;
 
                 case 1:

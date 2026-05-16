@@ -129,7 +129,6 @@ Copyright 2025-2026 Emotion Corp. License
 
         public static void SetUp()
         {
-            string userInput = "";
             int i = 0;
             while (i == 0)
             {
@@ -155,8 +154,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*INPUT NEURONS PARAMETER*");
                         Console.Write("INT32> Enter new count of input neurons (> 0)...");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int userInputChecked1))
+                        if (int.TryParse(Console.ReadLine(), out int userInputChecked1))
                         {
                             if (userInputChecked1 > 0)
                                 Parameters.inputNeuronsCount = userInputChecked1;
@@ -169,8 +167,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*MIDDLE NEURONS PARAMETER*");
                         Console.Write("INT32> Enter new count of middle neurons (> 0)...");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int userInputChecked2))
+                        if (int.TryParse(Console.ReadLine(), out int userInputChecked2))
                         {
                             if (userInputChecked2 > 0)
                                 Parameters.middleNeuronsCount = userInputChecked2;
@@ -183,8 +180,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*OUTPUT NEURONS PARAMETER*");
                         Console.Write("INT32> Enter new count of output neurons (> 0)...");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int userInputChecked3))
+                        if (int.TryParse(Console.ReadLine(), out int userInputChecked3))
                         {
                             if (userInputChecked3 > 0)
                                 Parameters.outputNeuronsCount = userInputChecked3;
@@ -197,8 +193,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*LAYERS PARAMETER*");
                         Console.Write("INT32> Enter new count of layers (> 2)...");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int layersCount))
+                        if (int.TryParse(Console.ReadLine(), out int layersCount))
                         {
                             if (layersCount > 2)
                             {
@@ -214,11 +209,9 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*KNOWLEDGE PARAMETER*");
                         Console.Write("STRING> Enter new knowledge file...");
-                        userInput = Console.ReadLine();
-                        if (File.Exists(userInput))
-                        {
-                            Parameters.knowledgeFile = userInput;
-                        }
+                        string file = Console.ReadLine();
+                        if (File.Exists(file))
+                            Parameters.knowledgeFile = file;
                         else
                             Send("Knowledge file doesn't exists", "error");
                         break;
@@ -227,8 +220,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*DROPOUT PERCENT PARAMETER*");
                         Console.Write("FLOAT> Enter new DropOut percent (0–70)... ");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int newDrop))
+                        if (int.TryParse(Console.ReadLine(), out int newDrop))
                         {
                             if (newDrop >= 0 && newDrop <= 70)
                                 Parameters.DropOutPercent = newDrop;
@@ -243,8 +235,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*LEARNING RATE PARAMETER*");
                         Console.Write("FLOAT> Enter new learning rate (0,0 – 1,0)... ");
-                        userInput = Console.ReadLine();
-                        if (float.TryParse(userInput, out float newLR))
+                        if (float.TryParse(Console.ReadLine(), out float newLR))
                         {
                             if (newLR > 0 && newLR <= 1.0)
                                 Parameters.learningRate = newLR;
@@ -259,8 +250,7 @@ Copyright 2025-2026 Emotion Corp. License
                         Console.Clear();
                         Console.WriteLine("*PASSES PARAMETER*");
                         Console.Write("INT32> Enter count of passes (> 0)... ");
-                        userInput = Console.ReadLine();
-                        if (int.TryParse(userInput, out int newPasses))
+                        if (int.TryParse(Console.ReadLine(), out int newPasses))
                         {
                             if (newPasses > 0)
                                 Parameters.passes = newPasses;

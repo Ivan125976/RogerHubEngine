@@ -60,13 +60,13 @@ namespace Yocto_Roger
             }
             while (File.Exists(fileName));
 
-            Roger roger = new Roger
+            Roger roger = new()
             {
                 AIversion = Parameters.version,
 
-                inputNeurons = BuildStringArray(NeuralNetwork.inputNeurons),
-                middleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons),
-                outputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
+                InputNeurons = BuildStringArray(NeuralNetwork.inputNeurons),
+                MiddleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons),
+                OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
 
                 Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
                 Obias = BuildStringArray(NeuralNetwork.Obias),
@@ -106,7 +106,8 @@ namespace Yocto_Roger
                     builder.Append(matrix[i, j].ToString(CultureInfo.InvariantCulture) + ";");
             }
 
-            return builder.ToString().Remove(builder.Length - 1);
+            return builder.ToString()
+                [..(builder.Length - 1)];
         }
 
         private static void WriteArray(StreamWriter writer, double[] array)
@@ -125,7 +126,8 @@ namespace Yocto_Roger
                 builder.Append(v.ToString(CultureInfo.InvariantCulture) + ';');
             }
 
-            return builder.ToString().Remove(builder.Length - 1); // Удаляет последний ненужный символ ';'
+            return builder.ToString()
+                [..(builder.Length - 1)]; // Удаляет последний ненужный символ ';'
         }
 
         /// <summary>
@@ -171,13 +173,13 @@ namespace Yocto_Roger
         { 
             public string AIversion { get; set;  }
 
-            public string inputNeurons { get; set; }
-            public string middleNeurons { get; set; }
-            public string outputNeurons { get; set; }
+            public string InputNeurons { get; set; }
+            public string MiddleNeurons { get; set; }
+            public string OutputNeurons { get; set; }
 
-            public string inputWeights { get; set; }
-            public string middleWeights { get; set; }
-            public string outputWeights { get; set; }
+            public string InputWeights { get; set; }
+            public string MiddleWeights { get; set; }
+            public string OutputWeights { get; set; }
 
             public string Mbias { get; set; }
             public string Obias { get; set; }
@@ -197,13 +199,13 @@ namespace Yocto_Roger
             {
                 AIversion = data["roger"]["AIversion"],
 
-                inputNeurons = data["neurons"]["inputNeurons"],
-                middleNeurons = data["neurons"]["middleNeurons"],
-                outputNeurons = data["neurons"]["outputNeurons"],
+                InputNeurons = data["neurons"]["inputNeurons"],
+                MiddleNeurons = data["neurons"]["middleNeurons"],
+                OutputNeurons = data["neurons"]["outputNeurons"],
 
-                inputWeights = data["weights"]["inputWeights"],
-                middleWeights = data["weights"]["middleWeights"],
-                outputWeights = data["weights"]["outputWeights"],
+                InputWeights = data["weights"]["inputWeights"],
+                MiddleWeights = data["weights"]["middleWeights"],
+                OutputWeights = data["weights"]["outputWeights"],
 
                 Mbias = data["biases"]["Mbias"],
                 Obias = data["biases"]["Obias"]
@@ -220,28 +222,26 @@ namespace Yocto_Roger
         /// </returns>
         private static Roger LoadRogerFromJson()
         {
-            using (JsonDocument document = JsonDocument.Parse(Parameters.roger2))
+            using JsonDocument document = JsonDocument.Parse(Parameters.roger2);
+            JsonElement root = document.RootElement;
+
+            Roger roger = new()
             {
-                JsonElement root = document.RootElement;
+                AIversion = root.GetProperty("AIversion").GetString(),
 
-                Roger roger = new()
-                {
-                    AIversion = root.GetProperty("AIversion").GetString(),
+                InputNeurons = root.GetProperty("inputNeurons").GetString(),
+                MiddleNeurons = root.GetProperty("middleNeurons").GetString(),
+                OutputNeurons = root.GetProperty("outputNeurons").GetString(),
 
-                    inputNeurons = root.GetProperty("inputNeurons").GetString(),
-                    middleNeurons = root.GetProperty("middleNeurons").GetString(),
-                    outputNeurons = root.GetProperty("outputNeurons").GetString(),
+                InputWeights = root.GetProperty("inputWeights").GetString(),
+                MiddleWeights = root.GetProperty("middleWeights").GetString(),
+                OutputWeights = root.GetProperty("outputWeights").GetString(),
 
-                    inputWeights = root.GetProperty("inputWeights").GetString(),
-                    middleWeights = root.GetProperty("middleWeights").GetString(),
-                    outputWeights = root.GetProperty("outputWeights").GetString(),
+                Mbias = root.GetProperty("Mbias").GetString(),
+                Obias = root.GetProperty("Obias").GetString()
+            };
 
-                    Mbias = root.GetProperty("Mbias").GetString(),
-                    Obias = root.GetProperty("Obias").GetString()
-                };
-
-                return roger;
-            }
+            return roger;
         }
 
 
