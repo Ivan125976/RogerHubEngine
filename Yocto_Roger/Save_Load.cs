@@ -68,10 +68,6 @@ namespace Yocto_Roger
                 MiddleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons),
                 OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
 
-                inputWeights = BuildStringArray(NeuralNetwork.inputWeights),
-                middleWeights = BuildStringArray(NeuralNetwork.middleWeights),
-                outputWeights = BuildStringArray(NeuralNetwork.outputWeights),
-
                 Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
                 Obias = BuildStringArray(NeuralNetwork.Obias),
             };
