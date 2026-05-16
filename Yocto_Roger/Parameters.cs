@@ -4,7 +4,7 @@
     {
         public static string version = "2.2.0";
         public static char revision = ' ';
-        public static bool isDebug = true;
+        public static bool isDebug = false;
         public static int passes = 500;
         public static float learningRate = 0.02f;
         public static float DropOutPercent = 3.0f;
