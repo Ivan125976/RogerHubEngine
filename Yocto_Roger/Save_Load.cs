@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using IniParser;
+using IniParser.Model;
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
@@ -126,7 +128,11 @@ namespace Yocto_Roger
             return builder.ToString().Remove(builder.Length - 1); // Удаляет последний ненужный символ ';'
         }
 
-        public static void LoadRoger() // TODO: Сделать загрузку, с новых правил записи (а точнее обрабатывать числа разделённые точками с запятой)
+        /// <summary>
+        /// Этот метод определяет тип и парсит файл Роджера и предоставляет объект в котором все данные лежат в виде строк, их придётся приводить в нужные типы данных с помощью соответствующих функций которые вроде есть в этом классе
+        /// </summary>
+        /// <returns>Объект класса Roger</returns>
+        public static Roger LoadRoger()
         {
             if (!File.Exists(Parameters.roger2))
                 UI.Send("Roger file not found", "error");
@@ -135,14 +141,13 @@ namespace Yocto_Roger
                 switch (CheckFormat())
                 {
                     case true: // Json
-                        LoadRogerFromJson();
-                        break;
+                        return LoadRogerFromJson();
 
                     case false: // Roger 
-                        LoadRogerFromRoger();
-                        break;
+                        return LoadRogerFromRoger();
                 }
             }
+            return null; // Заглушка чтобы компилятор не ругался, я хз как это исправлять. Я могу это с помощью GOTO исправить, но блин...
         }
 
         /// <summary>
@@ -170,13 +175,41 @@ namespace Yocto_Roger
             public string middleNeurons { get; set; }
             public string outputNeurons { get; set; }
 
+            public string inputWeights { get; set; }
+            public string middleWeights { get; set; }
+            public string outputWeights { get; set; }
+
             public string Mbias { get; set; }
             public string Obias { get; set; }
         }
 
-        private static void LoadRogerFromRoger()
-        {
 
+        /// <summary>
+        /// Функция которая возвращает объект класса Roger, с данными извлечёнными из файла формата .roger
+        /// </summary>
+        /// <returns>Объект класса Roger</returns>
+        private static Roger LoadRogerFromRoger()
+        {
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile(Parameters.roger2);
+
+            Roger roger = new()
+            {
+                AIversion = data["roger"]["AIversion"],
+
+                inputNeurons = data["neurons"]["inputNeurons"],
+                middleNeurons = data["neurons"]["middleNeurons"],
+                outputNeurons = data["neurons"]["outputNeurons"],
+
+                inputWeights = data["weights"]["inputWeights"],
+                middleWeights = data["weights"]["middleWeights"],
+                outputWeights = data["weights"]["outputWeights"],
+
+                Mbias = data["biases"]["Mbias"],
+                Obias = data["biases"]["Obias"]
+            };
+
+            return roger;
         }
 
         /// <summary>
@@ -185,7 +218,7 @@ namespace Yocto_Roger
         /// <returns>
         /// Возвращает обьект класса Roger со всеми нужными данными для загрузки нейросети
         /// </returns>
-        private static void LoadRogerFromJson()
+        private static Roger LoadRogerFromJson()
         {
             using (JsonDocument document = JsonDocument.Parse(Parameters.roger2))
             {
@@ -199,9 +232,15 @@ namespace Yocto_Roger
                     middleNeurons = root.GetProperty("middleNeurons").GetString(),
                     outputNeurons = root.GetProperty("outputNeurons").GetString(),
 
+                    inputWeights = root.GetProperty("inputWeights").GetString(),
+                    middleWeights = root.GetProperty("middleWeights").GetString(),
+                    outputWeights = root.GetProperty("outputWeights").GetString(),
+
                     Mbias = root.GetProperty("Mbias").GetString(),
                     Obias = root.GetProperty("Obias").GetString()
                 };
+
+                return roger;
             }
         }
 
