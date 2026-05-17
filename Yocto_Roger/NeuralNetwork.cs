@@ -9,7 +9,7 @@
         public static double[] outputNeurons = new double[Parameters.outputNeuronsCount];
 
         public static double[,] inputWeights = new double[inputNeurons.Length, middleNeurons.Length];
-        public static double[][,] middleWeights = new double[Parameters.layers][,];
+        public static double[][,] middleWeights = new double[Parameters.Mlayers - 1][,];
         public static double[,] outputWeights = new double[middleNeurons.Length, outputNeurons.Length];
 
         public static double[,] Mbias = new double[Parameters.Mlayers, middleNeurons.Length];

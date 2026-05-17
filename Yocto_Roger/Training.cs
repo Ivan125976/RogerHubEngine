@@ -1,17 +1,20 @@
-﻿namespace Yocto_Roger
+﻿using System.Net.Http.Headers;
+
+namespace Yocto_Roger
 {
     public class Training
     {
-        public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons,ref double[,] inputWeights, 
+        public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,
             ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, int[,] educationArray) //обучение с поддержкой DropOut
         {
             double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
             double[] deltaOut = new double[outputNeurons.Length];
-            double[,] oldWeights = new double[middleNeurons.GetLength(1), outputNeurons.Length];
-            
-            for (int z = 0; z < Parameters.passes; z++)
+            double[,] oldOutputWeights = new double[middleNeurons.GetLength(1), outputNeurons.Length];
+            double[][,] oldMiddleWeights = new double[Parameters.Mlayers - 1][,];
+
+            for (int passes = 0; passes < Parameters.passes; passes++)
             {
                 for (int i = 0; i < educationArray.GetLength(0); i++)
                 {
@@ -22,9 +25,14 @@
 
                     for (int x = 0; x < outputWeights.GetLength(0); x++)
                         for (int y = 0; y < outputWeights.GetLength(1); y++)
-                            oldWeights[x, y] = outputWeights[x, y];
+                            oldOutputWeights[x, y] = outputWeights[x, y];
 
-                    int[] binary = AIMath.NumToBin(educationArray[i,0], inputNeurons.Length);
+                    for (int x = 0; x < Parameters.Mlayers - 1; x++)
+                        for (int y =0; y < middleWeights.GetLength(1); y++)
+                            for (int z = 0; z < middleWeights.GetLength(1); z++)
+                                oldMiddleWeights[x][y, z] = middleWeights[x][y, z];
+
+                    int[] binary = AIMath.NumToBin(educationArray[i, 0], inputNeurons.Length);
 
                     //forward propagation
                     NeuralNetwork.ForwardPropagation(binary, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, NeuralNetwork.GenerateDropOut());
@@ -35,7 +43,7 @@
                         deltaOut[j] = errorOut[j] * outputNeurons[j] * (1 - outputNeurons[j]); //дельта
 
                         for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            outputWeights[k, j] -= middleNeurons[Parameters.Mlayers - 1,k] * deltaOut[j] * Parameters.learningRate;
+                            outputWeights[k, j] -= middleNeurons[Parameters.Mlayers - 1, k] * deltaOut[j] * Parameters.learningRate;
 
                         outputBiases[j] -= deltaOut[j] * Parameters.learningRate;
                     }
@@ -43,20 +51,39 @@
                     {
                         for (int l = 0; l < outputNeurons.Length; l++)
                         {
-                            //errorMid[j] += deltaOut[l] * oldWeights[j, l]; //ошибка
-
+                            errorMid[Parameters.Mlayers - 1, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
                         }
 
-                        /*if (NeuralNetwork.middleNeurons[j] == 0)
-                            deltaMid[j] = 0;
+                        if (middleNeurons[Parameters.Mlayers - 1, j] == 0)
+                            deltaMid[Parameters.Mlayers - 1, j] = 0;
                         else
-                            deltaMid[j] = errorMid[j] * NeuralNetwork.middleNeurons[j] * (1 - NeuralNetwork.middleNeurons[j]); //дельта */
+                            deltaMid[Parameters.Mlayers - 1, j] = errorMid[Parameters.Mlayers - 1, j] * middleNeurons[Parameters.Mlayers - 1, j] * (1 - middleNeurons[Parameters.Mlayers - 1, j]); //дельта
 
-                        for (int k = 0; k < NeuralNetwork.inputNeurons.Length; k++)
+                        for (int k = 0; k < outputNeurons.Length; k++)
+                            middleWeights[Parameters.Mlayers - 2][k, j] -= middleNeurons[Parameters.Mlayers - 1,k] * deltaMid[Parameters.Mlayers-1,j] * Parameters.learningRate;
+
+                        middleBiases[Parameters.Mlayers - 1, j] -= deltaMid[Parameters.Mlayers - 1, j] * Parameters.learningRate;
+                    }
+                    for (int layer = Parameters.Mlayers - 2; layer >= 0; layer--)
+                    {
+                        int oldLayer = layer + 1;
+                        for (int j = 0; j < middleNeurons.Length; j++)
                         {
-                            //NeuralNetwork.weights1[k, j] -= NeuralNetwork.inputNeurons[k] * deltaMid[j] * Parameters.learningRate;
+                            for (int l = 0; l < middleNeurons.Length; l++)
+                            {
+                                errorMid[layer, j] += deltaMid[oldLayer,l] * oldMiddleWeights[oldLayer][j, l]; //ошибка
+                            }
+
+                            if (middleNeurons[layer, j] == 0)
+                                deltaMid[layer, j] = 0;
+                            else
+                                deltaMid[layer, j] = errorMid[layer, j] * middleNeurons[layer, j] * (1 - middleNeurons[layer, j]); //дельта
+
+                            for (int k = 0; k < outputNeurons.Length; k++)
+                                middleWeights[Parameters.Mlayers - 2][k, j] -= middleNeurons[layer, k] * deltaMid[layer, j] * Parameters.learningRate;
+
+                            middleBiases[layer, j] -= deltaMid[layer, j] * Parameters.learningRate;
                         }
-                        //NeuralNetwork.bias1[j] -= deltaMid[j] * Parameters.learningRate;
                     }
                 }
             }
