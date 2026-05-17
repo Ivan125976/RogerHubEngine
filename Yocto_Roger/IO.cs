@@ -6,7 +6,15 @@ using System.Text.Json;
 
 namespace Yocto_Roger
 {
-    internal static class Save_Load
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+Internal I/O lib
+*/
+    internal static class IO
     {
         public static void SaveRoger()
         {

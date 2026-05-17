@@ -1,5 +1,13 @@
 ﻿namespace Yocto_Roger
 {
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+Internal AIMath lib
+*/
     internal class AIMath
     {
         static public Random rand = new();

@@ -1,5 +1,13 @@
 ﻿namespace Yocto_Roger
 {
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+RogerHub configuration
+*/
     public class Parameters
     {
         public static string version = "2.2.0";

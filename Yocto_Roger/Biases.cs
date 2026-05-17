@@ -1,5 +1,13 @@
 ﻿namespace Yocto_Roger
 {
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+    Internal Biases lib
+*/
     internal class Biases
     {
         public static void Init(ref double[] biases) //рандомное заполнение массива сдвигов

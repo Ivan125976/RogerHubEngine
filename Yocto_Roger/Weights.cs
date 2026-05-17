@@ -1,5 +1,13 @@
 ﻿namespace Yocto_Roger
 {
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+    Internal weights lib
+*/
     internal class Weights
     {
         public static void Init(ref double[,] weights) //рандомное заполнение двухмерного массива весов

@@ -1,5 +1,13 @@
 ﻿namespace Yocto_Roger
 {
+    /* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+    Yocto Roger 
+*/
     internal class NeuralNetwork
     {
         public static string[,]? educationArray;
@@ -48,7 +56,7 @@
 
                 case 1:
                     Console.Write("Loading your Roger...");
-                    Save_Load.LoadRoger();
+                    IO.LoadRoger();
                     break;
             }
             Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");

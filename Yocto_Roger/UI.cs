@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using static Yocto_Roger.Save_Load;
 
 namespace Yocto_Roger
 /* 
@@ -7,7 +6,8 @@ Yocto Roger ;)
 *****************
 *Emotion Corp ;)*
 *****************
-Copyright 2025-2026 Emotion Corp. License
+Copyright 2025-2026 Emotion Corp.
+    RogerHub UI part
 */
 
 {
@@ -54,7 +54,7 @@ Copyright 2025-2026 Emotion Corp. License
                             Console.Write("Enter the name of your .roger or .json file. If it's not in this directory, please write absolute path to it>>> ");
                             Parameters.roger2 = Console.ReadLine();
 
-                            InitRogersData(LoadRoger());
+                            IO.InitRogersData(IO.LoadRoger());
 
                             NeuralNetwork.StartAI(1);
                             break;
@@ -172,11 +172,11 @@ Copyright 2025-2026 Emotion Corp. License
                             switch (userInputChecked)
                             {
                                 case 1:
-                                    Save_Load.SaveRoger();
+                                    IO.SaveRoger();
                                     break;
 
                                 case 2:
-                                    Save_Load.SaveRogerToJson();
+                                    IO.SaveRogerToJson();
                                     break;
 
                                 default:
