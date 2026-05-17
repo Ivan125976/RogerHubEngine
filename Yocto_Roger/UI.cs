@@ -158,13 +158,14 @@ Copyright 2025-2026 Emotion Corp. License
                 {
 
                     case "0":
-                        Console.WriteLine("""
+                        Console.Write("""
+                            
                             How do you want to save roger?
 
                             1. INI
                             2. Json (recommended)
 
-                            (1\2) >>> 
+                            >>>
                             """);
                         if (int.TryParse(Console.ReadLine(), out int userInputChecked))
                         {

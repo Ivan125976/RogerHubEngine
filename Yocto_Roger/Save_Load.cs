@@ -69,7 +69,8 @@ namespace Yocto_Roger
                 OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
 
                 InputWeights = BuildStringArray(NeuralNetwork.inputWeights),
-                MiddleWeights = BuildStringArray(NeuralNetwork.middleWeights), // Не уверен что оно корректно сконвертирует это в строку, нужно проверить.
+                //TODO:  Сделать функцию для записи трёхмерного массива [][,]  в строку разделяя точкой с запятой (не забыть из удалить из строки последний элемент тобишь точку с запятой после которой идёт ничего и появляется проблемный пустой элемент в массиве (Nota bene)
+                //MiddleWeights = BuildStringArray(NeuralNetwork.middleWeights) Код ломается имеено здесб, изза неправильной записи, эта функция не может записать такие значения и ломается
                 OutputWeights = BuildStringArray(NeuralNetwork.outputWeights),
 
                 Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
@@ -153,7 +154,7 @@ namespace Yocto_Roger
                         return LoadRogerFromRoger();
                 }
             }
-            return null; // Заглушка чтобы компилятор не ругался, я хз как это исправлять. Я могу это с помощью GOTO исправить, но блин...
+            return null; // Заглушка чтобы компилятор не ругался, я хз как это исправлять. Я могу это с помощью GOTO исправить, но блин... По идее это вообще "недостижимый код"
         }
 
         /// <summary>
@@ -172,6 +173,8 @@ namespace Yocto_Roger
         /// Класс который будет хранить в себе данные для загрузки/сохранения нейросети.
         /// Данные хранятся в виде строк, поэтому их придётся конвертировать с помощью соответствующих методов (вроде все методы для этого написаны)
         /// For Axolotl: Если каких-то данных не хватает, просто допиши их в класс 
+        /// 
+        /// PS: Если добавляешь или убираешь какое либо поле в классе Roger, делай тоже самое в функции InitRogersData() !!! *пожалуйста*
         /// </summary>
         public class Roger
         {
