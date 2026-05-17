@@ -60,7 +60,7 @@ Copyright 2025-2026 Emotion Corp. License
                             break;
 
                         case 4:
-                            Send("This function isn't ready :)", "error");
+                            Send("This function isn't ready :(", "error");
                             break;
 
                         case 5:
@@ -135,7 +135,9 @@ Copyright 2025-2026 Emotion Corp. License
                 Console.Clear();
                 Console.Write($"""
                                         RogerHub Training Options
-                    
+                                            
+                                        0. Save your roger settings in the file 
+
                                         1. Count of input neurons...{Parameters.inputNeuronsCount}
                                         2. Count of middle neurons (all middle layers)...{Parameters.middleNeuronsCount}
                                         3. Count of output neurons...{Parameters.outputNeuronsCount}
@@ -150,6 +152,10 @@ Copyright 2025-2026 Emotion Corp. License
                 string choice = Console.ReadLine();
                 switch (choice)
                 {
+
+                    case "0":
+                        //TODO: Сохранение роджера, используя методы из класса Save_Load
+                        break;
                     case "1":
                         Console.Clear();
                         Console.WriteLine("*INPUT NEURONS PARAMETER*");
