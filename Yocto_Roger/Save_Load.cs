@@ -68,6 +68,10 @@ namespace Yocto_Roger
                 MiddleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons),
                 OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
 
+                InputWeights = BuildStringArray(NeuralNetwork.inputWeights),
+                MiddleWeights = BuildStringArray(NeuralNetwork.middleWeights), // Не уверен что оно корректно сконвертирует это в строку, нужно проверить.
+                OutputWeights = BuildStringArray(NeuralNetwork.outputWeights),
+
                 Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
                 Obias = BuildStringArray(NeuralNetwork.Obias),
             };
@@ -185,7 +189,20 @@ namespace Yocto_Roger
             public string Obias { get; set; }
         }
 
+        public static void InitRogersData(Roger roger)
+        {
+            //ivan125976: TODO: Сделать инициализацию middleWeights 
+            NeuralNetwork.inputNeurons = roger.InputNeurons.Split(';').Select(int.Parse).ToArray();
+            NeuralNetwork.middleNeurons = ReadMatrixFromArray([.. roger.MiddleNeurons.Split(';').Select(int.Parse)]);
+            NeuralNetwork.outputNeurons = roger.OutputNeurons.Split(';').Select(double.Parse).ToArray();
 
+            NeuralNetwork.inputWeights = ReadMatrixFromArray([.. roger.InputWeights.Split(';').Select(int.Parse)]);
+            //NeuralNetwork.middleWeights  Ахрринеть трёхмерная матрица я это не умею ненене...
+            NeuralNetwork.outputWeights = ReadMatrixFromArray([.. roger.OutputWeights.Split(';').Select(int.Parse)]);
+
+            NeuralNetwork.Mbias = ReadMatrixFromArray([.. roger.Mbias.Split(';').Select(int.Parse)]);
+            NeuralNetwork.Obias = roger.Obias.Split(';').Select(double.Parse).ToArray();
+        }
         /// <summary>
         /// Функция которая возвращает объект класса Roger, с данными извлечёнными из файла формата .roger
         /// </summary>
@@ -245,7 +262,7 @@ namespace Yocto_Roger
         }
 
 
-        public static dynamic[,] ReadMatrixFromArray(dynamic[] obj)
+        public static double[,] ReadMatrixFromArray(int[] obj)
         {
             byte rows = 3;
             byte columns = 2;
@@ -255,7 +272,7 @@ namespace Yocto_Roger
                 throw new ArgumentException("В исходном массиве недостаточно элементов для заполнения матрицы 3х2.");
             }
 
-            dynamic[,] matrix = new dynamic[rows, columns];
+            double[,] matrix = new double[rows, columns];
             int index = 0;
 
             for (int r = 0; r < rows; r++)

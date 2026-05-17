@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using static Yocto_Roger.Save_Load;
 
 namespace Yocto_Roger
 /* 
@@ -33,7 +34,7 @@ Copyright 2025-2026 Emotion Corp. License
                 Console.Write("""
                     
                     1. Start Roger in training mode
-                    2. Start Roger from the .roger file
+                    2. Start Roger from the .roger or .json file
                     3. Options for training mode
                     4. RRNNs settings
                     5. Exit of RogerHub 
@@ -50,8 +51,11 @@ Copyright 2025-2026 Emotion Corp. License
 
                         case 2:
                             Console.Clear();
-                            Console.Write("1. Place the .roger2 file in the folder with Yocto Roger.exe\n2. Enter the file name .roger2 (with extension)\n>>> ");
+                            Console.Write("Enter the name of your .roger or .json file. If it's not in this directory, please write absolute path to it>>> ");
                             Parameters.roger2 = Console.ReadLine();
+
+                            InitRogersData(LoadRoger());
+
                             NeuralNetwork.StartAI(1);
                             break;
 
@@ -154,7 +158,34 @@ Copyright 2025-2026 Emotion Corp. License
                 {
 
                     case "0":
-                        //TODO: Сохранение роджера, используя методы из класса Save_Load
+                        Console.WriteLine("""
+                            How do you want to save roger?
+
+                            1. INI
+                            2. Json (recommended)
+
+                            (1\2) >>> 
+                            """);
+                        if (int.TryParse(Console.ReadLine(), out int userInputChecked))
+                        {
+                            switch (userInputChecked)
+                            {
+                                case 1:
+                                    Save_Load.SaveRoger();
+                                    break;
+
+                                case 2:
+                                    Save_Load.SaveRogerToJson();
+                                    break;
+
+                                default:
+                                    Send("Value out of range.", "error");
+                                    break;
+                            }
+
+                            Console.WriteLine("Your roger saved in this directory, let's go, check it!\n If file was not created, write it in issues on our GitHub please ;)");
+                        }
+
                         break;
                     case "1":
                         Console.Clear();
