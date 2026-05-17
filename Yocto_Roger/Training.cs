@@ -9,7 +9,7 @@
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
             double[] deltaOut = new double[outputNeurons.Length];
-            //double[,] oldWeights = new double[NeuralNetwork.middleNeurons.GetLength(1), NeuralNetwork.outputNeurons.Length];
+            double[,] oldWeights = new double[middleNeurons.GetLength(1), outputNeurons.Length];
             
             for (int z = 0; z < Parameters.passes; z++)
             {
@@ -20,9 +20,9 @@
                     Array.Clear(deltaMid, 0, deltaMid.Length);
                     Array.Clear(deltaOut, 0, deltaOut.Length);
 
-                    //for (int x = 0; x < NeuralNetwork.weights2.GetLength(0); x++)
-                    //for (int y = 0; y < NeuralNetwork.weights2.GetLength(1); y++)
-                    //oldWeights[x, y] = NeuralNetwork.weights2[x, y];
+                    for (int x = 0; x < outputWeights.GetLength(0); x++)
+                        for (int y = 0; y < outputWeights.GetLength(1); y++)
+                            oldWeights[x, y] = outputWeights[x, y];
 
                     int[] binary = AIMath.NumToBin(educationArray[i,0], inputNeurons.Length);
 
@@ -34,10 +34,10 @@
                         errorOut[j] = outputNeurons[j] - binary[j]; //ошибка
                         deltaOut[j] = errorOut[j] * outputNeurons[j] * (1 - outputNeurons[j]); //дельта
 
-                        for (int k = 0; k < middleNeurons.Length; k++) { }
-                        //NeuralNetwork.weights2[k, j] -= NeuralNetwork.middleNeurons[k] * deltaOut[j] * Parameters.learningRate;
+                        for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                            outputWeights[k, j] -= middleNeurons[Parameters.Mlayers - 1,k] * deltaOut[j] * Parameters.learningRate;
 
-                        //NeuralNetwork.bias2[j] -= deltaOut[j] * Parameters.learningRate;
+                        outputBiases[j] -= deltaOut[j] * Parameters.learningRate;
                     }
                     for (int j = 0; j < middleNeurons.Length; j++)
                     {
