@@ -29,7 +29,14 @@ Internal AIMath lib
                 Console.WriteLine("binToNum -> " + result);
             return result;
         }
-        public static int[] NumToBin(int obj, int bits) //конвертация десятичного числа в двиучное
+        
+        /// <summary>
+        /// Конвертация десятичного числа в двоичное
+        /// </summary>
+        /// <param name="obj">Десятичное число которое нужно конвертировать</param>
+        /// <param name="bits">Количество бит</param> // Иван подправь, напиши пж для чего нужны биты
+        /// <returns></returns>
+        public static int[] NumToBin(int obj, int bits)
         {
             if (Parameters.isDebug)
                 Console.WriteLine("numToBin (" + bits + " bits) -> ");

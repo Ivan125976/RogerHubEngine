@@ -37,7 +37,7 @@ Copyright 2025-2026 Emotion Corp.
                     2. Start Roger from the .roger or .json file
                     3. Options for training mode
                     4. RRNNs settings
-                    5. Exit of RogerHub 
+                    5. Exit from RogerHub 
                     >>> 
                     """);
                 if (int.TryParse(Console.ReadLine(), out int value))
@@ -102,6 +102,11 @@ Copyright 2025-2026 Emotion Corp.
             }
         }
 
+        /// <summary>
+        /// Считает кол-во строк в переданном файле
+        /// </summary>
+        /// <param name="path">Абсолютный путь к файлу</param>
+        /// <returns>Целое число, значение которого является количеством прочитанных строк</returns>
         public static int CountLines(string path)
         {
             int count = 0;
@@ -111,6 +116,12 @@ Copyright 2025-2026 Emotion Corp.
             return count;
         }
 
+        /// <summary>
+        /// Рисует текст указанного цвета, в указанной позиции
+        /// </summary>
+        /// <param name="color">Цвет текста</param>
+        /// <param name="leftText">Текст слева</param>
+        /// <param name="rightText">Текст справа</param>
         public static void DrawLine(ConsoleColor color, string leftText, string rightText = "")
         {
             int cursorX = Console.CursorLeft;
@@ -131,6 +142,9 @@ Copyright 2025-2026 Emotion Corp.
             Console.BackgroundColor = ConsoleColor.Black;
         }
 
+        /// <summary>
+        /// Вызов меню настройки значений а также сохранения файла
+        /// </summary>
         public static void SetUp()
         {
             int i = 0;
@@ -306,7 +320,14 @@ Copyright 2025-2026 Emotion Corp.
             }
         }
 
-        public static void Send(string message, string mode)
+        /// <summary>
+        /// Рисует красивое сообщение пользователю о чём либо
+        /// 
+        /// Если ввести неправильный мод, пользователь получит ошибку о некорректно введённом моде. Замена исключениям
+        /// </summary>
+        /// <param name="message">Текст сообщения</param>
+        /// <param name="mode">Мод в зависимости от которого будет зависеть цвет и смысл сообщения. Доступные моды: "error", "warning", "message". По умолчанию мод является message</param>
+        public static void Send(string message, string mode = "message")
         {
             switch (mode.ToLower())
             {

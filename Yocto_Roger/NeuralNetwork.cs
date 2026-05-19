@@ -64,8 +64,8 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         string parsedValue = Convert.ToString(AIMath.StringParse(allLines[i]));
 
-                        educationArray[0, i] = parsedValue.ToString();
-                        educationArray[1, i] = parsedValue.ToString();
+                        educationArray[0, i] = parsedValue;
+                        educationArray[1, i] = parsedValue;
                     }
                     UI.Send("done", "message");
                     UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");

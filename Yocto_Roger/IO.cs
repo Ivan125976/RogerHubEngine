@@ -76,7 +76,7 @@ Internal I/O lib
                 OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
 
                 InputWeights = BuildStringArray(NeuralNetwork.inputWeights),
-                MiddleWeights = BuildStringJaggedMatrix(NeuralNetwork.middleWeights), // Вроде правильно работает, но Иван, проверь пожалуйста, я то даже не пойму работает оно или нет, для меня не крашится - значит работает а за корректность хз как то
+                //MiddleWeights = BuildStringJaggedMatrix(NeuralNetwork.middleWeights), //TODO: Исправить функцию BuildStringJaggedMatrix. Закомментировано потому что из-за некорректной работы функции программа падает с исключением
                 OutputWeights = BuildStringArray(NeuralNetwork.outputWeights),
 
                 Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
@@ -114,7 +114,7 @@ Internal I/O lib
         /// <summary>
         /// Проверка формата записи
         /// </summary>
-        /// <returns>true - json формат, false - roger формат/returns>
+        /// <returns>true - json формат, false - roger формат</returns>
         private static bool? CheckFormat()
         {
             if (Parameters.roger2.EndsWith(".json"))
@@ -210,7 +210,7 @@ Internal I/O lib
         /// Пытаеься создать файл в этой же директории, если такой файл уже существует то прибавляет индекс попыток пока не дойдёт до индекса, когда файла с таким именем не будет
         /// </summary>
         /// <param name="filename"></param>
-        /// <param name="extension"></param>
+        /// <param name="extension">Без точки</param>
         /// <returns>Имя итогового файла</returns>
         public static string MakeFileSplitOnIndexIfExists(string filename, string extension)
         {

@@ -6,6 +6,7 @@ namespace Yocto_Roger
 {
     internal class Auxiliary
     {
+
         public static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
             foreach (var element in array)
@@ -15,17 +16,30 @@ namespace Yocto_Roger
                 writer.WriteLine();
         }
 
-        public static void WriteMatrix(StreamWriter writer, double[,] matrix)
+        /// <summary>
+        /// Узкоспециализированная функция для записи матрицы врайтером
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="matrix"></param>
+        /// <param name="line_break">Перенос строки после записи</param>
+        public static void WriteMatrix(StreamWriter writer, double[,] matrix, bool line_break = false)
         {
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
                 for (int i = 0; i < matrix.GetLength(0); i++)
                     writer.Write(matrix[i, j].ToString(CultureInfo.InvariantCulture) + ";");
-                writer.WriteLine();
+
+                if (line_break)
+                    writer.WriteLine();
             }
         }
 
-        public static string BuildStringMatrix(double[,] matrix)
+        /// <summary>
+        /// Преобразует матрицу в строку, разделяя каждое значение точкой с запятой
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns>Строка в которой по порядку содержатся элементы матрицы, разделённые точкой с запятой</returns>
+        public static string BuildStringMatrix(double[,] matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
         {
             StringBuilder builder = new();
 
@@ -39,6 +53,7 @@ namespace Yocto_Roger
                 [..(builder.Length - 1)];
         }
 
+        //Ivan: Почини пожалуйста эту функцию я понятия не имею почему, но оно падает с исключением при сохранении именно в этой функции, что-то связанное с передачей первого параметра
         public static string BuildStringJaggedMatrix(double[][,] jaggedMatrix, byte maxIndexOfMatrix = 2)
         {
             StringBuilder builder = new();
