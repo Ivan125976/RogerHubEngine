@@ -134,18 +134,18 @@ Internal I/O lib
         /// </summary>
         public class Roger
         {
-            public string AIversion { get; set; }
+            public string? AIversion { get; set; }
 
-            public string InputNeurons { get; set; }
-            public string MiddleNeurons { get; set; }
-            public string OutputNeurons { get; set; }
+            public string? InputNeurons { get; set; }
+            public string? MiddleNeurons { get; set; }
+            public string? OutputNeurons { get; set; }
 
-            public string InputWeights { get; set; }
-            public string MiddleWeights { get; set; }
-            public string OutputWeights { get; set; }
+            public string? InputWeights { get; set; }
+            public string? MiddleWeights { get; set; }
+            public string? OutputWeights { get; set; }
 
-            public string Mbias { get; set; }
-            public string Obias { get; set; }
+            public string? Mbias { get; set; }
+            public string? Obias { get; set; }
         }
 
         /// <summary>

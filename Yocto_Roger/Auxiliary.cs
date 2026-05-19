@@ -3,6 +3,14 @@ using System.Text;
 using static Yocto_Roger.IO;
 
 namespace Yocto_Roger
+/* 
+Yocto Roger ;)
+*****************
+*Emotion Corp ;)*
+*****************
+Copyright 2025-2026 Emotion Corp.
+Internal extension I/O lib
+*/
 {
     internal class Auxiliary
     {

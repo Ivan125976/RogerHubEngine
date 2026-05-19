@@ -117,12 +117,12 @@ Copyright 2025-2026 Emotion Corp.
         }
 
         /// <summary>
-        /// Рисует текст указанного цвета, в указанной позиции
+        /// Рисует полоску определенного цвета внизу окна консоли
         /// </summary>
         /// <param name="color">Цвет текста</param>
         /// <param name="leftText">Текст слева</param>
         /// <param name="rightText">Текст справа</param>
-        public static void DrawLine(ConsoleColor color, string leftText, string rightText = "")
+        public static void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
@@ -172,8 +172,7 @@ Copyright 2025-2026 Emotion Corp.
                 {
 
                     case "0":
-                        Console.Write("""
-                            
+                        Console.Write("""                           
                             How do you want to save roger?
 
                             1. INI
@@ -194,7 +193,7 @@ Copyright 2025-2026 Emotion Corp.
                                     break;
 
                                 default:
-                                    Send("Value out of range.", "error");
+                                    Send("What?", "error");
                                     break;
                             }
 

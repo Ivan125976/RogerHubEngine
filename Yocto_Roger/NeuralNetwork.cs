@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Net.Http.Headers;
 
 namespace Yocto_Roger
 {
@@ -12,25 +12,33 @@ Copyright 2025-2026 Emotion Corp.
 */
     internal class NeuralNetwork
     {
+        static bool rogerIsCreated = false;
+
         public static string[,]? educationArray;
 
-        public static int[] inputNeurons = new int[Parameters.inputNeuronsCount];
+        public static int[] inputNeurons;
         public static double[,] middleNeurons = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
-        public static double[] outputNeurons = new double[Parameters.outputNeuronsCount];
+        public static double[] outputNeurons;
 
-        public static double[,] inputWeights = new double[inputNeurons.Length, middleNeurons.Length];
+        public static double[,] inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
         public static double[][,] middleWeights = new double[Parameters.Mlayers - 1][,];
-        public static double[,] outputWeights = new double[middleNeurons.Length, outputNeurons.Length];
+        public static double[,] outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
 
-        public static double[,] Mbias = new double[Parameters.Mlayers, middleNeurons.Length];
-        public static double[] Obias = new double[outputNeurons.Length];
-
+        public static double[,] Mbias = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
+        public static double[] Obias = new double[Parameters.outputNeuronsCount];
         public static void StartAI(int mode)
         {
+            inputNeurons = new int[Parameters.inputNeuronsCount];
+            outputNeurons = new double[Parameters.outputNeuronsCount];
             Console.WriteLine("StartAI in mode " + mode);
             switch (mode)
             {
                 case 0:
+                    if (!File.Exists(Parameters.knowledgeFile))
+                    {
+                        UI.Send("I can't find the training file!", "error");
+                        break;
+                    }
                     Console.Write("Initialization biases...");
                     Biases.Init(ref Mbias);
                     Biases.Init(ref Obias);
@@ -42,37 +50,42 @@ Copyright 2025-2026 Emotion Corp.
                     UI.Send("done", "message");
                     UI.Send("Initialization complete", "message");
                     Console.Write("SetUp education array and reading knowledge...");
-                    if (!File.Exists(Parameters.knowledgeFile))
-                    {
-                        string file = IO.MakeFileSplitOnIndexIfExists("knowledge", "know");
-                        using (StreamWriter writer = new(file))
-                        {
-                            Parameters.knowledgeFile = file;
-                            writer.Write("""
-                            10101001010 0.5;0.34;0.23;0.1313
-                            10101001001 0.2;0.1;.0.34;0.23234
-                            """);
-                        }
-                    }
                     string[] allLines = File.ReadAllLines(Parameters.knowledgeFile);
+
+                    //инициализация массива обучения
+
+                    string[] parsedString = allLines[0].Split(' ');
+                    int[] inputSize = AIMath.StringParse(parsedString[0]);
+                    string[] splitingSecond = parsedString[1].Split(';');
+                    double[] outputSize = new double[splitingSecond.Length];
+                    for (int j = 0; j < splitingSecond.Length; j++)
+                        outputSize[j] = Convert.ToDouble(splitingSecond[j]);
+                    int length = inputSize.Length + outputSize.Length;
+
+                    if (inputSize.Length != inputNeurons.Length)
+                    {
+                        UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu", "error");
+                        break;
+                    }
+                    else if (outputSize.Length != outputNeurons.Length)
+                    {
+                        UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu.", "error");
+                        break;
+                    }
+
+                    educationArray = new string[allLines.Length, length];
+
                     UI.Send("done", "message");
                     Console.Write("Education...");
-                    // Не уверен что всё правильно но вообще должно
-                    educationArray = new string[2, allLines.Length];
 
-                    for (int i = 0; i < allLines.Length; i++)
-                    {
-                        string parsedValue = Convert.ToString(AIMath.StringParse(allLines[i]));
 
-                        educationArray[0, i] = parsedValue;
-                        educationArray[1, i] = parsedValue;
-                    }
                     UI.Send("done", "message");
                     UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
-                    Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray);
+                    //Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray);
                     UI.Send("done", "message");
                     Console.Write("Cleaning...");
                     educationArray = null;
+                    rogerIsCreated = true;
                     UI.Send("done", "message");
                     break;
 
@@ -81,17 +94,20 @@ Copyright 2025-2026 Emotion Corp.
                     IO.LoadRoger();
                     break;
             }
-            Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
-            while (true)
+            if (rogerIsCreated)
             {
-                UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
-                int[] userInput = new int[inputNeurons.Length];
-                Console.Write("\nInput>>>");
-                userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
-                ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, GenerateDropOut());
-                Console.Write("Output>>>");
-                for (int i = 0; i < outputNeurons.Length; i++)
-                    Console.Write(outputNeurons[i] + " ");
+                Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
+                while (true)
+                {
+                    UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
+                    int[] userInput = new int[inputNeurons.Length];
+                    Console.Write("\nInput>>>");
+                    userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
+                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, GenerateDropOut());
+                    Console.Write("Output>>>");
+                    for (int i = 0; i < outputNeurons.Length; i++)
+                        Console.Write(outputNeurons[i] + " ");
+                }
             }
         }
 

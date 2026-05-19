@@ -34,7 +34,7 @@ Internal AIMath lib
         /// Конвертация десятичного числа в двоичное
         /// </summary>
         /// <param name="obj">Десятичное число которое нужно конвертировать</param>
-        /// <param name="bits">Количество бит</param> // Иван подправь, напиши пж для чего нужны биты
+        /// <param name="bits">Количество бит бинарного массива</param>
         /// <returns></returns>
         public static int[] NumToBin(int obj, int bits)
         {
