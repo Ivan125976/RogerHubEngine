@@ -10,6 +10,10 @@ Yocto Roger ;)
 Copyright 2025-2026 Emotion Corp.
     Education With Teacher v1.1
 */
+    /// <summary>
+    /// Алгоритм обучения
+    /// </summary>
+    /// <returns>Обученная нейросеть</returns>
     public class Training
     {
         public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,

@@ -97,9 +97,8 @@ Copyright 2025-2026 Emotion Corp.
                 while (true)
                 {
                     UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
-                    int[] userInput = new int[inputNeurons.Length];
                     Console.Write("\nInput>>>");
-                    userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
+                    int[] userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
                     ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, GenerateDropOut());
                     Console.Write("Output>>>");
                     for (int i = 0; i < outputNeurons.Length; i++)
