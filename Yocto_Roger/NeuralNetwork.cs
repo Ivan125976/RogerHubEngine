@@ -99,7 +99,7 @@ Copyright 2025-2026 Emotion Corp.
                     UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
                     Console.Write("\nInput>>>");
                     int[] userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
-                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, GenerateDropOut());
+                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights);
                     Console.Write("Output>>>");
                     for (int i = 0; i < outputNeurons.Length; i++)
                         Console.Write(outputNeurons[i] + " ");
@@ -210,16 +210,12 @@ Copyright 2025-2026 Emotion Corp.
         }
 
         public static void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights,
-            double[,] middleBiases, double[] outputNeurons, double[] outputBiases, double[,] outputWeights, float[,] dropOut)
+            double[,] middleBiases, double[] outputNeurons, double[] outputBiases, double[,] outputWeights)
         {
             WriteToNN(inputNeurons, NNinput);
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
-            for (int l = 0; l < Parameters.Mlayers; l++) //DropOut 
-            {
-                for (int k = 0; k < Parameters.middleNeuronsCount; k++)
-                    middleNeurons[l, k] *= dropOut[l, k];
+            for (int l = 0; l < Parameters.Mlayers - 1; l++) 
                 SumWeights(middleWeights[l], middleNeurons, middleNeurons, middleBiases, l);
-            }
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
         }
     }
