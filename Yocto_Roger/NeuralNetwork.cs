@@ -74,12 +74,11 @@ Copyright 2025-2026 Emotion Corp.
                     UI.Send("done", "message");
                     UI.Send("Initialization complete", "message");
                     Console.Write("Education...");
-
-
-                    UI.Send("done", "message");
                     UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
-                    //Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray);
+
+                    Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray);
                     UI.Send("done", "message");
+
                     Console.Write("Cleaning...");
                     educationArray = null;
                     rogerIsCreated = true;

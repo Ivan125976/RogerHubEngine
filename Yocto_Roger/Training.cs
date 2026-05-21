@@ -19,11 +19,11 @@ Copyright 2025-2026 Emotion Corp.
         public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,
             ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, string[,] educationArray) //обучение с поддержкой DropOut
         {
-            double[,] errorMid = new double[Parameters.Mlayers, middleNeurons.GetLength(0)];
-            double[,] deltaMid = new double[Parameters.Mlayers, middleNeurons.GetLength(0)];
+            double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
+            double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
             double[] deltaOut = new double[outputNeurons.Length];
-            double[,] oldOutputWeights = new double[middleNeurons.GetLength(1), outputNeurons.Length];
+            double[,] oldOutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
             double[][,] oldMiddleWeights = new double[Parameters.Mlayers - 1][,];
             for (int x = 0; x < Parameters.Mlayers - 1; x++)
                 oldMiddleWeights[x] = new double[middleNeurons.GetLength(1), middleNeurons.GetLength(1)];
@@ -32,6 +32,13 @@ Copyright 2025-2026 Emotion Corp.
             {
                 for (int i = 0; i < educationArray.GetLength(0); i++)
                 {
+                    string input = "";
+
+                    for (int l = 0; l < inputNeurons.Length; l++)
+                        input += educationArray[i, l];
+
+                    Console.WriteLine(input);
+
                     Array.Clear(errorMid, 0, errorMid.Length);
                     Array.Clear(errorOut, 0, errorOut.Length);
 
@@ -46,10 +53,8 @@ Copyright 2025-2026 Emotion Corp.
                                 oldMiddleWeights[x][y, z] = middleWeights[x][y, z];
                     }
 
-                    int[] binary = AIMath.NumToBin(Convert.ToInt32(educationArray[i, 0]), inputNeurons.Length);
-
                     //forward propagation
-                    NeuralNetwork.ForwardPropagation(binary, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
+                    NeuralNetwork.ForwardPropagation(AIMath.StringParse(input), inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
 
                     float[,] dropOut = NeuralNetwork.GenerateDropOut();
 
