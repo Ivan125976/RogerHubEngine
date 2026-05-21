@@ -40,16 +40,6 @@ Copyright 2025-2026 Emotion Corp.
                         UI.Send("I can't find the training file!", "error");
                         break;
                     }
-                    Console.Write("Initialization biases...");
-                    Biases.Init(ref Mbias);
-                    Biases.Init(ref Obias);
-                    UI.Send("done", "message");
-                    Console.Write("Initialization weights...");
-                    Weights.Init(ref inputWeights);
-                    Weights.Init(ref outputWeights);
-                    Weights.Init(ref middleWeights);
-                    UI.Send("done", "message");
-                    UI.Send("Initialization complete", "message");
                     Console.Write("SetUp education array and reading knowledge...");
                     string[] allLines = File.ReadAllLines(Parameters.knowledgeFile);
 
@@ -73,6 +63,16 @@ Copyright 2025-2026 Emotion Corp.
                     educationArray = new string[allLines.Length, length];
 
                     UI.Send("done", "message");
+                    Console.Write("Initialization biases...");
+                    Biases.Init(ref Mbias);
+                    Biases.Init(ref Obias);
+                    UI.Send("done", "message");
+                    Console.Write("Initialization weights...");
+                    Weights.Init(ref inputWeights);
+                    Weights.Init(ref outputWeights);
+                    Weights.Init(ref middleWeights);
+                    UI.Send("done", "message");
+                    UI.Send("Initialization complete", "message");
                     Console.Write("Education...");
 
 
