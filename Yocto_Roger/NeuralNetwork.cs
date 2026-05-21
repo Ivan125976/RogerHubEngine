@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Globalization;
+using System.Net.Http.Headers;
 
 namespace Yocto_Roger
 {
@@ -59,17 +60,13 @@ Copyright 2025-2026 Emotion Corp.
                     string[] splitingSecond = parsedString[1].Split(';');
                     double[] outputSize = new double[splitingSecond.Length];
                     for (int j = 0; j < splitingSecond.Length; j++)
-                        outputSize[j] = Convert.ToDouble(splitingSecond[j]);
+                        outputSize[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                     int length = inputSize.Length + outputSize.Length;
 
-                    if (inputSize.Length != inputNeurons.Length)
+                    if (inputSize.Length != inputNeurons.Length || outputSize.Length != outputNeurons.Length)
                     {
+                        Console.WriteLine();
                         UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu", "error");
-                        break;
-                    }
-                    else if (outputSize.Length != outputNeurons.Length)
-                    {
-                        UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu.", "error");
                         break;
                     }
 
