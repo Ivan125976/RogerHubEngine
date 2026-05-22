@@ -53,10 +53,16 @@ Copyright 2025-2026 Emotion Corp.
                         outputSize[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                     int length = inputSize.Length + outputSize.Length;
 
-                    if (inputSize.Length != inputNeurons.Length || outputSize.Length != outputNeurons.Length)
+                    if (inputSize.Length != inputNeurons.Length)
                     {
                         Console.WriteLine();
-                        UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu", "error");
+                        UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + inputSize.Length + ")", "error");
+                        break;
+                    }
+                    else if (outputSize.Length != outputNeurons.Length)
+                    {
+                        Console.WriteLine();
+                        UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + outputSize.Length + ")", "error");
                         break;
                     }
 
