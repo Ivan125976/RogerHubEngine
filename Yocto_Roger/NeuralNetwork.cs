@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Net.Http.Headers;
 
 namespace Yocto_Roger
 {
@@ -17,20 +16,26 @@ Copyright 2025-2026 Emotion Corp.
 
         public static string[,]? educationArray;
 
-        public static int[] inputNeurons;
-        public static double[,] middleNeurons = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
-        public static double[] outputNeurons;
+        public static int[]? inputNeurons;
+        public static double[,]? middleNeurons;
+        public static double[]? outputNeurons;
 
-        public static double[,] inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
-        public static double[][,] middleWeights = new double[Parameters.Mlayers - 1][,];
-        public static double[,] outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
+        public static double[,]? inputWeights;
+        public static double[][,]? middleWeights;
+        public static double[,]? outputWeights;
 
-        public static double[,] Mbias = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
-        public static double[] Obias = new double[Parameters.outputNeuronsCount];
+        public static double[,]? Mbias;
+        public static double[]? Obias;
         public static void StartAI(int mode)
         {
             inputNeurons = new int[Parameters.inputNeuronsCount];
+            middleNeurons = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
             outputNeurons = new double[Parameters.outputNeuronsCount];
+            inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
+            middleWeights = new double[Parameters.Mlayers - 1][,];
+            outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
+            Mbias = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
+            Obias = new double[Parameters.outputNeuronsCount];
             Console.WriteLine("StartAI in mode " + mode);
             switch (mode)
             {
@@ -38,6 +43,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (!File.Exists(Parameters.knowledgeFile))
                     {
                         UI.Send("I can't find the training file!", "error");
+                        Reset();
                         break;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
@@ -57,12 +63,14 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         Console.WriteLine();
                         UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + inputSize.Length + ")", "error");
+                        Reset();
                         break;
                     }
                     else if (outputSize.Length != outputNeurons.Length)
                     {
                         Console.WriteLine();
                         UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + outputSize.Length + ")", "error");
+                        Reset();
                         break;
                     }
 
@@ -219,9 +227,22 @@ Copyright 2025-2026 Emotion Corp.
         {
             WriteToNN(inputNeurons, NNinput);
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
-            for (int l = 0; l < Parameters.Mlayers - 1; l++) 
+            for (int l = 0; l < Parameters.Mlayers - 1; l++)
                 SumWeights(middleWeights[l], middleNeurons, middleNeurons, middleBiases, l);
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
+        }
+
+        public static void Reset()
+        {
+            inputNeurons = null;
+            outputNeurons = null;
+            inputWeights = null;
+            outputWeights = null;
+            educationArray = null;
+            middleWeights = null;
+            middleNeurons = null;
+            Obias = null;
+            Mbias = null;
         }
     }
 }

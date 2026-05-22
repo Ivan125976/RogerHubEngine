@@ -9,6 +9,8 @@ Yocto Roger ;)
 *****************
 Copyright 2025-2026 Emotion Corp.
     Education With Teacher v1.1
+
+    EducationWithTeacher, DropOut, multilayer
 */
     /// <summary>
     /// Алгоритм обучения
@@ -17,7 +19,7 @@ Copyright 2025-2026 Emotion Corp.
     public class Training
     {
         public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,
-            ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, string[,] educationArray) //обучение с поддержкой DropOut
+            ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, string[,] educationArray)
         {
             double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
@@ -62,11 +64,15 @@ Copyright 2025-2026 Emotion Corp.
                         for (int k = 0; k < Parameters.middleNeuronsCount; k++)
                             deltaMid[l, k] *= dropOut[l, k];
 
-                    int[] correctOutput = AIMath.StringParse(educationArray[i, 1]);
+                    string correctOutput = "";
+                    for (int l = inputNeurons.Length; l < outputNeurons.Length + inputNeurons.Length; l++)
+                        correctOutput += educationArray[i, l];
+
+                    double[] output = AIMath.SplitOutputEducation(correctOutput);
 
                     for (int j = 0; j < outputNeurons.Length; j++) //update output weights
                     {
-                        errorOut[j] = outputNeurons[j] - correctOutput[j]; //ошибка
+                        errorOut[j] = outputNeurons[j] - output[j]; //ошибка
                         deltaOut[j] = errorOut[j] * outputNeurons[j] * (1 - outputNeurons[j]); //дельта
 
                         for (int k = 0; k < middleNeurons.GetLength(1); k++)
