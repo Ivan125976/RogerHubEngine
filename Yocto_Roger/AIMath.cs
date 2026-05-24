@@ -59,10 +59,10 @@ Internal AIMath lib
         }
         public static double[] SplitOutputEducation(string obj)
         {
-            string[] parsedObj = obj.Split(';');
+            string[] parsedObj = obj.Split(' ');
             double[] parsedArray = new double[Parameters.outputNeuronsCount];
             for (int i = 0; i < parsedArray.Length; i++)
-                parsedArray[i] = Convert.ToDouble(parsedObj);
+                parsedArray[i] = Convert.ToDouble(parsedObj[i]);
             return parsedArray;
         }
     }

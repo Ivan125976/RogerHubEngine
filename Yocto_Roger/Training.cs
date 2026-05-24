@@ -21,6 +21,9 @@ Copyright 2025-2026 Emotion Corp.
         public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,
             ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, string[,] educationArray)
         {
+            string input, correctOutput;
+            int[] parsedInput;
+            double[] output;
             double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
@@ -34,15 +37,17 @@ Copyright 2025-2026 Emotion Corp.
             {
                 for (int i = 0; i < educationArray.GetLength(0); i++)
                 {
-                    string input = "";
+                    input = "";
 
                     for (int l = 0; l < inputNeurons.Length; l++)
                         input += educationArray[i, l];
 
-                    Console.WriteLine(input);
+                    parsedInput = AIMath.StringParse(input);
 
                     Array.Clear(errorMid, 0, errorMid.Length);
                     Array.Clear(errorOut, 0, errorOut.Length);
+                    Array.Clear(deltaMid, 0, deltaMid.Length);
+                    Array.Clear(deltaOut, 0, deltaOut.Length);
 
                     for (int x = 0; x < outputWeights.GetLength(0); x++)
                         for (int y = 0; y < outputWeights.GetLength(1); y++)
@@ -50,25 +55,21 @@ Copyright 2025-2026 Emotion Corp.
 
                     for (int x = 0; x < Parameters.Mlayers - 1; x++)
                     {
-                        for (int y = 0; y < middleWeights.GetLength(1); y++)
-                            for (int z = 0; z < middleWeights.GetLength(1); z++)
+                        for (int y = 0; y < middleWeights[x].GetLength(0); y++)
+                            for (int z = 0; z < middleWeights[x].GetLength(1); z++)
                                 oldMiddleWeights[x][y, z] = middleWeights[x][y, z];
                     }
 
                     //forward propagation
-                    NeuralNetwork.ForwardPropagation(AIMath.StringParse(input), inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
+                    NeuralNetwork.ForwardPropagation(parsedInput, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
 
                     float[,] dropOut = NeuralNetwork.GenerateDropOut();
 
-                    for (int l = 0; l < Parameters.Mlayers; l++)
-                        for (int k = 0; k < Parameters.middleNeuronsCount; k++)
-                            deltaMid[l, k] *= dropOut[l, k];
-
-                    string correctOutput = "";
+                    correctOutput = "";
                     for (int l = inputNeurons.Length; l < outputNeurons.Length + inputNeurons.Length; l++)
-                        correctOutput += educationArray[i, l];
+                        correctOutput += educationArray[i, l] + " ";
 
-                    double[] output = AIMath.SplitOutputEducation(correctOutput);
+                    output = AIMath.SplitOutputEducation(correctOutput);
 
                     for (int j = 0; j < outputNeurons.Length; j++) //update output weights
                     {
@@ -91,39 +92,52 @@ Copyright 2025-2026 Emotion Corp.
                         else
                             deltaMid[Parameters.Mlayers - 1, j] = errorMid[Parameters.Mlayers - 1, j] * middleNeurons[Parameters.Mlayers - 1, j] * (1 - middleNeurons[Parameters.Mlayers - 1, j]); //дельта
 
-                        for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            middleWeights[Parameters.Mlayers - 2][k, j] -= middleNeurons[Parameters.Mlayers - 2, k] * deltaMid[Parameters.Mlayers - 1, j] * Parameters.learningRate;
+                        deltaMid[Parameters.Mlayers - 1, j] *= dropOut[Parameters.Mlayers - 1, j];
+
+                        if (Parameters.Mlayers > 1)
+                            for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                middleWeights[Parameters.Mlayers - 2][k, j] -=
+                                    middleNeurons[Parameters.Mlayers - 2, k] *
+                                    deltaMid[Parameters.Mlayers - 1, j] *
+                                    Parameters.learningRate;
+                        else
+                            for (int k = 0; k < inputNeurons.Length; k++)
+                                inputWeights[k, j] -=
+                                    parsedInput[k] *
+                                    deltaMid[0, j] *
+                                    Parameters.learningRate;
 
                         middleBiases[Parameters.Mlayers - 1, j] -= deltaMid[Parameters.Mlayers - 1, j] * Parameters.learningRate;
                     }
 
-                    for (int layer = Parameters.Mlayers - 2; layer >= 0; layer--) //update middle->middle weights
-                    {
-                        int oldLayer = layer + 1;
-                        for (int j = 0; j < middleNeurons.GetLength(1); j++)
+                    if (Parameters.Mlayers > 1)
+                        for (int layer = Parameters.Mlayers - 2; layer >= 0; layer--) //update middle->middle weights
                         {
-                            for (int l = 0; l < middleNeurons.GetLength(1); l++)
-                                errorMid[layer, j] += deltaMid[oldLayer, l] * oldMiddleWeights[layer][j, l]; //ошибка
-
-                            if (middleNeurons[layer, j] == 0)
-                                deltaMid[layer, j] = 0;
-                            else
-                                deltaMid[layer, j] = errorMid[layer, j] * middleNeurons[layer, j] * (1 - middleNeurons[layer, j]); //дельта
-
-                            if (layer > 0)
+                            int oldLayer = layer + 1;
+                            for (int j = 0; j < middleNeurons.GetLength(1); j++)
                             {
-                                for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                    middleWeights[layer - 1][k, j] -= middleNeurons[layer - 1, k] * deltaMid[layer, j] * Parameters.learningRate;
-                            }
+                                for (int l = 0; l < middleNeurons.GetLength(1); l++)
+                                    errorMid[layer, j] += deltaMid[oldLayer, l] * oldMiddleWeights[layer][j, l]; //ошибка
 
-                            middleBiases[layer, j] -= deltaMid[layer, j] * Parameters.learningRate;
+                                if (middleNeurons[layer, j] == 0)
+                                    deltaMid[layer, j] = 0;
+                                else
+                                    deltaMid[layer, j] = errorMid[layer, j] * middleNeurons[layer, j] * (1 - middleNeurons[layer, j]); //дельта
+
+                                if (layer > 0)
+                                {
+                                    for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                        middleWeights[layer - 1][k, j] -= middleNeurons[layer - 1, k] * deltaMid[layer, j] * Parameters.learningRate;
+                                }
+
+                                middleBiases[layer, j] -= deltaMid[layer, j] * Parameters.learningRate;
+                            }
                         }
-                    }
 
                     for (int j = 0; j < inputNeurons.Length; j++) //update middle->input weights
                     {
                         for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            inputWeights[j, k] -= inputNeurons[j] * deltaMid[0,k] * Parameters.learningRate;
+                            inputWeights[j, k] -= parsedInput[j] * deltaMid[0, k] * Parameters.learningRate;
                     }
                 }
             }
