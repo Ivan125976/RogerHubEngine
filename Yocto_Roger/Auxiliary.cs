@@ -77,21 +77,21 @@ Internal extension I/O lib
             return builder.ToString();
         }
 
-        //Ivan: Почини пожалуйста эту функцию я понятия не имею почему, но оно падает с исключением при сохранении именно в этой функции, что-то связанное с передачей первого параметра
-        public static string BuildStringJaggedMatrix(double[][,] jaggedMatrix, byte maxIndexOfMatrix = 2)
+        public static string BuildStringJaggedMatrix(double[][,] jaggedMatrix, byte maxIndexOfMatrix)
         {
             StringBuilder builder = new();
 
-            for (int j = 0; j < jaggedMatrix[0].GetLength(1); j++)
+            for (int iM = 0; iM < maxIndexOfMatrix; iM++)
             {
-                for (int i = 0; i < jaggedMatrix[0].GetLength(0); i++)
+                for (int j = 0; j < jaggedMatrix[iM].GetLength(1); j++)
                 {
-                    for (int iM = 0; iM < Math.Min(maxIndexOfMatrix, jaggedMatrix.Length); iM++)
+                    for (int i = 0; i < jaggedMatrix[iM].GetLength(0); i++)
                     {
-                            builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
+                        builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
                     }
                 }
             }
+
             if (builder.ToString().EndsWith(';'))
                 builder.Length--; // Удаляет последний ненужный символ ';'
 

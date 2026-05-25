@@ -23,9 +23,9 @@ Internal I/O lib
             do
             {
                 if (index == 0)
-                    fileName = $"roger.roger";
+                    fileName = $"roger.roger" ?? String.Empty;
                 else
-                    fileName = $"roger{index}.roger";
+                    fileName = $"roger{index}.roger" ?? String.Empty;
                 index++;
             }
             while (File.Exists(fileName));
@@ -60,27 +60,27 @@ Internal I/O lib
             do
             {
                 if (index == 0)
-                    fileName = $"roger.json";
+                    fileName = $"roger.json" ?? String.Empty;
                 else
-                    fileName = $"roger{index}.json";
+                    fileName = $"roger{index}.json" ?? String.Empty;
                 index++;
             }
             while (File.Exists(fileName));
 
             Roger roger = new()
             {
-                AIversion = Parameters.version,
+                AIversion = Parameters.version ?? String.Empty,
 
-                InputNeurons = BuildStringArray(NeuralNetwork.inputNeurons),
-                MiddleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons),
-                OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons),
+                InputNeurons = BuildStringArray(NeuralNetwork.inputNeurons) ?? String.Empty,
+                MiddleNeurons = BuildStringMatrix(NeuralNetwork.middleNeurons) ?? String.Empty,
+                OutputNeurons = BuildStringArray(NeuralNetwork.outputNeurons) ?? String.Empty,
 
-                InputWeights = BuildStringArray(NeuralNetwork.inputWeights),
+                InputWeights = BuildStringArray(NeuralNetwork.inputWeights) ?? String.Empty,
                 //MiddleWeights = BuildStringJaggedMatrix(NeuralNetwork.middleWeights), //TODO: Исправить функцию BuildStringJaggedMatrix. Закомментировано потому что из-за некорректной работы функции программа падает с исключением
-                OutputWeights = BuildStringArray(NeuralNetwork.outputWeights),
+                OutputWeights = BuildStringArray(NeuralNetwork.outputWeights) ?? String.Empty,
 
-                Mbias = BuildStringMatrix(NeuralNetwork.Mbias),
-                Obias = BuildStringArray(NeuralNetwork.Obias),
+                Mbias = BuildStringMatrix(NeuralNetwork.Mbias) ?? String.Empty,
+                Obias = BuildStringArray(NeuralNetwork.Obias) ?? String.Empty,
             };
 
             string jsonData = JsonSerializer.Serialize(roger, new JsonSerializerOptions { WriteIndented = true });
@@ -128,24 +128,25 @@ Internal I/O lib
         /// <summary>
         /// Класс который будет хранить в себе данные для загрузки/сохранения нейросети.
         /// Данные хранятся в виде строк, поэтому данные из него требуется инициализировать с помощью специальной функции InitRogersData, написанной специально для того чтобы не инициализировать всё вручную
+        /// Принять к сведению, как к работе с этим классом, там и просто к просмотру - Отсутствие данных обозначается String.Empty вместо null !!!
         /// For Axolotl: Если каких-то данных не хватает, просто допиши их в класс 
         /// 
         /// PS: Если добавляешь или убираешь какое либо поле в классе Roger, делай тоже самое в функции InitRogersData() !!! *пожалуйста*
         /// </summary>
         public class Roger
         {
-            public string? AIversion { get; set; }
+            public string AIversion { get; set; }
 
-            public string? InputNeurons { get; set; }
-            public string? MiddleNeurons { get; set; }
-            public string? OutputNeurons { get; set; }
+            public string InputNeurons { get; set; }
+            public string MiddleNeurons { get; set; }
+            public string OutputNeurons { get; set; }
 
-            public string? InputWeights { get; set; }
-            public string? MiddleWeights { get; set; }
-            public string? OutputWeights { get; set; }
+            public string InputWeights { get; set; }
+            public string MiddleWeights { get; set; }
+            public string OutputWeights { get; set; }
 
-            public string? Mbias { get; set; }
-            public string? Obias { get; set; }
+            public string Mbias { get; set; }
+            public string Obias { get; set; }
         }
 
         /// <summary>
@@ -159,18 +160,18 @@ Internal I/O lib
 
             Roger roger = new()
             {
-                AIversion = data["roger"]["AIversion"],
+                AIversion = data["roger"]["AIversion"] ?? String.Empty,
 
-                InputNeurons = data["neurons"]["inputNeurons"],
-                MiddleNeurons = data["neurons"]["middleNeurons"],
-                OutputNeurons = data["neurons"]["outputNeurons"],
+                InputNeurons = data["neurons"]["inputNeurons"] ?? String.Empty,
+                MiddleNeurons = data["neurons"]["middleNeurons"] ?? String.Empty,
+                OutputNeurons = data["neurons"]["outputNeurons"] ?? String.Empty,
 
-                InputWeights = data["weights"]["inputWeights"],
-                MiddleWeights = data["weights"]["middleWeights"],
-                OutputWeights = data["weights"]["outputWeights"],
+                InputWeights = data["weights"]["inputWeights"] ?? String.Empty,
+                MiddleWeights = data["weights"]["middleWeights"] ?? String.Empty,
+                OutputWeights = data["weights"]["outputWeights"] ?? String.Empty,
 
-                Mbias = data["biases"]["Mbias"],
-                Obias = data["biases"]["Obias"]
+                Mbias = data["biases"]["Mbias"] ?? String.Empty,
+                Obias = data["biases"]["Obias"] ?? String.Empty
             };
 
             return roger;
@@ -184,33 +185,35 @@ Internal I/O lib
         /// </returns>
         private static Roger LoadRogerFromJson()
         {
-            using JsonDocument document = JsonDocument.Parse(Parameters.roger2);
-            JsonElement root = document.RootElement;
-
-            Roger roger = new()
+            using (JsonDocument document = JsonDocument.Parse(Parameters.roger2))
             {
-                AIversion = root.GetProperty("AIversion").GetString(),
+                JsonElement root = document.RootElement;
 
-                InputNeurons = root.GetProperty("inputNeurons").GetString(),
-                MiddleNeurons = root.GetProperty("middleNeurons").GetString(),
-                OutputNeurons = root.GetProperty("outputNeurons").GetString(),
+                Roger roger = new()
+                {
+                    AIversion = root.GetProperty("AIversion").GetString() ?? String.Empty,
 
-                InputWeights = root.GetProperty("inputWeights").GetString(),
-                MiddleWeights = root.GetProperty("middleWeights").GetString(),
-                OutputWeights = root.GetProperty("outputWeights").GetString(),
+                    InputNeurons = root.GetProperty("inputNeurons").GetString() ?? String.Empty,
+                    MiddleNeurons = root.GetProperty("middleNeurons").GetString() ?? String.Empty,
+                    OutputNeurons = root.GetProperty("outputNeurons").GetString() ?? String.Empty,
 
-                Mbias = root.GetProperty("Mbias").GetString(),
-                Obias = root.GetProperty("Obias").GetString()
-            };
+                    InputWeights = root.GetProperty("inputWeights").GetString() ?? String.Empty,
+                    MiddleWeights = root.GetProperty("middleWeights").GetString() ?? String.Empty,
+                    OutputWeights = root.GetProperty("outputWeights").GetString() ?? String.Empty,
 
-            return roger;
+                    Mbias = root.GetProperty("Mbias").GetString() ?? String.Empty,
+                    Obias = root.GetProperty("Obias").GetString() ?? String.Empty
+                };
+
+                return roger;
+            }
         }
 
         /// <summary>
-        /// Пытаеься создать файл в этой же директории, если такой файл уже существует то прибавляет индекс попыток пока не дойдёт до индекса, когда файла с таким именем не будет
+        /// Пытается создать файл в этой же директории, если такой файл уже существует то прибавляет индекс попыток пока не дойдёт до индекса, когда файла с таким именем не будет
         /// </summary>
         /// <param name="filename"></param>
-        /// <param name="extension">Без точки</param>
+        /// <param name="extension">Указывать расширение (без точки)</param>
         /// <returns>Имя итогового файла</returns>
         public static string MakeFileSplitOnIndexIfExists(string filename, string extension)
         {
