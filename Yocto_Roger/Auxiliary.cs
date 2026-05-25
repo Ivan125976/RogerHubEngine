@@ -63,66 +63,84 @@ Internal extension I/O lib
         /// <returns>Строка в которой по порядку содержатся элементы матрицы, разделённые точкой с запятой</returns>
         public static string BuildStringMatrix(double[,] matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
         {
-            StringBuilder builder = new();
-
-            for (byte j = 0; j < matrix.GetLength(1); j++)
+            if (matrix != null)
             {
-                for (byte i = 0; i < matrix.GetLength(0); i++)
-                    builder.Append(matrix[i, j].ToString(CultureInfo.InvariantCulture) + ";");
+                StringBuilder builder = new();
+
+                for (byte j = 0; j < matrix.GetLength(1); j++)
+                {
+                    for (byte i = 0; i < matrix.GetLength(0); i++)
+                        builder.Append(matrix[i, j].ToString(CultureInfo.InvariantCulture) + ";");
+                }
+
+                if (builder.ToString().EndsWith(';'))
+                    builder.Length--; // Удаляет последний ненужный символ ';'
+
+                return builder.ToString();
             }
-
-            if (builder.ToString().EndsWith(';'))
-                builder.Length--; // Удаляет последний ненужный символ ';'
-
-            return builder.ToString();
+            else
+                return String.Empty;
         }
 
         /// <summary>
         /// Строит все значения из матрицы с вложенными массивами в одну строчку разделяя их точкой с запятой. Очень важно вводить корректный второй параметр, от этого зависит упадёт ли программа сс исключением или нет
         /// </summary>
         /// <param name="jaggedMatrix">Матрица со вложенными массивами</param>
-        /// <param name="maxIndexOfMatrix">Колл-во вложенных массивов</param>
+        /// <param name="maxIndexOfMatrix">Кол-во вложенных массивов</param>
         /// <returns></returns>
         public static string BuildStringJaggedMatrix(double[][,] jaggedMatrix, byte maxIndexOfMatrix)
         {
-            StringBuilder builder = new();
-
-            for (int iM = 0; iM < maxIndexOfMatrix; iM++)
+            if (jaggedMatrix != null)
             {
-                for (int j = 0; j < jaggedMatrix[iM].GetLength(1); j++)
+                StringBuilder builder = new();
+
+                for (int iM = 0; iM < maxIndexOfMatrix; iM++)
                 {
-                    for (int i = 0; i < jaggedMatrix[iM].GetLength(0); i++)
+                    for (int j = 0; j < jaggedMatrix[iM].GetLength(1); j++)
                     {
-                        builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
+                        for (int i = 0; i < jaggedMatrix[iM].GetLength(0); i++)
+                        {
+                            builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
+                        }
                     }
                 }
+
+                if (builder.ToString().EndsWith(';'))
+                    builder.Length--; // Удаляет последний ненужный символ ';'
+
+                return builder.ToString();
             }
-
-            if (builder.ToString().EndsWith(';'))
-                builder.Length--; // Удаляет последний ненужный символ ';'
-
-            return builder.ToString();
+            else
+                return String.Empty;
         }
 
         public static string BuildStringArray(dynamic array)
         {
             StringBuilder builder = new();
 
-            foreach (dynamic v in array)
+            if (array != null)
             {
-                builder.Append(v.ToString(CultureInfo.InvariantCulture) + ';');
+                foreach (dynamic v in array)
+                {
+                    builder.Append(v.ToString(CultureInfo.InvariantCulture) + ';');
+                }
+
+                if (builder.ToString().EndsWith(';'))
+                    builder.Length--; // Удаляет последний ненужный символ ';'
+
+                return builder.ToString();
             }
-
-            if (builder.ToString().EndsWith(';'))
-                builder.Length--; // Удаляет последний ненужный символ ';'
-
-            return builder.ToString();
+            else
+                return String.Empty;
         }
 
         private static void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
         {
-            foreach (double v in array)
-                writer.Write(v.ToString(CultureInfo.InvariantCulture) + ';');
+            if (array != null)
+            {
+                foreach (double v in array)
+                    writer.Write(v.ToString(CultureInfo.InvariantCulture) + ';');
+            }
 
             if (line_break)
                 writer.WriteLine();

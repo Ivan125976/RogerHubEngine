@@ -119,16 +119,20 @@ Copyright 2025-2026 Emotion Corp.
             if (rogerIsCreated)
             {
                 float[,]? disabledDropOut = null;
+
+                //Console.TreatControlCAsInput = true; // Блокирование закрытия программы по нажатия ctrl+c ибо нужно чтобы оно выходило из цикла, а не из программы
+                //TODO: Сделать выход из training mode в главное меню, по нажатию CTRL + C асинхронно, чтобы проверка была не в конкретном куске кода, а в любой момент
+                //UI.Send("Press CTRL + C to quit outta here", "warning");
                 Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
                 while (true)
                 {
                     UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
-                    Console.Write("\nInput>>>");
-                    int[] userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
-                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
-                    Console.Write("Output>>>");
-                    for (int i = 0; i < outputNeurons.Length; i++)
-                        Console.Write(outputNeurons[i] + " ");
+                        Console.Write("\nInput>>>");
+                        int[] userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
+                        ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
+                        Console.Write("Output>>>");
+                        for (int i = 0; i < outputNeurons.Length; i++)
+                            Console.Write(outputNeurons[i] + " ");
                 }
             }
         }

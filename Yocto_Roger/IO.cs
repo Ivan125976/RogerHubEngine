@@ -66,7 +66,7 @@ Internal I/O lib
                 index++;
             }
             while (File.Exists(fileName));
-
+            //TODO: Поменять сохранение непроинициализированных данных из NeuralNetwork, на данные из класса Parameters
             Roger roger = new()
             {
                 AIversion = Parameters.version ?? String.Empty,
