@@ -65,7 +65,7 @@ Copyright 2025-2026 Emotion Corp.
 
                     educationArray = new string[allLines.Length, length];
 
-                    for (int i = 0; i< allLines.Length; i++)
+                    for (int i = 0; i < allLines.Length; i++)
                     {
                         parsedString = allLines[i].Split(' ');
                         input = AIMath.StringParse(parsedString[0]);
@@ -80,14 +80,14 @@ Copyright 2025-2026 Emotion Corp.
 
                     UI.Send("done", "message");
                     Console.Write("Initialization RogerHubEngine...");
-                        inputNeurons = new int[Parameters.inputNeuronsCount];
-                        middleNeurons = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
-                        outputNeurons = new double[Parameters.outputNeuronsCount];
-                        inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
-                        middleWeights = new double[Parameters.Mlayers - 1][,];
-                        outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
-                        Mbias = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
-                        Obias = new double[Parameters.outputNeuronsCount];
+                    inputNeurons = new int[Parameters.inputNeuronsCount];
+                    middleNeurons = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
+                    outputNeurons = new double[Parameters.outputNeuronsCount];
+                    inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
+                    middleWeights = new double[Parameters.Mlayers - 1][,];
+                    outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
+                    Mbias = new double[Parameters.Mlayers, Parameters.middleNeuronsCount];
+                    Obias = new double[Parameters.outputNeuronsCount];
                     UI.Send("done", "message");
                     Console.Write("Initialization biases...");
                     Biases.Init(ref Mbias);
@@ -118,13 +118,14 @@ Copyright 2025-2026 Emotion Corp.
             }
             if (rogerIsCreated)
             {
+                float[,]? disabledDropOut = null;
                 Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
                 while (true)
                 {
                     UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
                     Console.Write("\nInput>>>");
                     int[] userInput = AIMath.NumToBin(Convert.ToInt32(Console.ReadLine()), inputNeurons.Length);
-                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights);
+                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
                     Console.Write("Output>>>");
                     for (int i = 0; i < outputNeurons.Length; i++)
                         Console.Write(outputNeurons[i] + " ");
@@ -160,7 +161,7 @@ Copyright 2025-2026 Emotion Corp.
                 {
                     for (int j = 0; j < masks.GetLength(1); j++)
                     {
-                        if (AIMath.rand.Next(0, 101) < Parameters.DropOutPercent)
+                        if (AIMath.rand.NextDouble() < Parameters.DropOutPercent / 100.0)
                             masks[i, j] = 0;
                         else
                             masks[i, j] = 1.0f / keepProb;
@@ -183,7 +184,7 @@ Copyright 2025-2026 Emotion Corp.
                 for (int j = 0; j < oldNeurons.Length; j++)
                     temp += oldweights[j, i] * oldNeurons[j];
                 temp += biases[0, i];
-                newNeurons[0, i] = AIMath.Sigmoida(temp);
+                newNeurons[0, i] = AIMath.Tanh(temp);
                 if (Parameters.isDebug)
                     Console.Write(newNeurons[0, i] + " ");
             }
@@ -199,8 +200,8 @@ Copyright 2025-2026 Emotion Corp.
                 double temp = 0;
                 for (int j = 0; j < oldNeurons.GetLength(1); j++)
                     temp += oldweights[j, i] * oldNeurons[layer, j];
-                temp += biases[layer, i];
-                newNeurons[layer + 1, i] = AIMath.Sigmoida(temp);
+                temp += biases[layer + 1, i];
+                newNeurons[layer + 1, i] = AIMath.Tanh(temp);
                 if (Parameters.isDebug)
                     Console.Write(newNeurons[layer + 1, i] + " ");
             }
@@ -217,7 +218,7 @@ Copyright 2025-2026 Emotion Corp.
                 for (int j = 0; j < oldNeurons.GetLength(1); j++)
                     temp += oldweights[j, i] * oldNeurons[oldNeurons.GetLength(0) - 1, j];
                 temp += biases[i];
-                newNeurons[i] = AIMath.Sigmoida(temp);
+                newNeurons[i] = AIMath.Tanh(temp);
                 if (Parameters.isDebug)
                     Console.Write(newNeurons[i] + " ");
             }
@@ -234,13 +235,22 @@ Copyright 2025-2026 Emotion Corp.
                 UI.Send("NeuralNetwork.WriteToNN>The size of the neuron array and the data array do not match, it is impossible to write data", "error");
         }
 
-        public static void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights,
-            double[,] middleBiases, double[] outputNeurons, double[] outputBiases, double[,] outputWeights)
+        public static void ForwardPropagation(int[] NNinput,int[] inputNeurons,double[,] inputWeights,double[,] middleNeurons,double[][,] middleWeights,double[,] middleBiases,
+            double[] outputNeurons,double[] outputBiases,double[,] outputWeights,float[,]? dropOutMasks)
         {
             WriteToNN(inputNeurons, NNinput);
+
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
+
             for (int l = 0; l < Parameters.Mlayers - 1; l++)
+            {
                 SumWeights(middleWeights[l], middleNeurons, middleNeurons, middleBiases, l);
+
+                if (dropOutMasks != null)
+                    for (int i = 0; i < middleNeurons.GetLength(1); i++)
+                        middleNeurons[l + 1, i] *= dropOutMasks[l, i];
+            }
+
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
         }
     }

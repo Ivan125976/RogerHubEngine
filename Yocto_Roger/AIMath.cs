@@ -12,12 +12,9 @@ Internal AIMath lib
     {
         static public Random rand = new();
 
-        public static double Sigmoida(double value) //активация
+        public static double Tanh(double value) //активация
         {
-            double answer = 1.0 / (1.0 + Math.Exp(-value));
-            if (Parameters.isDebug)
-                Console.WriteLine("Sigmoida> " + answer);
-            return answer;
+            return Math.Tanh(value);
         }
         public static int BinToNum(double[] obj) //двиучное в десятичное
         {
