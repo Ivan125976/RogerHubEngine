@@ -42,6 +42,20 @@ Internal extension I/O lib
             }
         }
 
+        public static void WriteJaggedMatrix(StreamWriter writer, double[,,] matrix, bool line_break = false)
+        {
+            for (byte j = 0; j < matrix.GetLength(1); j++)
+            {
+                for (byte i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (byte c = 0; c < matrix.GetLength(2); c++)
+                        writer.Write(matrix[i, j, c].ToString(CultureInfo.InvariantCulture) + ";");
+                }
+
+                if (line_break)
+                    writer.WriteLine();
+            }
+        }
         /// <summary>
         /// Преобразует матрицу в строку, разделяя каждое значение точкой с запятой
         /// </summary>
@@ -51,14 +65,16 @@ Internal extension I/O lib
         {
             StringBuilder builder = new();
 
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (byte j = 0; j < matrix.GetLength(1); j++)
             {
-                for (int i = 0; i < matrix.GetLength(0); i++)
+                for (byte i = 0; i < matrix.GetLength(0); i++)
                     builder.Append(matrix[i, j].ToString(CultureInfo.InvariantCulture) + ";");
             }
 
-            return builder.ToString()
-                [..(builder.Length - 1)];
+            if (builder.ToString().EndsWith(';'))
+                builder.Length--; // Удаляет последний ненужный символ ';'
+
+            return builder.ToString();
         }
 
         //Ivan: Почини пожалуйста эту функцию я понятия не имею почему, но оно падает с исключением при сохранении именно в этой функции, что-то связанное с передачей первого параметра
@@ -72,14 +88,14 @@ Internal extension I/O lib
                 {
                     for (int iM = 0; iM < Math.Min(maxIndexOfMatrix, jaggedMatrix.Length); iM++)
                     {
-                        if (i < jaggedMatrix[iM].GetLength(0) && j < jaggedMatrix[iM].GetLength(1)) // Эту проверку если что не я написал
                             builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
                     }
                 }
             }
+            if (builder.ToString().EndsWith(';'))
+                builder.Length--; // Удаляет последний ненужный символ ';'
 
-            return builder.ToString()
-                [..(builder.Length - 1)]; // Удаляет последнюю ненужную точку с запятой, которая при превращении с массив разделяя точкой с запятой образует ненужные посдений пустой элемент, который лучше сразу здесь удалять чтобы потом не мучатся и не думать где у тебя проблема
+            return builder.ToString();
         }
 
         public static string BuildStringArray(dynamic array)
@@ -91,15 +107,19 @@ Internal extension I/O lib
                 builder.Append(v.ToString(CultureInfo.InvariantCulture) + ';');
             }
 
-            return builder.ToString()
-                [..(builder.Length - 1)]; // Удаляет последний ненужный символ ';'
+            if (builder.ToString().EndsWith(';'))
+                builder.Length--; // Удаляет последний ненужный символ ';'
+
+            return builder.ToString();
         }
 
-        private static void WriteArray(StreamWriter writer, double[] array)
+        private static void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
         {
             foreach (double v in array)
                 writer.Write(v.ToString(CultureInfo.InvariantCulture) + ';');
-            //writer.WriteLine();
+
+            if (line_break)
+                writer.WriteLine();
         }
 
         /// <summary>
