@@ -17,7 +17,7 @@ Copyright 2025-2026 Emotion Corp.
         static void Main()
         {
             Console.WriteLine("Configuring console...");
-            Console.Title = "RogerHubEngine";
+            Console.Title = "Welcome to Beta!";
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
             Console.CursorVisible = false;
@@ -28,9 +28,9 @@ Copyright 2025-2026 Emotion Corp.
             {
                 Console.Clear();
                 if (Parameters.isDebug == false)
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} DEV2", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 else
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} DEV2 DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 Send("This project is still in the development stage.", "warning");
                 Send("This is a BETA build. Some functionality may not work. Have fun testing :D", "warning");
                 Console.Write("""
