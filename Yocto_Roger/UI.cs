@@ -370,7 +370,7 @@ Copyright 2025-2026 Emotion Corp.
     {
         private readonly int _parts;
         private readonly ConsoleColor _color;
-        Progressbar(ConsoleColor color, int parts)
+        public Progressbar(ConsoleColor color, int parts)
         {
             _parts = parts;
             _color = color;
@@ -382,6 +382,7 @@ Copyright 2025-2026 Emotion Corp.
             Console.ForegroundColor = _color;
             Console.Write(new string('█', percent * _parts / 100));
             Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(new string('█', _parts - (percent * _parts / 100)));
             Console.Write("]");
         }
     }
