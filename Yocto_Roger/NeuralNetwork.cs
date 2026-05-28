@@ -144,6 +144,7 @@ Copyright 2025-2026 Emotion Corp.
                         Console.Write("Output>>>");
                         for (int i = 0; i < outputNeurons.Length; i++)
                             Console.Write(outputNeurons[i] + " ");
+                    Console.ReadKey();
                 }
             }
         }
@@ -257,13 +258,17 @@ Copyright 2025-2026 Emotion Corp.
 
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
 
+            if (dropOutMasks != null)
+                for (int i = 0; i < middleNeurons.GetLength(1); i++)
+                    middleNeurons[0, i] *= dropOutMasks[0, i];
+
             for (int l = 0; l < Parameters.Mlayers - 1; l++)
             {
                 SumWeights(middleWeights[l], middleNeurons, middleNeurons, middleBiases, l);
 
                 if (dropOutMasks != null)
                     for (int i = 0; i < middleNeurons.GetLength(1); i++)
-                        middleNeurons[l + 1, i] *= dropOutMasks[l, i];
+                        middleNeurons[l + 1, i] *= dropOutMasks[l + 1, i];
             }
 
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
