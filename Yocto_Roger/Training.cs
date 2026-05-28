@@ -8,14 +8,14 @@ Yocto Roger ;)
 *Emotion Corp ;)*
 *****************
 Copyright 2025-2026 Emotion Corp.
-    Education With Teacher v1.1
+    Education With Teacher Algorithm v1.1
 
     EducationWithTeacher, DropOut, multilayer
 */
     /// <summary>
-    /// Алгоритм обучения
+    /// Training Algorithm
     /// </summary>
-    /// <returns>Обученная нейросеть</returns>
+    /// <returns>Trained neural network</returns>
     public class Training
     {
         public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,

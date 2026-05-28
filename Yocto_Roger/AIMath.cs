@@ -12,11 +12,11 @@ Internal AIMath lib
     {
         static public Random rand = new();
 
-        public static double Tanh(double value) //активация
+        public static double Tanh(double value) //activation
         {
             return Math.Tanh(value);
         }
-        public static int BinToNum(double[] obj) //двиучное в десятичное
+        public static int BinToNum(double[] obj) //binary to int
         {
             int result = 0;
             for (int i = 0; i < obj.Length; i++)
@@ -26,12 +26,12 @@ Internal AIMath lib
                 Console.WriteLine("binToNum -> " + result);
             return result;
         }
-        
+
         /// <summary>
-        /// Конвертация десятичного числа в двоичное
+        /// Converting int to binary
         /// </summary>
-        /// <param name="obj">Десятичное число которое нужно конвертировать</param>
-        /// <param name="bits">Количество бит бинарного массива</param>
+        /// <param name="obj">The int32 number to be converted</param>
+        /// <param name="bits">Number of bits in a binary array</param>
         /// <returns></returns>
         public static int[] NumToBin(int obj, int bits)
         {

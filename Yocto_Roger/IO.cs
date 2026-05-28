@@ -1,7 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
 using System.Text.Json;
-using static Yocto_Roger.Auxiliary;
 
 namespace Yocto_Roger
 {
@@ -66,14 +65,14 @@ Internal I/O lib
         }
 
         /// <summary>
-        /// Этот метод определяет тип и парсит файл Роджера и предоставляет объект в котором все данные лежат в виде строк, их придётся приводить в нужные типы данных с помощью соответствующих функций которые вроде есть в этом классе
+        /// This method determines the type and parses Roger's file and provides an object in which all the data is in the form of strings, they will have to be converted to the required data types using the appropriate functions that seem to be in this class
         /// </summary>
-        /// <returns>Объект класса Roger</returns>
+        /// <returns>Roger class object</returns>
         public static Roger LoadRoger()
         {
             if (!File.Exists(Parameters.roger2))
                 UI.Send("Roger file not found", "error");
-            else // Сделал else чтобы при отсутствии файла код дальше не выполнялся
+            else // I made an else clause so that if the file does not exist, the code will not be executed further.
             {
                 switch (CheckFormat())
                 {
@@ -84,13 +83,13 @@ Internal I/O lib
                         return LoadRogerFromRoger();
                 }
             }
-            return null; // Заглушка чтобы компилятор не ругался, я хз как это исправлять. Я могу это с помощью GOTO исправить, но блин... По идее это вообще "недостижимый код"
+            return null; //It's a stub to keep the compiler from complaining. I have no idea how to fix it. I can fix it with GOTO, but damn... In theory, it's basically "unreachable code."
         }
 
         /// <summary>
-        /// Проверка формата записи
+        /// Checking the recording format
         /// </summary>
-        /// <returns>true - json формат, false - roger формат</returns>
+        /// <returns>true - json format, false - roger format</returns>
         private static bool? CheckFormat()
         {
             if (Parameters.roger2.EndsWith(".json"))
@@ -102,12 +101,9 @@ Internal I/O lib
         }
 
         /// <summary>
-        /// Класс который будет хранить в себе данные для загрузки/сохранения нейросети.
-        /// Данные хранятся в виде строк, поэтому данные из него требуется инициализировать с помощью специальной функции InitRogersData, написанной специально для того чтобы не инициализировать всё вручную
-        /// Принять к сведению, как к работе с этим классом, там и просто к просмотру - Отсутствие данных обозначается String.Empty вместо null !!!
-        /// For Axolotl: Если каких-то данных не хватает, просто допиши их в класс 
-        /// 
-        /// PS: Если добавляешь или убираешь какое либо поле в классе Roger, делай тоже самое в функции InitRogersData() !!! *пожалуйста*
+        /// A class that will store data for loading/saving the neural network.
+        /// The data is stored as strings, so the data from it must be initialized using a special function InitRogersData, written specifically to avoid initializing everything manually.
+        /// Please note, both when working with this class and simply when viewing it, that the absence of data is indicated by String.Empty instead of null!!!
         /// </summary>
         public class Roger
         {
