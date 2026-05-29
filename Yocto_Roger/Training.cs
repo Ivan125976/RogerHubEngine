@@ -30,9 +30,22 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="middleBiases">A two-dimensional array of shifts for all average neurons</param>
         /// <param name="outputBiases">One-dimensional array of shifts for output neurons</param>
         /// <param name="educationArray">An array of training data that complies with the .know standard</param>
-        public static void Education(ref int[] inputNeurons, ref double[,] middleNeurons, ref double[] outputNeurons, ref double[,] inputWeights,
-            ref double[][,] middleWeights, ref double[,] outputWeights, ref double[,] middleBiases, ref double[] outputBiases, double[,] educationArray)
+        /// <param name="status">An optional Progressbar object that will display how much the neural network has learned.</param>
+        public static void Education(ref int[] inputNeurons,
+                                     ref double[,] middleNeurons,
+                                     ref double[] outputNeurons,
+                                     ref double[,] inputWeights,
+                                     ref double[][,] middleWeights,
+                                     ref double[,] outputWeights,
+                                     ref double[,] middleBiases,
+                                     ref double[] outputBiases,
+                                     double[,] educationArray,
+                                     Progressbar? status = null)
         {
+            double progress = 0;
+            bool done = false;
+            object lockObj = new();
+
             string correctOutput;
             int[] input = new int[Parameters.inputNeuronsCount];
             double[] output;
@@ -44,6 +57,25 @@ Copyright 2025-2026 Emotion Corp.
             double[][,] oldMiddleWeights = new double[Parameters.Mlayers - 1][,];
             for (int x = 0; x < Parameters.Mlayers - 1; x++)
                 oldMiddleWeights[x] = new double[middleNeurons.GetLength(1), middleNeurons.GetLength(1)];
+
+            Thread uiThread = new(() =>
+            {
+                while (!done)
+                {
+                    double local;
+
+                    lock (lockObj)
+                        local = progress;
+
+                    status?.Draw((int)(local * 100));
+
+                    Thread.Sleep(1000);
+                }
+            })
+            {
+                IsBackground = true
+            };
+            uiThread.Start();
 
             for (int passes = 0; passes < Parameters.passes; passes++)
             {
@@ -138,8 +170,18 @@ Copyright 2025-2026 Emotion Corp.
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
                                 inputWeights[j, k] -= input[j] * deltaMid[0, k] * Parameters.learningRate;
                     }
+
+                    lock (lockObj)
+                    {
+                        progress =
+                            (double)(passes * educationArray.GetLength(0) + i + 1)
+                            / (Parameters.passes * educationArray.GetLength(0));
+                    }
                 }
             }
+
+            done = true;
+            uiThread.Join();
         }
     }
 }

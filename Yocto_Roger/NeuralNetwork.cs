@@ -81,6 +81,9 @@ Copyright 2025-2026 Emotion Corp.
                         break;
                     }
 
+                    Console.Clear();
+                    UI.Send("Everything is ready to create Roger!");
+
                     educationArray = new double[allLines.Length, length];
 
                     for (int i = 0; i < allLines.Length; i++)
@@ -126,8 +129,12 @@ Copyright 2025-2026 Emotion Corp.
                     UI.Send("Initialization complete", "message");
                     Console.Write("Education...");
                     UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
+                    Console.WriteLine();
+                    Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
+                    educationStatus.Draw(0);
 
-                    Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray);
+                    Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray, educationStatus);
+                    
                     UI.Send("done");
 
                     Console.Write("Cleaning...");
