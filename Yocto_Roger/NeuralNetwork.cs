@@ -51,13 +51,33 @@ Copyright 2025-2026 Emotion Corp.
                     if (input.Length != Parameters.inputNeuronsCount)
                     {
                         Console.WriteLine();
-                        UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + input.Length + ")", "error");
+                        UI.Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", "error");
+                        Console.WriteLine("Do you want to change this parameter <Parameters.inputNeuronsCount> and restart NeuralNetwork? (y/n)");
+                        ConsoleKeyInfo answer = Console.ReadKey();
+                        switch (answer.KeyChar)
+                        {
+                            case 'y':
+                                Parameters.inputNeuronsCount = input.Length;
+                                Console.Clear();
+                                StartAI(0);
+                                break;
+                        }
                         break;
                     }
                     else if (output.Length != Parameters.outputNeuronsCount)
                     {
                         Console.WriteLine();
-                        UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! Please reconfigure it in the settings menu (need value " + output.Length + ")", "error");
+                        UI.Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", "error");
+                        Console.WriteLine("Do you want to change this parameter <Parameters.outputNeuronsCount> and restart NeuralNetwork? (y/n)");
+                        ConsoleKeyInfo answer = Console.ReadKey();
+                        switch (answer.KeyChar)
+                        {
+                            case 'y':
+                                Parameters.outputNeuronsCount = output.Length;
+                                Console.Clear();
+                                StartAI(0);
+                                break;
+                        }
                         break;
                     }
 
@@ -79,7 +99,7 @@ Copyright 2025-2026 Emotion Corp.
                     for (int i = 0; i < educationArray.GetLength(0); i++)
                     {
                         for (int j = 0; j < educationArray.GetLength(1); j++)
-                            Console.Write(educationArray[i,j] + " ");
+                            Console.Write(educationArray[i, j] + " ");
                         Console.WriteLine();
                     }
 
@@ -132,15 +152,15 @@ Copyright 2025-2026 Emotion Corp.
                 {
                     Console.Clear();
                     UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
-                        Console.Write("\nInput>>>");
+                    Console.Write("\nInput>>>");
                     string[] userInputString = Console.ReadLine().Split(',');
                     int[] userInput = new int[Parameters.inputNeuronsCount];
                     for (int i = 0; i < userInput.Length; i++)
                         userInput[i] = Convert.ToInt32(userInputString[i]);
                     ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
-                        Console.Write("Output>>>");
-                        for (int i = 0; i < outputNeurons.Length; i++)
-                            Console.Write(outputNeurons[i] + " ");
+                    Console.Write("Output>>>");
+                    for (int i = 0; i < outputNeurons.Length; i++)
+                        Console.Write(outputNeurons[i] + " ");
                     Console.ReadKey();
                 }
             }
@@ -248,8 +268,8 @@ Copyright 2025-2026 Emotion Corp.
                 UI.Send("NeuralNetwork.WriteToNN>The size of the neuron array and the data array do not match, it is impossible to write data", "error");
         }
 
-        public static void ForwardPropagation(int[] NNinput,int[] inputNeurons,double[,] inputWeights,double[,] middleNeurons,double[][,] middleWeights,double[,] middleBiases,
-            double[] outputNeurons,double[] outputBiases,double[,] outputWeights,float[,]? dropOutMasks)
+        public static void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights, double[,] middleBiases,
+            double[] outputNeurons, double[] outputBiases, double[,] outputWeights, float[,]? dropOutMasks)
         {
             WriteToNN(inputNeurons, NNinput);
 

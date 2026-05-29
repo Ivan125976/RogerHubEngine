@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Globalization;
 
 namespace Yocto_Roger
 /* 
@@ -266,11 +265,11 @@ Copyright 2025-2026 Emotion Corp.
                         Console.WriteLine("*KNOWLEDGE PARAMETER*");
                         Console.Write("STRING> Enter new knowledge file...");
                         string? file = Console.ReadLine();
-                            if (File.Exists(file))
-                                Parameters.knowledgeFile = file;
-                            else
-                                Send("I couldn't find such a file :(", "error");
-                            break;
+                        if (File.Exists(file))
+                            Parameters.knowledgeFile = file;
+                        else
+                            Send("I couldn't find such a file :(", "error");
+                        break;
 
                     case "6":
                         Console.Clear();
