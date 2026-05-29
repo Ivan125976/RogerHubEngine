@@ -81,7 +81,6 @@ Copyright 2025-2026 Emotion Corp.
                         break;
                     }
 
-                    Console.Clear();
                     UI.Send("Everything is ready to create Roger!");
 
                     educationArray = new double[allLines.Length, length];
