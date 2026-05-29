@@ -43,7 +43,6 @@ Internal I/O lib
             Roger roger = new()
             {
                 AIversion = Parameters.version,
-                IsDebug = Parameters.isDebug,
                 Passes = Parameters.passes,
 
                 LearingRate = Parameters.learningRate,
@@ -107,9 +106,8 @@ Internal I/O lib
         /// </summary>
         public class Roger
         {
-            public string AIversion { get; set; }
+            public string? AIversion { get; set; }
 
-            public bool IsDebug { get; set; }
             public int Passes { get; set; }
 
             public float LearingRate { get; set; }
@@ -160,7 +158,6 @@ Internal I/O lib
             Roger roger = new()
             {
                 AIversion = root.GetProperty("AIversion").GetString(),
-                IsDebug = root.GetProperty("isDebug").GetBoolean(),
                 Passes = root.GetProperty("Passes").GetInt32(),
 
                 LearingRate = float.Parse(root.GetProperty("learningRate").GetString()), // Переделаю это говно

@@ -56,7 +56,8 @@ Copyright 2025-2026 Emotion Corp.
 
                         case 2:
                             Console.Write("Write a path to your .roger or .json file\nSTRING> ");
-                            if (Console.ReadLine() is string inputChecked && !string.IsNullOrEmpty(Console.ReadLine()))
+                            string? userInput = Console.ReadLine();
+                            if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput))
                             {
                                 Parameters.roger2 = inputChecked;
                                 Auxiliary.InitRogersData(IO.LoadRoger());
@@ -115,13 +116,18 @@ Copyright 2025-2026 Emotion Corp.
         }
 
         /// <summary>
-        /// Draws a stripe of a specified color at the bottom of the console window.
+        /// Draws a stripe of a specified color at the bottom of the console window with auto-text color.
         /// </summary>
         /// <param name="color">Background text color</param>
         /// <param name="leftText">Left text</param>
         /// <param name="rightText">Right text</param>
         public static void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
         {
+            Console.ForegroundColor = color switch
+            {
+                ConsoleColor.Gray or ConsoleColor.White or ConsoleColor.Yellow or ConsoleColor.DarkYellow or ConsoleColor.Cyan or ConsoleColor.Green or ConsoleColor.DarkGreen => ConsoleColor.Black,
+                _ => ConsoleColor.White,
+            };
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
 
@@ -138,6 +144,7 @@ Copyright 2025-2026 Emotion Corp.
 
             Console.SetCursorPosition(cursorX, cursorY);
             Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         /// <summary>
@@ -359,13 +366,17 @@ Copyright 2025-2026 Emotion Corp.
         }
     }
 
-    class Progressbar(ConsoleColor color, int parts) : UI
+    class Progressbar(ConsoleColor color, int parts, int x, int y)
     {
         private readonly int _parts = parts;
         private readonly ConsoleColor _color = color;
+        private readonly int _x = x;
+        private readonly int _y = y;
 
         public void Draw(int percent)
         {
+            Console.SetCursorPosition(_x + _parts + 2, _y);
+            Console.Write(new string('\b', _parts + 2));
             Console.Write("[");
             Console.ForegroundColor = _color;
             Console.Write(new string('█', percent * _parts / 100));

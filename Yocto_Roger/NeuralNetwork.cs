@@ -151,17 +151,24 @@ Copyright 2025-2026 Emotion Corp.
                 while (true)
                 {
                     Console.Clear();
-                    UI.DrawLine(ConsoleColor.DarkGreen, "Not-ready AI Interface v2.2");
+                    UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2!");
                     Console.Write("\nInput>>>");
-                    string[] userInputString = Console.ReadLine().Split(',');
-                    int[] userInput = new int[Parameters.inputNeuronsCount];
-                    for (int i = 0; i < userInput.Length; i++)
-                        userInput[i] = Convert.ToInt32(userInputString[i]);
-                    ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
-                    Console.Write("Output>>>");
-                    for (int i = 0; i < outputNeurons.Length; i++)
-                        Console.Write(outputNeurons[i] + " ");
-                    Console.ReadKey();
+                    string? userInputString = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(userInputString))
+                    {
+                        string[] userInputChecked = userInputString.Split(',');
+                        if (userInputChecked.Length == Parameters.inputNeuronsCount)
+                        {
+                            int[] userInput = new int[Parameters.inputNeuronsCount];
+                            for (int i = 0; i < userInput.Length; i++)
+                                userInput[i] = Convert.ToInt32(userInputChecked[i]);
+                            ForwardPropagation(userInput, inputNeurons, inputWeights, middleNeurons, middleWeights, Mbias, outputNeurons, Obias, outputWeights, disabledDropOut);
+                            Console.Write("Output>>>");
+                            for (int i = 0; i < outputNeurons.Length; i++)
+                                Console.Write(outputNeurons[i] + " ");
+                            Console.ReadKey();
+                        }
+                    }
                 }
             }
         }
