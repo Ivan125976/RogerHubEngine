@@ -23,7 +23,6 @@ Copyright 2025-2026 Emotion Corp.
             Console.Title = "Welcome to Beta!";
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
-            Console.CursorVisible = false;
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
             Thread.Sleep(3000);
             int i = 0;

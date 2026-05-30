@@ -81,6 +81,7 @@ Copyright 2025-2026 Emotion Corp.
                         break;
                     }
 
+                    Console.CursorVisible = false;
                     UI.Send("Everything is ready to create Roger!");
 
                     educationArray = new double[allLines.Length, length];
@@ -133,12 +134,16 @@ Copyright 2025-2026 Emotion Corp.
                     educationStatus.Draw(0);
 
                     Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray, educationStatus);
-                    
-                    UI.Send("done");
+
+                    educationStatus.Draw(100);
+                    UI.Send("\nEducation Complete");
 
                     Console.Write("Cleaning...");
                     rogerIsCreated = true;
                     UI.Send("done");
+                    UI.Send("Enter \"save\" to fix the state of neural network in the file, for load at this point later", "warning");
+                    Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
+                    Thread.Sleep(3000);
                     break;
 
                 case 1:
@@ -152,11 +157,8 @@ Copyright 2025-2026 Emotion Corp.
 
                 //Console.TreatControlCAsInput = true; // Блокирование закрытия программы по нажатия ctrl+c ибо нужно чтобы оно выходило из цикла, а не из программы
                 //TODO: Сделать выход из training mode в главное меню, по нажатию CTRL + C асинхронно, чтобы проверка была не в конкретном куске кода, а в любой момент
-                UI.Send("Enter \"save\" to fix the state of neural network in the file, for load at this point later", "message");
-                Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
-
-                bool saveIsTyped = false;
-                while (saveIsTyped = false)
+                Console.CursorVisible = true;
+                while (true)
                 {
                     Console.Clear();
                     UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2!");
@@ -166,7 +168,6 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         if (userInputString != "save")
                         {
-
                             string[] userInputChecked = userInputString.Split(',');
                             if (userInputChecked.Length == Parameters.inputNeuronsCount)
                             {
@@ -177,24 +178,23 @@ Copyright 2025-2026 Emotion Corp.
                                 Console.Write("Output>>>");
                                 for (int i = 0; i < outputNeurons.Length; i++)
                                     Console.Write(outputNeurons[i] + " ");
+                                Console.WriteLine("Press any key to continue");
                                 Console.ReadKey();
                             }
                         }
                         else
-                            saveIsTyped = true;
-
-                        Console.Write("Please, enter the path, where we going to save the file (to this directory, simple press the enter): ");
-                        string input = Console.ReadLine() ?? String.Empty;
-
-                        if (input is string path && !string.IsNullOrEmpty(path))
-                            IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), path);
-
-                        else if (input == String.Empty)
                         {
-                            IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
+                            Console.Write("Please, enter the path, where we going to save the file (to this directory, simple press the enter): ");
+                            string input = Console.ReadLine() ?? string.Empty;
+
+                            if (input is string path && !string.IsNullOrEmpty(path))
+                                IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), path);
+
+                            else if (input == string.Empty)
+                                IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
+                            else
+                                UI.Send("Incorrect input (-_0)", "error");
                         }
-                        else
-                            UI.Send("Incorrect input (-_0)", "error");
                     }
                 }
             }
