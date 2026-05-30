@@ -62,7 +62,7 @@ Copyright 2025-2026 Emotion Corp.
                             {
                                 NeuralNetwork.rogerIsCreated = true;
                                 IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromJson(userInput), false);
-                                Auxiliary.InitRogersData(IO.LoadRoger());
+                                //Auxiliary.InitRogersData(IO.LoadRoger());
                             }
                             else
                                 Send("Incorrect input (-_0)", "error");
@@ -74,7 +74,7 @@ Copyright 2025-2026 Emotion Corp.
                             break;
 
                         case 4:
-                            Send("This page isn't ready RRNNs.RRNNs", "error");
+                            Send("RRNNs.RRNNs>This page isn't ready", "error");
                             break;
 
                         case 5:
