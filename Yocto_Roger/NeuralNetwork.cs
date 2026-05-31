@@ -147,8 +147,8 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    Console.Write("Loading your Roger...");
-                    IO.LoadRoger();
+                    //Console.Write("Loading your Roger...");
+                    //IO.LoadRoger();
                     break;
             }
             if (rogerIsCreated)
@@ -180,6 +180,7 @@ Copyright 2025-2026 Emotion Corp.
                                     Console.Write(outputNeurons[i] + " ");
                                 Console.WriteLine("Press any key to continue");
                                 Console.ReadKey();
+                                Console.Clear();
                             }
                         }
                         else
@@ -187,13 +188,20 @@ Copyright 2025-2026 Emotion Corp.
                             Console.Write("Please, enter the path, where we going to save the file (to this directory, simple press the enter): ");
                             string input = Console.ReadLine() ?? string.Empty;
 
-                            if (input is string path && !string.IsNullOrEmpty(path))
-                                IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), path);
+                            try
+                            {
+                                if (input is string path && !string.IsNullOrEmpty(path))
+                                    IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), path);
 
-                            else if (input == string.Empty)
-                                IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
-                            else
-                                UI.Send("Incorrect input (-_0)", "error");
+                                else if (input == string.Empty)
+                                    IO.SaveNeuralNetworkStateToJson(IO.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
+                                else
+                                    UI.Send("Incorrect input (-_0)", "error");
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Somethin' wrong with me, here's my exception: " + e);
+                            }
                         }
                     }
                     else

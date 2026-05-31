@@ -27,7 +27,7 @@ RogerHub configuration
         /// <summary>
         /// Debug flag. If enabled, logs will be written to the console. This is for developers.
         /// </summary>
-        public static readonly bool isDebug = false;
+        public static readonly bool isDebug = true;
 
         /// <summary>
         /// Number of passes during training on training data
