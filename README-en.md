@@ -4,47 +4,34 @@ My neural network, which I improve every day.
 
 Copyright (c) 2025 Axolotl512, death_script. License: MIT.
 
-AI suitable for embedding in robots and games.
+An AI suitable for integration into a robot.
 
 ## Versions and Architecture
 
-- **Quecto Roger 1 and below** — LP architecture, .NET 8.0.
-- **Quecto Roger 2 and above** — MLP architecture, .NET 9.0.
-- **Yocto Roger 2.1** — MLP architecture, .NET 9.0.
+- **Quecto Roger 1.x** — LP architecture, .NET 8.0.
+- **Quecto Roger 2.0.x** — MLP architecture, .NET 9.0.
+- **Yocto Roger 2.1.x** — MLP architecture, .NET 9.0.
+- **Yocto Roger 2.2.x** — MLP architecture, .NET 9.0.
 
-## Running Yocto Roger 2.1 on Windows
+## Running Yocto Roger 2.0 on Windows
 
 1. Install .NET 9.0.
-2. Navigate to the following path: `AI_Roger/AI_Roger/bin/Release/net9.0`
-3. Run `AI_Roger.exe`.
-4. > Or simply download the release binary
-5. Edit the knowledge file (knowledge.know) or create your own (more details in the wiki).
+2. Open the project in Visual Studio
+3. Compile the project for your desired platform
+4. Test the neural network using the built-in RogerHub shell
+5. Integrate the neural network into your product
 
 ### Training Parameters
 
-- **LR (Learning Rate)** — the lower the value, the more accurate the training.
-- **Passes** — the higher the value, the better the network learns.
-- **Knowledge File** — the file on which the neural network is trained.
-- **DropOut** (only in `AI_Roger.exe`) — protection against overfitting.
-Recommended values: **5%** or **10%**.
-When using DropOut, a lower LR and more passes are usually needed.
+- **LR (Learning Rate)** — the lower the value, the more precise the training.
+- **Epochs** — the higher the value, the better the network assimilates information.
+- **Knowledge File** — the file used to train the neural network.
+- **DropOut** (only in `Yocto Roger v.2.1.exe`) — protection against overfitting. 
+Recommended values: **3%** or **5%**. 
+When using DropOut, a lower LR and a higher number of epochs are typically required.
 
-## Running on Linux ARM (aarch64, AI_Roger)
+>[!note]
+>All announcements, news, and other project-related information will be posted on the Telegram channel: [Link to Channel](https://t.me/Axolotl1024)
+>Also, our website: [Link](https://emotioncorp.site)
 
-1. In the folder with the files, run:
-`./AI_Roger`
-2. Edit the knowledge file `knowledge.know` (more details in the wiki).
-
-### Training Parameters
-
-- **LR (Learning Rate)** — the lower the value, the more accurate the training.
-- **Passes** — the higher the value, the better the network learns.
-- **Knowledge File** — the file on which the neural network is trained.
-
-> ⚠️ For the ARM version of Yocto Roger 2.1 / 3.0, installing .NET 9 is not required.
-
-## Reminder
-All announcements, news, and other information about the project will be posted in the Telegram channel: [Link to our Telegram channel](https://t.me/Axolotl1024).
-And also our website: [Website](https://emotioncorp.site) [Temporarily down]
-
-Sincerely, the Emotion team ;)
+Best regards, the Emotion Team ;)
