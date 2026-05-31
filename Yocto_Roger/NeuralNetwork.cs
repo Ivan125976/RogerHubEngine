@@ -160,7 +160,7 @@ Copyright 2025-2026 Emotion Corp.
                 Console.CursorVisible = true;
                 while (true)
                 {
-                    Console.Clear();
+                    //Console.Clear(); // Юзер не успевает прочитать результаты инициализации, и в том числе подсказку про ключевое слово save, пускай лучше остаётся текст
                     UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2!");
                     Console.Write("\nInput>>>");
                     string? userInputString = Console.ReadLine();
@@ -195,6 +195,10 @@ Copyright 2025-2026 Emotion Corp.
                             else
                                 UI.Send("Incorrect input (-_0)", "error");
                         }
+                    }
+                    else
+                    {
+                        UI.Send("Incorrect input (-_0)", "error");
                     }
                 }
             }

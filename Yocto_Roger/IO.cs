@@ -156,21 +156,23 @@ Internal I/O lib
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(Parameters.roger2));
             JsonElement root = document.RootElement;
 
-            Roger roger = new()
-            {
-                AIversion = root.GetProperty("AIversion").GetString(),
-                Passes = root.GetProperty("Passes").GetInt32(),
+            Roger roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(Parameters.roger2));
 
-                LearingRate = float.Parse(root.GetProperty("learningRate").GetString()),
-                DropOutPercent = float.Parse(root.GetProperty("learningRate").GetString()),
+            //Roger roger = new()
+            //{
+            //    AIversion = root.GetProperty("AIversion").GetString(),
+            //    Passes = root.GetProperty("Passes").GetInt32(),
 
-                InputNeuronsCount = root.GetProperty("inputNeuronsCount").GetInt32(),
-                MiddleNeuronsCount = root.GetProperty("middleNeuronsCount").GetInt32(),
-                OutputNeuronsCount = root.GetProperty("outputNeuronsCount").GetInt32(),
+            //    LearingRate = float.Parse(root.GetProperty("LearingRate").GetString()),
+            //    DropOutPercent = float.Parse(root.GetProperty("DropOutPercent").GetString()),
 
-                Layers = root.GetProperty("Layers").GetInt32(),
-                MLayers = root.GetProperty("Mlayers").GetInt32()
-            };
+            //    InputNeuronsCount = root.GetProperty("InputNeuronsCount").GetInt32(),
+            //    MiddleNeuronsCount = root.GetProperty("MiddleNeuronsCount").GetInt32(),
+            //    OutputNeuronsCount = root.GetProperty("OutputNeuronsCount").GetInt32(),
+
+            //    Layers = root.GetProperty("Layers").GetInt32(),
+            //    MLayers = root.GetProperty("MLayers").GetInt32()
+            //};
 
             return roger;
         }
@@ -238,7 +240,7 @@ Internal I/O lib
 
         public static void SaveNeuralNetworkStateToJson(NeuralNetworkState nN, string pathToDirectoryToSave)
         {
-            string json = JsonSerializer.Serialize(nN);
+            string json = JsonSerializer.Serialize(nN, new JsonSerializerOptions { WriteIndented = true} );
 
             string path = MakeFileSplitOnIndexIfExists(Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"), "json");
 
@@ -268,7 +270,7 @@ Internal I/O lib
         {
             NeuralNetworkState nN = new();
 
-            using (JsonDocument doc = JsonDocument.Parse(absolute_path))
+            using (JsonDocument doc = JsonDocument.Parse(File.ReadAllText(absolute_path)))
             {
                 var root = doc.RootElement;
 
