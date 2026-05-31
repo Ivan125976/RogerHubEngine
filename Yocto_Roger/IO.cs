@@ -1,5 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
+using System.Globalization;
 using System.Text.Json;
 using Yocto_Roger;
 
@@ -220,21 +221,21 @@ Internal I/O lib
             public string Obias { get; set; }
         }
 
-        public static void InitNeuralNetwork(NeuralNetworkState nN, bool isNeededToInitEducationArray = true)
+        public static void InitNeuralNetwork(NeuralNetworkState nN, bool isNeededToInitEducationArray = false)
         {
             if (isNeededToInitEducationArray)
-                NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.educationArray.Split(';').Select(int.Parse)]);
+                NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.educationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture))]);
 
-            NeuralNetwork.inputNeurons = nN.inputNeurons.Split(';').Select(int.Parse).ToArray();
-            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromArray([.. nN.middleNeurons.Split(';').Select(int.Parse)]);
-            NeuralNetwork.outputNeurons = nN.outputNeurons.Split(';').Select(double.Parse).ToArray();
+            NeuralNetwork.inputNeurons = nN.inputNeurons.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray([.. nN.middleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
+            NeuralNetwork.outputNeurons = nN.outputNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
-            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromArray([.. nN.inputWeights.Split(';').Select(int.Parse)]);
-            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray([.. nN.middleNeurons.Split(';').Select(double.Parse)]);
-            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromArray([.. nN.outputWeights.Split(';').Select(int.Parse)]);
+            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.inputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
+            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray([.. nN.middleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
+            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.outputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
 
-            NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromArray([.. nN.Mbias.Split(';').Select(int.Parse)]);
-            NeuralNetwork.Obias = nN.Obias.Split(';').Select(double.Parse).ToArray();
+            NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromDoublesArray([.. nN.Mbias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
+            NeuralNetwork.Obias = nN.Obias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
                  
         }
 
@@ -257,7 +258,7 @@ Internal I/O lib
                 outputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? String.Empty,
 
                 inputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? String.Empty,
-                middleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights, 2) ?? String.Empty,
+                middleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights, Convert.ToByte(Parameters.Mlayers - 1)) ?? String.Empty,
                 outputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? String.Empty,
 
                 Obias = Auxiliary.BuildStringMatrix(NeuralNetwork.Mbias) ?? String.Empty,

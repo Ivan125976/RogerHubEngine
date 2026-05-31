@@ -171,11 +171,32 @@ Internal extension I/O lib
             byte rows = 3;
             byte columns = 2;
 
-            if (obj.Length < rows * columns)
+            double[,] matrix = new double[rows, columns];
+            int index = 0;
+
+            for (int r = 0; r < rows; r++)
             {
-                throw new ArgumentException("В исходном массиве недостаточно элементов для заполнения матрицы 3х2.");
-                // Не уверен насчет надобности выкидывания исключения ибо мешает, да и вообще неудобно получается
+                for (int c = 0; c < columns; c++)
+                {
+                    if (index < obj.Length)
+                    {
+                        matrix[r, c] = obj[index];
+                        index++;
+                    }
+                    else
+                    {
+                        matrix[r, c] = 0.0;
+                    }
+                }
             }
+
+            return matrix;
+        }
+
+        public static double[,] ReadMatrixFromDoublesArray(double[] obj)
+        {
+            byte rows = 3;
+            byte columns = 2;
 
             double[,] matrix = new double[rows, columns];
             int index = 0;
@@ -184,30 +205,47 @@ Internal extension I/O lib
             {
                 for (int c = 0; c < columns; c++)
                 {
-                    matrix[r, c] = obj[index];
-                    index++;
+                    if (index < obj.Length)
+                    {
+                        matrix[r, c] = obj[index];
+                        index++;
+                    }
+                    else
+                    {
+                        matrix[r, c] = 0.0;
+                    }
                 }
             }
 
             return matrix;
         }
 
-        public static double[][,] ReadJaggedMatrixFromArray(double[] obj, byte indexOfMatrix = 0)
+        public static double[][,] ReadJaggedMatrixFromArray(double[] obj, byte matrixCount = 1)
         {
+            if (obj == null || obj.Length == 0 || matrixCount == 0)
+            {
+                return [];
+            }
+
             byte rows = 3;
             byte columns = 2;
 
-            double[][,] matrix = [];
+            double[][,] matrix = new double[matrixCount][,];
             int index = 0;
 
-            for (int r = 0; r < rows; r++)
+            for (int i = 0; i < matrixCount; i++)
             {
-                for (int c = 0; c < columns; c++)
+                matrix[i] = new double[rows, columns];
+
+                for (int r = 0; r < rows; r++)
                 {
-                    for (int i = 0; i < indexOfMatrix; i++)
+                    for (int c = 0; c < columns; c++)
                     {
-                        matrix[i][r, c] = obj[index];
-                        index++;
+                        if (index < obj.Length)
+                        {
+                            matrix[i][r, c] = obj[index];
+                            index++;
+                        }
                     }
                 }
             }

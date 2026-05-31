@@ -66,7 +66,7 @@ Copyright 2025-2026 Emotion Corp.
                             {
                                 NeuralNetwork.rogerIsCreated = true;
                                 IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromJson(userInput), false);
-                                //Auxiliary.InitRogersData(IO.LoadRoger());
+                                NeuralNetwork.StartAI(1);
                             }
                             else
                             {
