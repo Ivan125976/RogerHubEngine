@@ -18,9 +18,9 @@ Copyright (c) 2025 Axolotl512, death_script. Лицензия: MIT.
 
 1. Установите .NET 9.0.
 2. Перейдите в по пути: `AI_Roger/AI_Roger/bin/Release/net9.0`
-3. Запустите `AI_Rogerexe`.
+3. Запустите `AI_Roger.exe`.
 4. > Или просто скачайте релизный бинарник
-5. Отредактируйте файл знаний (knowledge.know) или создайте собственный (подробнее в wiki).
+5. Отредактируйте файл знаний ([knowledge.know](https://raw.githubusercontent.com/Ivan125976/AI_Roger/refs/heads/v2.2-beta/Yocto_Roger/knowledge.know)) или создайте собственный (подробнее в wiki).
 
 ### Параметры обучения
 
@@ -35,7 +35,7 @@ Copyright (c) 2025 Axolotl512, death_script. Лицензия: MIT.
 
 1. В папке с файлами выполните:
    `./AI_Roger`
-2. Отредактируйте файл знаний `knowledge.know` (подробнее в wiki).
+2. Отредактируйте файл знаний `[knowledge.know](https://raw.githubusercontent.com/Ivan125976/AI_Roger/refs/heads/v2.2-beta/Yocto_Roger/knowledge.know)` (подробнее в wiki).
 
 ### Параметры обучения
 
