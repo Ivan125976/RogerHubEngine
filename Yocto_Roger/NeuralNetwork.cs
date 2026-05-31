@@ -128,20 +128,18 @@ Copyright 2025-2026 Emotion Corp.
                     UI.Send("done");
                     UI.Send("Initialization complete", "message");
                     Console.Write("Education...");
-                    UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D");
+                    UI.DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                     Console.WriteLine();
                     Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
-                    educationStatus.Draw(0);
 
                     Training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray, educationStatus);
 
                     educationStatus.Draw(100);
                     UI.Send("\nEducation Complete");
 
-                    Console.Write("Cleaning...");
+                    Console.Write("Finishing...");
                     rogerIsCreated = true;
                     UI.Send("done");
-                    UI.Send("Enter \"save\" to fix the state of neural network in the file, for load at this point later", "warning");
                     Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
                     Thread.Sleep(3000);
                     break;
@@ -160,8 +158,11 @@ Copyright 2025-2026 Emotion Corp.
                 Console.CursorVisible = true;
                 while (true)
                 {
-                    //Console.Clear(); // Юзер не успевает прочитать результаты инициализации, и в том числе подсказку про ключевое слово save, пускай лучше остаётся текст
-                    UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2!");
+                    Console.Clear();
+                    UI.Send("Enter \"save\" to fix the state of neural network in the file, for load at this point later", "warning");
+                    Console.WriteLine($"Roger have {Parameters.inputNeuronsCount} input neurons, and {Parameters.outputNeuronsCount} output neurons." +
+                        $"Write input format: <datain1>,<datain2>,<datain3>...");
+                    UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                     Console.Write("\nInput>>>");
                     string? userInputString = Console.ReadLine();
                     if (!string.IsNullOrEmpty(userInputString))

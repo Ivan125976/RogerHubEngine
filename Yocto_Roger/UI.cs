@@ -20,9 +20,14 @@ Copyright 2025-2026 Emotion Corp.
         static void Main()
         {
             Console.WriteLine("Configuring console...");
+            if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
+            {
+                Send("The window is too small >:(", "error");
+                Environment.Exit(1);
+            }
             Console.Title = "Welcome to Beta!";
-            Console.InputEncoding = Encoding.UTF8;
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
             Thread.Sleep(3000);
             int i = 0;
