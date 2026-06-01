@@ -159,7 +159,7 @@ Copyright 2025-2026 Emotion Corp.
                 while (true)
                 {
                     Console.Clear();
-                    UI.Send("Enter \"save\" to fix the state of neural network in the file, for load at this point later", "warning");
+                    UI.Send("Enter \"save\"  to fix the state of neural network in the file, for load at this point later. Or \"exit\" to exit to main menu", "warning");
                     Console.WriteLine($"Roger have {Parameters.inputNeuronsCount} input neurons, and {Parameters.outputNeuronsCount} output neurons." +
                         $"Write input format: <datain1>,<datain2>,<datain3>...");
                     UI.DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
@@ -184,6 +184,10 @@ Copyright 2025-2026 Emotion Corp.
                                 Console.Clear();
                             }
                         }
+
+                        else if (userInputString == "exit")
+                            break;
+
                         else
                         {
                             Console.Write("Please, enter the path, where we going to save the file (to this directory, simple press the enter): ");
