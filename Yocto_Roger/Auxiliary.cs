@@ -83,35 +83,35 @@ Internal extension I/O lib
         }
 
         /// <summary>
-        /// Строит все значения из матрицы с вложенными массивами в одну строчку разделяя их точкой с запятой. Очень важно вводить корректный второй параметр, от этого зависит упадёт ли программа сс исключением или нет
+        /// Строит все значения из матрицы с вложенными массивами в одну строчку разделяя их точкой с запятой. Важно, что если переденная переменная будет пустой (null), то программа упадёт с исключением, NullReference исключения, требется обрабатывать (если честно то не только здесь, а всегда).
         /// </summary>
         /// <param name="jaggedMatrix">Матрица со вложенными массивами</param>
-        /// <param name="maxIndexOfMatrix">Кол-во вложенных массивов</param>
         /// <returns></returns>
-        public static string BuildStringJaggedMatrix(double[][,] jaggedMatrix, int maxIndexOfMatrix)
+        public static string? BuildStringJaggedMatrix(double[][,] jaggedMatrix)
         {
-            if (jaggedMatrix != null)
-            {
-                StringBuilder builder = new();
+            if (jaggedMatrix == null)
+                return null;
 
-                for (int iM = 0; iM < maxIndexOfMatrix; iM++)
+            StringBuilder builder = new();
+
+            for (int iM = 0; iM < jaggedMatrix.Length; iM++)
+            {
+                int rows = jaggedMatrix[iM].GetLength(0);
+                int cols = jaggedMatrix[iM].GetLength(1);
+
+                for (int i = 0; i < rows; i++)
                 {
-                    for (int j = 0; j < jaggedMatrix[iM].GetLength(1); j++)
+                    for (int j = 0; j < cols; j++)
                     {
-                        for (int i = 0; i < jaggedMatrix[iM].GetLength(0); i++)
-                        {
-                            builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture) + ";");
-                        }
+                        builder.Append(Convert.ToString(jaggedMatrix[iM][i, j], CultureInfo.InvariantCulture)).Append(';');
                     }
                 }
-
-                if (builder.ToString().EndsWith(';'))
-                    builder.Length--; // Удаляет последний ненужный символ ';'
-
-                return builder.ToString();
             }
-            else
-                return String.Empty;
+
+            if (builder.Length > 0)
+                builder.Length--; // Удаление последнего символа ';'
+
+            return builder.ToString();
         }
 
         public static string BuildStringArray(dynamic array)

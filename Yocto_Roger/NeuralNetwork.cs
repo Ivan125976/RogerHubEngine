@@ -26,6 +26,7 @@ Copyright 2025-2026 Emotion Corp.
 
         public static double[,] Mbias;
         public static double[] Obias;
+
         public static void StartAI(int mode)
         {
             Console.WriteLine("StartAI in mode " + mode);
@@ -167,8 +168,7 @@ Copyright 2025-2026 Emotion Corp.
                     string? userInputString = Console.ReadLine();
                     if (!string.IsNullOrEmpty(userInputString))
                     {
-                        if (userInputString != "save")
-                        {
+
                             string[] userInputChecked = userInputString.Split(',');
                             if (userInputChecked.Length == Parameters.inputNeuronsCount)
                             {
@@ -183,12 +183,12 @@ Copyright 2025-2026 Emotion Corp.
                                 Console.ReadKey();
                                 Console.Clear();
                             }
-                        }
 
-                        else if (userInputString == "exit")
-                            break;
 
-                        else
+                        if (userInputString == "exit")
+                            return;
+
+                        if (userInputString == "save")
                         {
                             Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
                             string input = Console.ReadLine() ?? string.Empty;

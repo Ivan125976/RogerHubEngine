@@ -213,9 +213,16 @@ Internal I/O lib
             public string middleNeurons { get; set; }
             public string outputNeurons { get; set; }
 
+            public int inputNeuronsCount { get; set; }
+            public int middleNeuronsCount { get; set; }
+            public int outputNeuronsCount { get; set; }
+
             public string inputWeights { get; set; }
             public string middleWeights { get; set; }
             public string outputWeights { get; set; }
+
+            public int Layers { get; set; }
+            public int MLayers { get; set; }
 
             public string Mbias { get; set; }
             public string Obias { get; set; }
@@ -230,9 +237,16 @@ Internal I/O lib
             NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray([.. nN.middleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
             NeuralNetwork.outputNeurons = nN.outputNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
+            Parameters.inputNeuronsCount = nN.inputNeuronsCount;
+            Parameters.middleNeuronsCount = nN.middleNeuronsCount;
+            Parameters.outputNeuronsCount = nN.outputNeuronsCount;
+
             NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.inputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
             NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray([.. nN.middleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
             NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.outputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
+
+            Parameters.layers = nN.Layers;
+            Parameters.Mlayers = nN.Layers;
 
             NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromDoublesArray([.. nN.Mbias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
             NeuralNetwork.Obias = nN.Obias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
@@ -252,14 +266,21 @@ Internal I/O lib
         {
             NeuralNetworkState nN = new()
             {
-                educationArray =  (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? String.Empty : String.Empty,
+                educationArray = (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? String.Empty : String.Empty,
                 inputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.inputNeurons) ?? String.Empty,
                 middleNeurons = Auxiliary.BuildStringMatrix(NeuralNetwork.middleNeurons) ?? String.Empty,
                 outputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? String.Empty,
 
+                inputNeuronsCount = Parameters.inputNeuronsCount,
+                middleNeuronsCount = Parameters.middleNeuronsCount,
+                outputNeuronsCount = Parameters.outputNeuronsCount,
+
                 inputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? String.Empty,
-                middleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights, NeuralNetwork.middleWeights.GetLength(0)) ?? String.Empty,
+                middleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights) ?? String.Empty,
                 outputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? String.Empty,
+
+                Layers = Parameters.layers,
+                MLayers = Parameters.Mlayers,
 
                 Obias = Auxiliary.BuildStringMatrix(NeuralNetwork.Mbias) ?? String.Empty,
                 Mbias = Auxiliary.BuildStringArray(NeuralNetwork.Obias) ?? String.Empty,
@@ -280,6 +301,10 @@ Internal I/O lib
                 nN.inputNeurons = root.GetProperty("inputNeurons").GetString() ?? String.Empty;
                 nN.middleNeurons = root.GetProperty("middleNeurons").GetString() ?? String.Empty;
                 nN.outputNeurons = root.GetProperty("outputNeurons").GetString() ?? String.Empty;
+
+                nN.inputNeuronsCount = root.GetProperty("inputNeuronsCount").GetInt32();
+                nN.middleNeuronsCount = root.GetProperty("middleNeuronsCount").GetInt32();
+                nN.outputNeuronsCount = root.GetProperty("outputNeuronsCount").GetInt32();
 
                 nN.inputWeights = root.GetProperty("inputWeights").GetString() ?? String.Empty;
                 nN.middleWeights = root.GetProperty("middleWeights").GetString() ?? String.Empty;
