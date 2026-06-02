@@ -121,17 +121,6 @@ Copyright 2025-2026 Emotion Corp.
                     Obias = new double[Parameters.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization biases...");
-<<<<<<< HEAD:Yocto_Roger/Yocto_Roger/NeuralNetwork.cs
-                    Biases.Init(ref Mbias);
-                    Biases.Init(ref Obias);
-                    Send("done");
-                    Console.Write("Initialization weights...");
-                    Weights.Init(ref inputWeights);
-                    Weights.Init(ref outputWeights);
-                    Weights.Init(ref middleWeights);
-                    Send("done");
-                    Send("Initialization complete", "message");
-=======
                     try
                     {
                         Biases.Init(ref Mbias);
@@ -139,11 +128,11 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        UI.Send("Failed to initialize the Biases: \n" + ex.Message, "error");
+                        Send("Failed to initialize the Biases: \n" + ex.Message, "error");
                         Thread.Sleep(5000);
                         break;
                     }
-                    UI.Send("done");
+                    Send("done");
                     Console.Write("Initialization weights...");
                     try
                     {
@@ -153,13 +142,12 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        UI.Send($"Failed to initialize the Weights: \n{ex.Message}", "error");
+                        Send($"Failed to initialize the Weights: \n{ex.Message}", "error");
                         Thread.Sleep(5000);
                         break;
                     }
-                    UI.Send("done");
-                    UI.Send("Initialization complete", "message");
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/NeuralNetwork.cs
+                    Send("done");
+                    Send("Initialization complete", "message");
                     Console.Write("Education...");
                     DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                     Console.WriteLine();
@@ -171,7 +159,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        UI.Send($"Filed to educate the data: \n{ex.Message}", "error");
+                        Send($"Filed to educate the data: \n{ex.Message}", "error");
                         Thread.Sleep(5000);
                         break;
                     }
@@ -187,16 +175,14 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    //Console.Write("Loading your Roger...");
-                    //IO.LoadRoger();
+                    Console.Write("Loading your Roger...");
+                    LoadRoger();
                     break;
             }
             if (rogerIsCreated)
             {
                 float[,]? disabledDropOut = null;
 
-                //Console.TreatControlCAsInput = true; // Блокирование закрытия программы по нажатия ctrl+c ибо нужно чтобы оно выходило из цикла, а не из программы
-                //TODO: Сделать выход из training mode в главное меню, по нажатию CTRL + C асинхронно, чтобы проверка была не в конкретном куске кода, а в любой момент
                 Console.CursorVisible = true;
                 while (true)
                 {

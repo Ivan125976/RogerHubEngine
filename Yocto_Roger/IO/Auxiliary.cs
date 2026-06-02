@@ -151,11 +151,7 @@ Internal extension I/O lib
         /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
         /// </summary>
         /// <param name="roger"></param>
-<<<<<<< HEAD:Yocto_Roger/IO/Auxiliary.cs
         public static void InitRogersData(MainIO.Roger roger)
-=======
-        public static void InitRogersData(Roger? roger)
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/Auxiliary.cs
         {
             //Parameters.version = roger.AIversion; если надо -- разкомментируй
 

@@ -170,10 +170,6 @@ Internal I/O lib
         /// <param name="extension">File extension (without period)</param>
         public static string MakeFileSplitOnIndexIfExists(string filename, string extension)
         {
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-            string filenameWithIndex;
-=======
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
             int index = 0;
 
             string filenameWithIndex;
@@ -197,30 +193,17 @@ Internal I/O lib
         public class NeuralNetworkState
         {
             public string? EducationArray { get; set; }
-
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-            public string InputNeurons { get; set; }
-            public string MiddleNeurons { get; set; }
-            public string OutputNeurons { get; set; }
-=======
-            public string? inputNeurons { get; set; }
-            public string? middleNeurons { get; set; }
-            public string? outputNeurons { get; set; }
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+            public string? InputNeurons { get; set; }
+            public string? MiddleNeurons { get; set; }
+            public string? OutputNeurons { get; set; }
 
             public int InputNeuronsCount { get; set; }
             public int MiddleNeuronsCount { get; set; }
             public int OutputNeuronsCount { get; set; }
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-            public string InputWeights { get; set; }
-            public string MiddleWeights { get; set; }
-            public string OutputWeights { get; set; }
-=======
-            public string? inputWeights { get; set; }
-            public string? middleWeights { get; set; }
-            public string? outputWeights { get; set; }
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+            public string? InputWeights { get; set; }
+            public string? MiddleWeights { get; set; }
+            public string? OutputWeights { get; set; }
 
             public int Layers { get; set; }
             public int MLayers { get; set; }
