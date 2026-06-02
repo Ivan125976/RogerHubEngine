@@ -215,49 +215,28 @@ Internal I/O lib
         public static void InitNeuralNetwork(NeuralNetworkState nN, bool isNeededToInitEducationArray = false)
         {
             if (isNeededToInitEducationArray)
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture))]);
+                if (nN?.EducationArray is not null)
+                    NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
 
-            NeuralNetwork.inputNeurons = [.. nN.InputNeurons.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture))];
-            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray([.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
-            NeuralNetwork.outputNeurons = [.. nN.OutputNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))];
-
-            Parameters.inputNeuronsCount = nN.InputNeuronsCount;
-            Parameters.middleNeuronsCount = nN.MiddleNeuronsCount;
-            Parameters.outputNeuronsCount = nN.OutputNeuronsCount;
-
-            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.InputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
-            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray([.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
-            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray([.. nN.OutputWeights.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
-=======
-                if (nN?.educationArray is not null)
-                    NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.educationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
-
-            NeuralNetwork.inputNeurons = nN?.inputNeurons?.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray((nN?.middleNeurons is not null) ? [.. nN.middleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            NeuralNetwork.outputNeurons = nN?.outputNeurons?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            NeuralNetwork.inputNeurons = nN?.InputNeurons?.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray((nN?.MiddleNeurons is not null) ? [.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            NeuralNetwork.outputNeurons = nN?.OutputNeurons?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
             // Если null - значения по умолчанию
-            Parameters.inputNeuronsCount = nN?.inputNeuronsCount ?? 14;
-            Parameters.middleNeuronsCount = nN?.middleNeuronsCount ?? 16;
-            Parameters.outputNeuronsCount = nN?.outputNeuronsCount ?? 8;
+            Parameters.inputNeuronsCount = nN?.InputNeuronsCount ?? 14;
+            Parameters.middleNeuronsCount = nN?.MiddleNeuronsCount ?? 16;
+            Parameters.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
 
-            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.inputWeights is not null) ? [.. nN.inputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray((nN?.middleWeights is not null) ? [.. nN.middleWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null );
-            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.outputWeights is not null) ? [.. nN.outputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.InputWeights is not null) ? [.. nN.InputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray((nN?.MiddleWeights is not null) ? [.. nN.MiddleWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null );
+            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.OutputWeights is not null) ? [.. nN.OutputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
 
             // Значения по умолчанию в случае null или пустого элемента
             Parameters.layers = nN?.Layers ?? 3;
             Parameters.Mlayers = nN?.MLayers ?? 1; // Layers -1
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-            NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromDoublesArray([.. nN.Mbias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))]);
-            NeuralNetwork.Obias = [.. nN.Obias.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))];
-=======
             NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromDoublesArray((nN?.Mbias != null) ? [..nN.Mbias!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
             NeuralNetwork.Obias = nN?.Obias?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
                  
         }
 
@@ -274,42 +253,24 @@ Internal I/O lib
         {
             NeuralNetworkState nN = new()
             {
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                EducationArray = isNeedToFixTheEducationArray ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? string.Empty : string.Empty,
-                InputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.inputNeurons) ?? string.Empty,
-                MiddleNeurons = Auxiliary.BuildStringMatrix(NeuralNetwork.middleNeurons) ?? string.Empty,
-                OutputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? string.Empty,
-=======
-                educationArray = (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? null : String.Empty,
-                inputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.inputNeurons) ?? null,
-                middleNeurons = Auxiliary.BuildStringMatrix(NeuralNetwork.middleNeurons) ?? null,
-                outputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? null,
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+                EducationArray = (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? null : String.Empty,
+                InputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.inputNeurons) ?? null,
+                MiddleNeurons = Auxiliary.BuildStringMatrix(NeuralNetwork.middleNeurons) ?? null,
+                OutputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? null,
 
                 InputNeuronsCount = Parameters.inputNeuronsCount,
                 MiddleNeuronsCount = Parameters.middleNeuronsCount,
                 OutputNeuronsCount = Parameters.outputNeuronsCount,
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                InputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? string.Empty,
-                MiddleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights) ?? string.Empty,
-                OutputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? string.Empty,
-=======
-                inputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? null,
-                middleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights) ?? null,
-                outputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? null,
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+                InputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? null,
+                MiddleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights) ?? null,
+                OutputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? null,
 
                 Layers = Parameters.layers,
                 MLayers = Parameters.Mlayers,
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                Obias = Auxiliary.BuildStringMatrix(NeuralNetwork.Mbias) ?? string.Empty,
-                Mbias = Auxiliary.BuildStringArray(NeuralNetwork.Obias) ?? string.Empty,
-=======
                 Obias = Auxiliary.BuildStringMatrix(NeuralNetwork.Mbias) ?? null,
                 Mbias = Auxiliary.BuildStringArray(NeuralNetwork.Obias) ?? null,
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
             };
 
             return nN;
@@ -322,39 +283,22 @@ Internal I/O lib
             {
                 var root = doc.RootElement;
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                nN.EducationArray = root.GetProperty("educationArray").GetString() ?? string.Empty;
+                nN.EducationArray = root.GetProperty("educationArray").GetString() ?? null;
 
-                nN.InputNeurons = root.GetProperty("inputNeurons").GetString() ?? string.Empty;
-                nN.MiddleNeurons = root.GetProperty("middleNeurons").GetString() ?? string.Empty;
-                nN.OutputNeurons = root.GetProperty("outputNeurons").GetString() ?? string.Empty;
-=======
-                nN.educationArray = root.GetProperty("educationArray").GetString() ?? null;
-
-                nN.inputNeurons = root.GetProperty("inputNeurons").GetString() ?? null;
-                nN.middleNeurons = root.GetProperty("middleNeurons").GetString() ?? null;
-                nN.outputNeurons = root.GetProperty("outputNeurons").GetString() ?? null;
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
+                nN.InputNeurons = root.GetProperty("inputNeurons").GetString() ?? null;
+                nN.MiddleNeurons = root.GetProperty("middleNeurons").GetString() ?? null;
+                nN.OutputNeurons = root.GetProperty("outputNeurons").GetString() ?? null;
 
                 nN.InputNeuronsCount = root.GetProperty("inputNeuronsCount").GetInt32();
                 nN.MiddleNeuronsCount = root.GetProperty("middleNeuronsCount").GetInt32();
                 nN.OutputNeuronsCount = root.GetProperty("outputNeuronsCount").GetInt32();
 
-<<<<<<< HEAD:Yocto_Roger/IO/MainIO.cs
-                nN.InputWeights = root.GetProperty("inputWeights").GetString() ?? string.Empty;
-                nN.MiddleWeights = root.GetProperty("middleWeights").GetString() ?? string.Empty;
-                nN.OutputWeights = root.GetProperty("outputWeights").GetString() ?? string.Empty;
-
-                nN.Obias = root.GetProperty("Obias").GetString() ?? string.Empty;
-                nN.Mbias = root.GetProperty("Mbias").GetString() ?? string.Empty;
-=======
-                nN.inputWeights = root.GetProperty("inputWeights").GetString() ?? null;
-                nN.middleWeights = root.GetProperty("middleWeights").GetString() ?? null;
-                nN.outputWeights = root.GetProperty("outputWeights").GetString() ?? null;
+                nN.InputWeights = root.GetProperty("inputWeights").GetString() ?? null;
+                nN.MiddleWeights = root.GetProperty("middleWeights").GetString() ?? null;
+                nN.OutputWeights = root.GetProperty("outputWeights").GetString() ?? null;
 
                 nN.Obias = root.GetProperty("Obias").GetString() ?? null;
                 nN.Mbias = root.GetProperty("Mbias").GetString() ?? null;
->>>>>>> c496e0713b22dc4e19d5bf43cc380c0767d57f46:Yocto_Roger/IO.cs
             }
 
             return nN;
