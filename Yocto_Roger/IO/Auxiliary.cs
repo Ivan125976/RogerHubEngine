@@ -14,8 +14,8 @@ Internal extension I/O lib
 {
     public class Auxiliary(Parameters param)
     {
-        private Parameters _param = param;
-        public void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
+        private readonly Parameters _param = param;
+        public static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
             foreach (var element in array)
                 writer.Write(element.ToString(CultureInfo.InvariantCulture) + ";");
@@ -30,7 +30,7 @@ Internal extension I/O lib
         /// <param name="writer"></param>
         /// <param name="matrix"></param>
         /// <param name="line_break">Перенос строки после записи</param>
-        public void WriteMatrix(StreamWriter writer, double[,] matrix, bool line_break = false)
+        public static void WriteMatrix(StreamWriter writer, double[,] matrix, bool line_break = false)
         {
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
@@ -42,7 +42,7 @@ Internal extension I/O lib
             }
         }
 
-        public void WriteJaggedMatrix(StreamWriter writer, double[,,] matrix, bool line_break = false)
+        public static void WriteJaggedMatrix(StreamWriter writer, double[,,] matrix, bool line_break = false)
         {
             for (byte j = 0; j < matrix.GetLength(1); j++)
             {
@@ -61,7 +61,7 @@ Internal extension I/O lib
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns>Строка в которой по порядку содержатся элементы матрицы, разделённые точкой с запятой</returns>
-        public string BuildStringMatrix(double[,]? matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
+        public static string BuildStringMatrix(double[,]? matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
         {
             if (matrix != null)
             {
@@ -87,7 +87,7 @@ Internal extension I/O lib
         /// </summary>
         /// <param name="jaggedMatrix">Матрица со вложенными массивами</param>
         /// <returns></returns>
-        public string? BuildStringJaggedMatrix(double[][,]? jaggedMatrix)
+        public static string? BuildStringJaggedMatrix(double[][,]? jaggedMatrix)
         {
             if (jaggedMatrix == null)
                 return null;
@@ -114,7 +114,7 @@ Internal extension I/O lib
             return builder.ToString();
         }
 
-        public string BuildStringArray(dynamic? array)
+        public static string BuildStringArray(dynamic? array)
         {
             StringBuilder builder = new();
 
@@ -134,7 +134,7 @@ Internal extension I/O lib
                 return string.Empty;
         }
 
-        private void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
+        private static void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
         {
             if (array != null)
             {
@@ -164,7 +164,7 @@ Internal extension I/O lib
             _param.layers = roger?.Layers ?? 3;
         }
 
-        public double[,]? ReadMatrixFromArray(int[]? obj)
+        public static double[,]? ReadMatrixFromArray(int[]? obj)
         {
             if (obj != null && obj.Length > 0)
             {
@@ -190,7 +190,7 @@ Internal extension I/O lib
             else return null;
         }
 
-        public double[,]? ReadMatrixFromDoublesArray(double[]? obj)
+        public static double[,]? ReadMatrixFromDoublesArray(double[]? obj)
         {
             byte rows = 3;
             byte columns = 2;
@@ -221,7 +221,7 @@ Internal extension I/O lib
             return matrix;
         }
 
-        public double[][,] ReadJaggedMatrixFromArray(double[]? obj, byte matrixCount = 1)
+        public static double[][,] ReadJaggedMatrixFromArray(double[]? obj, byte matrixCount = 1)
         {
             if (obj == null || obj.Length == 0 || matrixCount == 0)
             {

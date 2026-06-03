@@ -13,10 +13,9 @@ Copyright 2025-2026 Emotion Corp.
     /// Class for initializing arrays of weights
     /// </summary>
 
-    public class Weights(Parameters param, UI.UI user)
+    public class Weights(Parameters param)
     {
-        private Parameters _param = param;
-        private UI.UI _user = user;
+        private readonly Parameters _param = param;
         /// <summary>
         /// Random filling of a two-dimensional array of weights
         /// </summary>
@@ -31,7 +30,7 @@ Copyright 2025-2026 Emotion Corp.
             {
                 for (int j = 0; j < weights.GetLength(1); j++)
                 {
-                    weights[i, j] = AIMath.rand.NextDouble() * 0.2 - 0.1;
+                    weights[i, j] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
                     if (_param.isDebug)
                         Console.Write($"{weights[i, j]} ");
                 }
@@ -39,7 +38,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine();
             }
             if (_param.isDebug)
-                _user.Send("The weights have been successfully adjusted!");
+                UI.UI.Send("The weights have been successfully adjusted!");
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ Copyright 2025-2026 Emotion Corp.
                 {
                     for (int k = 0; k < weights[i].GetLength(1); k++)
                     {
-                        weights[i][j, k] = AIMath.rand.NextDouble() * 0.2 - 0.1;
+                        weights[i][j, k] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
                         if (_param.isDebug)
                             Console.Write($"{weights[i][j, k]} ");
                     }
@@ -70,7 +69,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine(new string('=', Console.WindowWidth));
             }
             if (_param.isDebug)
-                _user.Send("The weights have been successfully adjusted!");
+                UI.UI.Send("The weights have been successfully adjusted!");
         }
     }
 }

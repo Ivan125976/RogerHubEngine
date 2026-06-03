@@ -17,11 +17,17 @@ RogerHub configuration
         /// <summary>
         /// Debug flag. If enabled, logs will be written to the console. This is for developers.
         /// </summary>
-        public readonly bool isDebug = true;
+        public readonly bool isDebug = false;
 
-        public readonly string version = "2.2";
+        /// <summary>
+        /// Version of RogerHubEngine
+        /// </summary>
+        public readonly string version = "2.2.0";
 
-        public readonly string revision = ""; // Я хз что сюда ставить
+        /// <summary>
+        /// Revision of version RogerHubEngine
+        /// </summary>
+        public readonly string revision = "";
         /// <summary>
         /// Number of passes during training on training data
         /// </summary>

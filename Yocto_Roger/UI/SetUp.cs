@@ -3,12 +3,18 @@ using Yocto_Roger.Yocto_Roger;
 
 namespace Yocto_Roger.UI
 {
-    public class SetUpInterface(Parameters param, UI user, MainIO io, IO.Auxiliary auxiliaryIO)
+
+    /// <summary>
+    /// Settings interface
+    /// </summary>
+    /// <param name="param">Link to RogerHubEngine parameters file</param>
+    /// <param name="io">Link to RogerHubEngine IO lib</param>
+    /// <param name="auxiliaryIO">Link to RogerHubEngine ExternalIO file</param>
+    public class SettingsInterface(Parameters param, MainIO io, Auxiliary auxiliaryIO)
     {
-        private Parameters _param = param;
-        private UI _user = user;
-        private IO.MainIO _io = io;
-        private IO.Auxiliary _auxiliaryIO = auxiliaryIO;
+        private readonly MainIO _io = io;
+        private readonly Auxiliary _auxiliaryIO = auxiliaryIO;
+
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
@@ -60,7 +66,7 @@ namespace Yocto_Roger.UI
                                     break;
 
                                 default:
-                                    user.Send("What?", "error");
+                                    UI.Send("What?", "error");
                                     break;
                             }
 
@@ -69,7 +75,7 @@ namespace Yocto_Roger.UI
                             Console.ReadKey();
                         }
                         else
-                            user.Send("Unknown input", "error");
+                            UI.Send("Unknown input", "error");
 
                         break;
 
@@ -83,8 +89,8 @@ namespace Yocto_Roger.UI
                             _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
                         }
                         else
-                            user.Send("Incorrect input (-_0)", "error");
-                        user.Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
+                            UI.Send("Incorrect input (-_0)", "error");
+                        UI.Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
                         break;
 
                     case "2":
@@ -96,7 +102,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked1 > 0)
                                 param.inputNeuronsCount = userInputChecked1;
                             else
-                                user.Send("Value out of range.", "error");
+                                UI.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -109,7 +115,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked2 > 0)
                                 param.middleNeuronsCount = userInputChecked2;
                             else
-                                user.Send("Value out of range.", "error");
+                                UI.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -122,7 +128,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked3 > 0)
                                 param.outputNeuronsCount = userInputChecked3;
                             else
-                                user.Send("Value out of range.", "error");
+                                UI.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -135,7 +141,7 @@ namespace Yocto_Roger.UI
                             if (layersCount > 2)
                                 param.layers = layersCount;
                             else
-                                user.Send("Value out of range.", "error");
+                                UI.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -147,7 +153,7 @@ namespace Yocto_Roger.UI
                         if (File.Exists(file))
                             param.knowledgeFile = file;
                         else
-                            user.Send("I couldn't find such a file :(", "error");
+                            UI.Send("I couldn't find such a file :(", "error");
                         break;
 
                     case "7":
@@ -159,10 +165,10 @@ namespace Yocto_Roger.UI
                             if (newDrop >= 0 && newDrop <= 70)
                                 param.DropOutPercent = newDrop;
                             else
-                                user.Send("Value out of range.", "error");
+                                UI.Send("Value out of range.", "error");
                         }
                         else
-                            user.Send("Invalid input.", "error");
+                            UI.Send("Invalid input.", "error");
                         break;
 
                     case "8":
@@ -174,10 +180,10 @@ namespace Yocto_Roger.UI
                             if (newLR > 0 && newLR <= 1.0)
                                 param.learningRate = newLR;
                             else
-                                user.Send("Learning rate out of range.", "error");
+                                UI.Send("Learning rate out of range.", "error");
                         }
                         else
-                            user.Send("Invalid input.", "error");
+                            UI.Send("Invalid input.", "error");
                         break;
 
                     case "9":
@@ -189,10 +195,10 @@ namespace Yocto_Roger.UI
                             if (newPasses > 0)
                                 param.passes = newPasses;
                             else
-                                user.Send("Passes must be greater than zero.", "error");
+                                UI.Send("Passes must be greater than zero.", "error");
                         }
                         else
-                            user.Send("Invalid input.", "error");
+                            UI.Send("Invalid input.", "error");
                         break;
 
                     case "10":

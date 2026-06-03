@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Yocto_Roger.Yocto_Roger;
-//using static Yocto_Roger.IO.MainIO;
 
 namespace Yocto_Roger.UI
 /* 
@@ -14,32 +13,43 @@ Copyright 2025-2026 Emotion Corp.
 
 {
     /// <summary>
-    /// Internal library for a beautiful command-line interface
+    /// Internal library for a beautiful command line
     /// </summary>
-    public class UI(NeuralNetwork nN, SetUpInterface setUpInterface, Parameters param)
+    /// <param name="nN">Link to RogerHubEngine neural network lib</param>
+    /// <param name="settingsInterface">Link to RogerHubEngine settings interface</param>
+    /// <param name="param">Link to RogerHubEngine parameters file</param>
+    public class UI(NeuralNetwork nN, SettingsInterface settingsInterface, Parameters param)
     {
+        /// <summary>
+        /// Link to neural network file
+        /// </summary>
+        public NeuralNetwork _roger = nN;
 
-        public NeuralNetwork _nN = nN;
-        public SetUpInterface _setUpInterface = setUpInterface;
-        private Parameters _param = param;
+        /// <summary>
+        /// Link to SettingsInterface
+        /// </summary>
+        public SettingsInterface _settingsInterface = settingsInterface;
+
+        private readonly Parameters _param = param;
+
         /// <summary>
         /// Launches the console UI
         /// </summary>
-        public void Start()
+        public void StartEngine()
         {
-            //NeuralNetwork roger = new();
-            //SetUpInterface setUp = new();
-            //Parameters param = new();
-
             Console.WriteLine("Configuring console...");
+
             if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
             {
                 Send("The window is too small >:(", "error");
                 Environment.Exit(1);
             }
+
             Console.Title = "Welcome to Beta!";
+
             Console.InputEncoding = Encoding.Unicode;
             Console.OutputEncoding = Encoding.Unicode;
+
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
             Thread.Sleep(3000);
             int i = 0;
@@ -68,15 +78,15 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         case 1:
                             Console.WriteLine("Starting Roger...");
-                            _nN.StartAI(0);
+                            _roger.StartAI(0);
                             break;
 
                         case 2:
-                            _nN.StartAI(1);
+                            _roger.StartAI(1);
                             break;
 
                         case 3:
-                            _setUpInterface.SetUpMenu();
+                            _settingsInterface.SetUpMenu();
                             break;
 
                         case 4:
@@ -130,7 +140,7 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="color">Background text color</param>
         /// <param name="leftText">Left text</param>
         /// <param name="rightText">Right text</param>
-        public void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
+        public static void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
         {
             Console.ForegroundColor = color switch
             {
@@ -162,7 +172,7 @@ Copyright 2025-2026 Emotion Corp.
         /// </summary>
         /// <param name="message">Message text</param>
         /// <param name="mode">The color and meaning of the message will depend on the mode. Available modes are "error," "warning," and "message." The default mode is "message."</param>
-        public void Send(string message, string mode = "message")
+        public static void Send(string message, string mode = "message")
         {
             switch (mode.ToLower())
             {

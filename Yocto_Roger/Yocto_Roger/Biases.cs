@@ -9,14 +9,13 @@ Copyright 2025-2026 Emotion Corp.
     Internal Biases lib
 */
 
-    /// <summary>
+    /// <summary> 
     /// Class for initializing arrays of biases
     /// </summary>
-
-    public class Biases(Parameters param, UI.UI user)
+    /// <param name="param">Link to RogerHubEngine parameters file</param>
+    public class Biases(Parameters param)
     {
-        private Parameters _param = param;
-        private UI.UI _user = user;
+        private readonly Parameters _param = param;
         /// <summary>
         /// Random filling of the array of biases
         /// </summary>
@@ -28,12 +27,12 @@ Copyright 2025-2026 Emotion Corp.
                 Console.Write($"biases[] = \n");
             for (int i = 0; i < biases.Length; i++)
             {
-                biases[i] = AIMath.rand.NextDouble() * 0.2 - 0.1;
+                biases[i] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
                 if (_param.isDebug)
                     Console.Write($"{biases[i]} ");
             }
             if (_param.isDebug)
-                _user.Send("\nThe biases have been successfully adjusted!");
+                UI.UI.Send("\nThe biases have been successfully adjusted!");
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ Copyright 2025-2026 Emotion Corp.
             {
                 for (int j = 0; j < biases.GetLength(1); j++)
                 {
-                    biases[i, j] = AIMath.rand.NextDouble() * 0.2 - 0.1;
+                    biases[i, j] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
                     if (_param.isDebug)
                         Console.Write($"{biases[i, j]} ");
                 }
@@ -57,7 +56,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine();
             }
             if (_param.isDebug)
-                _user.Send("The biases have been successfully adjusted!");
+                UI.UI.Send("The biases have been successfully adjusted!");
         }
     }
 }

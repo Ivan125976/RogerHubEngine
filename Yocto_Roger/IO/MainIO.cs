@@ -3,6 +3,8 @@ using IniParser.Model;
 using System.Globalization;
 using System.Text.Json;
 using Yocto_Roger.Yocto_Roger;
+using static Yocto_Roger.UI.UI;
+using static Yocto_Roger.IO.Auxiliary;
 
 namespace Yocto_Roger.IO
 {
@@ -14,13 +16,12 @@ Yocto Roger ;)
 Copyright 2025-2026 Emotion Corp.
 Internal I/O lib
 */
-    public class MainIO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState, UI.UI user, IO.Auxiliary auxiliaryIO)
+    public class MainIO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState, Auxiliary auxiliaryIO)
     {
         private Parameters _param = param;
         public NeuralNetwork _nN = nN;
         private NeuralNetworkState _nNState = nNState;
-        private UI.UI _user = user;
-        private IO.Auxiliary _auxiliaryIO = auxiliaryIO;
+        private Auxiliary _auxiliaryIO = auxiliaryIO;
 
         public void SaveRoger()
         {
@@ -79,7 +80,7 @@ Internal I/O lib
         {
 
             if (!File.Exists(_param.roger2))
-                _user.Send("Roger file not found", "error");
+                Send("Roger file not found", "error");
             else // I made an else clause so that if the file does not exist, the code will not be executed further.
             {
                 switch (CheckFormat())
@@ -210,10 +211,10 @@ Internal I/O lib
             //NeuralNetwork roger = new();
             if (isNeededToInitEducationArray)
                 if (nN?.EducationArray is not null)
-                    _nN.educationArray = _auxiliaryIO.ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
+                    _nN.educationArray = ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
 
             _nN.inputNeurons = nN?.InputNeurons?.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-            _nN.middleNeurons = _auxiliaryIO.ReadMatrixFromDoublesArray((nN?.MiddleNeurons is not null) ? [.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            _nN.middleNeurons = ReadMatrixFromDoublesArray((nN?.MiddleNeurons is not null) ? [.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
             _nN.outputNeurons = nN?.OutputNeurons?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
             // Если null - значения по умолчанию
@@ -221,14 +222,14 @@ Internal I/O lib
             _param.middleNeuronsCount = nN?.MiddleNeuronsCount ?? 16;
             _param.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
 
-            _nN.inputWeights = _auxiliaryIO.ReadMatrixFromDoublesArray((nN?.InputWeights is not null) ? [.. nN.InputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            _nN.middleWeights = _auxiliaryIO.ReadJaggedMatrixFromArray((nN?.MiddleWeights is not null) ? [.. nN.MiddleWeights!.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            _nN.outputWeights = _auxiliaryIO.ReadMatrixFromDoublesArray((nN?.OutputWeights is not null) ? [.. nN.OutputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            _nN.inputWeights = ReadMatrixFromDoublesArray((nN?.InputWeights is not null) ? [.. nN.InputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            _nN.middleWeights = ReadJaggedMatrixFromArray((nN?.MiddleWeights is not null) ? [.. nN.MiddleWeights!.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            _nN.outputWeights = ReadMatrixFromDoublesArray((nN?.OutputWeights is not null) ? [.. nN.OutputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
 
             // Значения по умолчанию в случае null или пустого элемента
             _param.layers = nN?.Layers ?? 3;
 
-            _nN.Mbias = _auxiliaryIO.ReadMatrixFromDoublesArray((nN?.Mbias != null) ? [.. nN.Mbias!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            _nN.Mbias = ReadMatrixFromDoublesArray((nN?.Mbias != null) ? [.. nN.Mbias!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
             _nN.Obias = nN?.Obias?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
         }
@@ -246,23 +247,23 @@ Internal I/O lib
         {
             NeuralNetworkState nN = new()
             {
-                EducationArray = (isNeedToFixTheEducationArray) ? _auxiliaryIO.BuildStringMatrix(_nN.educationArray) ?? null : String.Empty,
-                InputNeurons = _auxiliaryIO.BuildStringArray(_nN.inputNeurons) ?? null,
-                MiddleNeurons = _auxiliaryIO.BuildStringMatrix(_nN.middleNeurons) ?? null,
-                OutputNeurons = _auxiliaryIO.BuildStringArray(_nN.outputNeurons) ?? null,
+                EducationArray = (isNeedToFixTheEducationArray) ? BuildStringMatrix(_nN.educationArray) ?? null : String.Empty,
+                InputNeurons = BuildStringArray(_nN.inputNeurons) ?? null,
+                MiddleNeurons = BuildStringMatrix(_nN.middleNeurons) ?? null,
+                OutputNeurons = BuildStringArray(_nN.outputNeurons) ?? null,
 
                 InputNeuronsCount = _param.inputNeuronsCount,
                 MiddleNeuronsCount = _param.middleNeuronsCount,
                 OutputNeuronsCount = _param.outputNeuronsCount,
 
-                InputWeights = _auxiliaryIO.BuildStringArray(_nN.inputWeights) ?? null,
-                MiddleWeights = _auxiliaryIO.BuildStringJaggedMatrix(_nN.middleWeights) ?? null,
-                OutputWeights = _auxiliaryIO.BuildStringArray(_nN.outputWeights) ?? null,
+                InputWeights = BuildStringArray(_nN.inputWeights) ?? null,
+                MiddleWeights = BuildStringJaggedMatrix(_nN.middleWeights) ?? null,
+                OutputWeights = BuildStringArray(_nN.outputWeights) ?? null,
 
                 Layers = _param.layers,
 
-                Obias = _auxiliaryIO.BuildStringMatrix(_nN.Mbias) ?? null,
-                Mbias = _auxiliaryIO.BuildStringArray(_nN.Obias) ?? null,
+                Obias = BuildStringMatrix(_nN.Mbias) ?? null,
+                Mbias = BuildStringArray(_nN.Obias) ?? null,
             };
 
             return nN;

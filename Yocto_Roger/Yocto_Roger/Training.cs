@@ -13,15 +13,26 @@ Copyright 2025-2026 Emotion Corp.
     EducationWithTeacher, DropOut, multilayer, biases
 */
 
-    /// <summary>
-    /// Learning Algorithm Class
-    /// </summary>
+    // <summary>
+    // Learning Algorithm Class
+    // </summary>
 
-    public class Training(Parameters param, NeuralNetwork nN, AIMath aiMath)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="param">Link to RogerHubEngine parameters file</param>
+    /// <param name="nN">Link to RogerHubEngine neural network lib</param>
+    /// <param name="aiMath">Link to RogerHubEngine aiMath lib</param>
+    public class Training(Parameters param, NeuralNetwork nN, RogerMath aiMath)
     {
-        private Parameters _param = param;
-        public NeuralNetwork _nN = nN;
-        private AIMath _aiMath = aiMath;
+        private readonly Parameters _param = param;
+
+        /// <summary>
+        /// Link to a method containing a neural network
+        /// </summary>
+        public NeuralNetwork roger = nN;
+
+        private readonly RogerMath _rogerMath = aiMath;
 
 
         /// <summary>
@@ -106,16 +117,16 @@ Copyright 2025-2026 Emotion Corp.
                                 oldMiddleWeights[x][y, z] = middleWeights[x][y, z];
                     }
 
-                    float[,] dropOut = _nN.GenerateDropOut();
+                    float[,] dropOut = roger.GenerateDropOut();
 
                     //forward propagation
-                    _nN.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, dropOut);
+                    roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, dropOut);
 
                     correctOutput = "";
                     for (int l = inputNeurons.Length; l < outputNeurons.Length + inputNeurons.Length; l++)
                         correctOutput += educationArray[i, l] + " ";
 
-                    output = _aiMath.SplitOutputEducation(correctOutput);
+                    output = _rogerMath.SplitOutputEducation(correctOutput);
 
                     for (int j = 0; j < outputNeurons.Length; j++) //update output weights
                     {
