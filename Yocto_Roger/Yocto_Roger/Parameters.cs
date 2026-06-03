@@ -17,8 +17,11 @@ RogerHub configuration
         /// <summary>
         /// Debug flag. If enabled, logs will be written to the console. This is for developers.
         /// </summary>
-        public readonly bool isDebug = false;
+        public readonly bool isDebug = true;
 
+        public readonly string version = "2.2";
+
+        public readonly string revision = ""; // Я хз что сюда ставить
         /// <summary>
         /// Number of passes during training on training data
         /// </summary>
@@ -63,5 +66,6 @@ RogerHub configuration
         /// Number of layers in a neural network
         /// </summary>
         public int layers = 3;
+
     }
 }

@@ -1,19 +1,19 @@
-﻿using Yocto_Roger.Yocto_Roger;
-using static Yocto_Roger.IO.Auxiliary;
-using static Yocto_Roger.IO.MainIO;
+﻿using Yocto_Roger.IO;
+using Yocto_Roger.Yocto_Roger;
 
 namespace Yocto_Roger.UI
 {
-    internal class SetUpInterface
+    public class SetUpInterface(Parameters param, UI user, MainIO io, IO.Auxiliary auxiliaryIO)
     {
-        readonly Parameters param = new();
-        readonly UI user = new();
+        private Parameters _param = param;
+        private UI _user = user;
+        private IO.MainIO _io = io;
+        private IO.Auxiliary _auxiliaryIO = auxiliaryIO;
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
         public void SetUpMenu()
         {
-            Parameters param = new();
             int i = 0;
             while (i == 0)
             {
@@ -52,11 +52,11 @@ namespace Yocto_Roger.UI
                             switch (userInputChecked)
                             {
                                 case 1:
-                                    SaveRoger();
+                                    _io.SaveRoger();
                                     break;
 
                                 case 2:
-                                    SaveRogerToJson();
+                                    _io.SaveRogerToJson();
                                     break;
 
                                 default:
@@ -80,7 +80,7 @@ namespace Yocto_Roger.UI
                         {
                             param.roger2 = input;
 
-                            InitRogersData(LoadRoger());
+                            _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
                         }
                         else
                             user.Send("Incorrect input (-_0)", "error");

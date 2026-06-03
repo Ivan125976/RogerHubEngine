@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using Yocto_Roger.Yocto_Roger;
-using static Yocto_Roger.IO.MainIO;
 
 namespace Yocto_Roger.IO
 /* 
@@ -13,10 +12,10 @@ Copyright 2025-2026 Emotion Corp.
 Internal extension I/O lib
 */
 {
-    internal class Auxiliary
+    public class Auxiliary(Parameters param)
     {
-
-        public static void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
+        private Parameters _param = param;
+        public void WriteAll(dynamic array, StreamWriter writer, bool line_break = false)
         {
             foreach (var element in array)
                 writer.Write(element.ToString(CultureInfo.InvariantCulture) + ";");
@@ -31,7 +30,7 @@ Internal extension I/O lib
         /// <param name="writer"></param>
         /// <param name="matrix"></param>
         /// <param name="line_break">Перенос строки после записи</param>
-        public static void WriteMatrix(StreamWriter writer, double[,] matrix, bool line_break = false)
+        public void WriteMatrix(StreamWriter writer, double[,] matrix, bool line_break = false)
         {
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
@@ -43,7 +42,7 @@ Internal extension I/O lib
             }
         }
 
-        public static void WriteJaggedMatrix(StreamWriter writer, double[,,] matrix, bool line_break = false)
+        public void WriteJaggedMatrix(StreamWriter writer, double[,,] matrix, bool line_break = false)
         {
             for (byte j = 0; j < matrix.GetLength(1); j++)
             {
@@ -62,7 +61,7 @@ Internal extension I/O lib
         /// </summary>
         /// <param name="matrix"></param>
         /// <returns>Строка в которой по порядку содержатся элементы матрицы, разделённые точкой с запятой</returns>
-        public static string BuildStringMatrix(double[,]? matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
+        public string BuildStringMatrix(double[,]? matrix) // TODO: Добавить сюда и в другие функции такого же типа, принимать символ по которому будут разделятся значения
         {
             if (matrix != null)
             {
@@ -88,7 +87,7 @@ Internal extension I/O lib
         /// </summary>
         /// <param name="jaggedMatrix">Матрица со вложенными массивами</param>
         /// <returns></returns>
-        public static string? BuildStringJaggedMatrix(double[][,]? jaggedMatrix)
+        public string? BuildStringJaggedMatrix(double[][,]? jaggedMatrix)
         {
             if (jaggedMatrix == null)
                 return null;
@@ -115,7 +114,7 @@ Internal extension I/O lib
             return builder.ToString();
         }
 
-        public static string BuildStringArray(dynamic? array)
+        public string BuildStringArray(dynamic? array)
         {
             StringBuilder builder = new();
 
@@ -135,7 +134,7 @@ Internal extension I/O lib
                 return string.Empty;
         }
 
-        private static void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
+        private void WriteArray(StreamWriter writer, double[] array, bool line_break = false)
         {
             if (array != null)
             {
@@ -151,33 +150,29 @@ Internal extension I/O lib
         /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
         /// </summary>
         /// <param name="roger"></param>
-        public static void InitRogersData(MainIO.Roger? roger)
+        public void InitRogersData(MainIO.Roger? roger)
         {
-            Parameters param = new Parameters();
 
-            param.passes = roger?.Passes ?? 500;
-            param.learningRate = roger?.LearingRate ?? 0.02f;
-            param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
+            _param.passes = roger?.Passes ?? 500;
+            _param.learningRate = roger?.LearingRate ?? 0.02f;
+            _param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
 
-            param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
-            param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
-            param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
+            _param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
+            _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+            _param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
 
-            param.layers = roger?.Layers ?? 3;
+            _param.layers = roger?.Layers ?? 3;
         }
 
-        public static double[,]? ReadMatrixFromArray(int[]? obj)
+        public double[,]? ReadMatrixFromArray(int[]? obj)
         {
             if (obj != null && obj.Length > 0)
             {
-                byte rows = 3;
-                byte columns = 2;
-
-                double[,] matrix = new double[rows, columns];
+                double[,] matrix = new double[3, 2];
                 int index = 0;
-                for (int r = 0; r < rows; r++)
+                for (int r = 0; r < 3; r++)
                 {
-                    for (int c = 0; c < columns; c++)
+                    for (int c = 0; c < 2; c++)
                     {
                         if (index < obj.Length)
                         {
@@ -195,7 +190,7 @@ Internal extension I/O lib
             else return null;
         }
 
-        public static double[,]? ReadMatrixFromDoublesArray(double[]? obj)
+        public double[,]? ReadMatrixFromDoublesArray(double[]? obj)
         {
             byte rows = 3;
             byte columns = 2;
@@ -226,7 +221,7 @@ Internal extension I/O lib
             return matrix;
         }
 
-        public static double[][,] ReadJaggedMatrixFromArray(double[]? obj, byte matrixCount = 1)
+        public double[][,] ReadJaggedMatrixFromArray(double[]? obj, byte matrixCount = 1)
         {
             if (obj == null || obj.Length == 0 || matrixCount == 0)
             {

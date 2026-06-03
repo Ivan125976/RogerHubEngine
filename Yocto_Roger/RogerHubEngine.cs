@@ -1,29 +1,41 @@
-﻿namespace Yocto_Roger
+﻿using Yocto_Roger.IO;
+using Yocto_Roger.UI;
+using Yocto_Roger.Yocto_Roger;
+
+namespace Yocto_Roger
 {
 
-    internal class RogerHubEngine
+    public class RogerHubEngine
     {
-        const string version = "2.2.0";
+        //public RogerHubEngine(UI.UI user, Parameters param, NeuralNetwork nN)
+        //{
+        //    _user = user;
+        //    _param = param;
+        //    _nN = nN;
+        //}
 
-        const char revision = ' ';
-
-        static void Main()
+        static public void Main()
         {
-            UI.UI user = new();
+            Parameters param = new();
+            NeuralNetworkState nNState = new();
+
+            UI.UI user = new(null!, null!, param);
+            IO.Auxiliary auxiliaryIO = new(param);
+            MainIO io = new(param, null!, nNState, user, auxiliaryIO);
+            Weights weights = new(param, user);
+            Biases biases = new(param, user);
+            AIMath aiMath = new(param);
+            Training training = new(param, null!, aiMath);
+            NeuralNetwork nN = new(param, user, nNState, io, weights, biases, training, aiMath);
+            SetUpInterface setUpInterface = new(param, user, io, auxiliaryIO);
+
+            // Инициализация недостающих элементов, которые в конструкторах null, ибо они образовывали замкнутый круг когда чтобы для класса нужен объект, а для этого объекта нужен класс для которого нужен объект, короче забей, работает  - главное
+            io._nN = nN;
+            user._nN = nN;
+            user._setUpInterface = setUpInterface;
+            training._nN = nN;
+
             user.Start();
-        }
-
-        /// <summary>
-        /// Allows you to get the application version
-        /// </summary>
-        /// <param name="withRevision">If enabled, the version will be returned as a string with a revision letter at the end.</param>
-        /// <returns></returns>
-        public static string GetVersion(bool withRevision)
-        {
-            if (!withRevision)
-                return version;
-            else
-                return version + revision;
         }
     }
 }

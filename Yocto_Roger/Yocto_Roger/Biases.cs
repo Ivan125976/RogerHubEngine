@@ -13,27 +13,27 @@ Copyright 2025-2026 Emotion Corp.
     /// Class for initializing arrays of biases
     /// </summary>
 
-    internal class Biases
+    public class Biases(Parameters param, UI.UI user)
     {
+        private Parameters _param = param;
+        private UI.UI _user = user;
         /// <summary>
         /// Random filling of the array of biases
         /// </summary>
         /// <param name="biases">Array of biases</param>
 
-        public static void Init(ref double[] biases)
+        public void Init(ref double[] biases)
         {
-            Parameters param = new();
-            UI.UI user = new();
-            if (param.isDebug)
+            if (_param.isDebug)
                 Console.Write($"biases[] = \n");
             for (int i = 0; i < biases.Length; i++)
             {
                 biases[i] = AIMath.rand.NextDouble() * 0.2 - 0.1;
-                if (param.isDebug)
+                if (_param.isDebug)
                     Console.Write($"{biases[i]} ");
             }
-            if (param.isDebug)
-                user.Send("\nThe biases have been successfully adjusted!");
+            if (_param.isDebug)
+                _user.Send("\nThe biases have been successfully adjusted!");
         }
 
         /// <summary>
@@ -41,25 +41,23 @@ Copyright 2025-2026 Emotion Corp.
         /// </summary>
         /// <param name="biases">Array of biases</param>
 
-        public static void Init(ref double[,] biases)
+        public void Init(ref double[,] biases)
         {
-            Parameters param = new();
-            UI.UI user = new();
-            if (param.isDebug)
+            if (_param.isDebug)
                 Console.Write($"biases[,] = \n");
             for (int i = 0; i < biases.GetLength(0); i++)
             {
                 for (int j = 0; j < biases.GetLength(1); j++)
                 {
                     biases[i, j] = AIMath.rand.NextDouble() * 0.2 - 0.1;
-                    if (param.isDebug)
+                    if (_param.isDebug)
                         Console.Write($"{biases[i, j]} ");
                 }
-                if (param.isDebug)
+                if (_param.isDebug)
                     Console.WriteLine();
             }
-            if (param.isDebug)
-                user.Send("The biases have been successfully adjusted!");
+            if (_param.isDebug)
+                _user.Send("The biases have been successfully adjusted!");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Yocto_Roger.Yocto_Roger;
-using static Yocto_Roger.IO.MainIO;
+//using static Yocto_Roger.IO.MainIO;
 
 namespace Yocto_Roger.UI
 /* 
@@ -16,17 +16,21 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Internal library for a beautiful command-line interface
     /// </summary>
-    public class UI
+    public class UI(NeuralNetwork nN, SetUpInterface setUpInterface, Parameters param)
     {
 
+        public NeuralNetwork _nN = nN;
+        public SetUpInterface _setUpInterface = setUpInterface;
+        private Parameters _param = param;
         /// <summary>
         /// Launches the console UI
         /// </summary>
         public void Start()
         {
-            NeuralNetwork roger = new();
-            SetUpInterface setUp = new();
-            Parameters param = new();
+            //NeuralNetwork roger = new();
+            //SetUpInterface setUp = new();
+            //Parameters param = new();
+
             Console.WriteLine("Configuring console...");
             if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
             {
@@ -42,10 +46,10 @@ Copyright 2025-2026 Emotion Corp.
             while (true)
             {
                 Console.Clear();
-                if (param.isDebug == false)
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{RogerHubEngine.GetVersion(true)} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                if (_param.isDebug == false)
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{_param.version} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 else
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{RogerHubEngine.GetVersion(true)} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{_param.version}.{_param.revision} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 Send("This project is still in the development stage.", "warning");
                 Send("This is a BETA build. Some functionality may not work. Have fun testing :D", "warning");
                 Console.Write("""
@@ -64,15 +68,15 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         case 1:
                             Console.WriteLine("Starting Roger...");
-                            roger.StartAI(0);
+                            _nN.StartAI(0);
                             break;
 
                         case 2:
-                            roger.StartAI(1);
+                            _nN.StartAI(1);
                             break;
 
                         case 3:
-                            setUp.SetUpMenu();
+                            _setUpInterface.SetUpMenu();
                             break;
 
                         case 4:
@@ -80,7 +84,7 @@ Copyright 2025-2026 Emotion Corp.
                             break;
 
                         case 5:
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{RogerHubEngine.GetVersion(true)} build:BETA \n" +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{_param.version}.{_param.revision} build:BETA \n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;
