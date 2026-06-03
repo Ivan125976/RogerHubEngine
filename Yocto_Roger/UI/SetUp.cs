@@ -1,17 +1,19 @@
 ﻿using Yocto_Roger.Yocto_Roger;
-using static Yocto_Roger.IO.MainIO;
 using static Yocto_Roger.IO.Auxiliary;
+using static Yocto_Roger.IO.MainIO;
 
 namespace Yocto_Roger.UI
 {
-    internal class SetUp
+    internal class SetUpInterface
     {
-
+        readonly Parameters param = new();
+        readonly UI user = new();
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
-        public static void SetUpMenu()
+        public void SetUpMenu()
         {
+            Parameters param = new();
             int i = 0;
             while (i == 0)
             {
@@ -22,14 +24,14 @@ namespace Yocto_Roger.UI
                                         0. Save your roger settings in the file 
                                         1. Load your roger setting from the file
 
-                                        2. Count of input neurons...{Parameters.inputNeuronsCount}
-                                        3. Count of middle neurons (all middle layers)...{Parameters.middleNeuronsCount}
-                                        4. Count of output neurons...{Parameters.outputNeuronsCount}
-                                        5. Count of Layers...{Parameters.layers}
-                                        6. Knowledge file...{Parameters.knowledgeFile}
-                                        7. DropOut sys percent...{Parameters.DropOutPercent}% (0% - disable DropOut)
-                                        8. Learning Rate...{Parameters.learningRate}
-                                        9. Passes...{Parameters.passes}
+                                        2. Count of input neurons...{param.inputNeuronsCount}
+                                        3. Count of middle neurons (all middle layers)...{param.middleNeuronsCount}
+                                        4. Count of output neurons...{param.outputNeuronsCount}
+                                        5. Count of Layers...{param.layers}
+                                        6. Knowledge file...{param.knowledgeFile}
+                                        7. DropOut sys percent...{param.DropOutPercent}% (0% - disable DropOut)
+                                        8. Learning Rate...{param.learningRate}
+                                        9. Passes...{param.passes}
                                         10. Exit 
                                         >>> 
                                         """);
@@ -58,7 +60,7 @@ namespace Yocto_Roger.UI
                                     break;
 
                                 default:
-                                    UI.Send("What?", "error");
+                                    user.Send("What?", "error");
                                     break;
                             }
 
@@ -67,7 +69,7 @@ namespace Yocto_Roger.UI
                             Console.ReadKey();
                         }
                         else
-                            UI.Send("Unknown input", "error");
+                            user.Send("Unknown input", "error");
 
                         break;
 
@@ -76,13 +78,13 @@ namespace Yocto_Roger.UI
 
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && Path.Exists(input))
                         {
-                            Parameters.roger2 = input;
+                            param.roger2 = input;
 
                             InitRogersData(LoadRoger());
                         }
                         else
-                            UI.Send("Incorrect input (-_0)", "error");
-                        UI.Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
+                            user.Send("Incorrect input (-_0)", "error");
+                        user.Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
                         break;
 
                     case "2":
@@ -92,9 +94,9 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int userInputChecked1))
                         {
                             if (userInputChecked1 > 0)
-                                Parameters.inputNeuronsCount = userInputChecked1;
+                                param.inputNeuronsCount = userInputChecked1;
                             else
-                                UI.Send("Value out of range.", "error");
+                                user.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -105,9 +107,9 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int userInputChecked2))
                         {
                             if (userInputChecked2 > 0)
-                                Parameters.middleNeuronsCount = userInputChecked2;
+                                param.middleNeuronsCount = userInputChecked2;
                             else
-                                UI.Send("Value out of range.", "error");
+                                user.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -118,9 +120,9 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int userInputChecked3))
                         {
                             if (userInputChecked3 > 0)
-                                Parameters.outputNeuronsCount = userInputChecked3;
+                                param.outputNeuronsCount = userInputChecked3;
                             else
-                                UI.Send("Value out of range.", "error");
+                                user.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -131,12 +133,9 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int layersCount))
                         {
                             if (layersCount > 2)
-                            {
-                                Parameters.layers = layersCount;
-                                Parameters.Mlayers = layersCount - 2;
-                            }
+                                param.layers = layersCount;
                             else
-                                UI.Send("Value out of range.", "error");
+                                user.Send("Value out of range.", "error");
                         }
                         break;
 
@@ -146,9 +145,9 @@ namespace Yocto_Roger.UI
                         Console.Write("STRING> Enter new knowledge file...");
                         string? file = Console.ReadLine();
                         if (File.Exists(file))
-                            Parameters.knowledgeFile = file;
+                            param.knowledgeFile = file;
                         else
-                            UI.Send("I couldn't find such a file :(", "error");
+                            user.Send("I couldn't find such a file :(", "error");
                         break;
 
                     case "7":
@@ -158,12 +157,12 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int newDrop))
                         {
                             if (newDrop >= 0 && newDrop <= 70)
-                                Parameters.DropOutPercent = newDrop;
+                                param.DropOutPercent = newDrop;
                             else
-                                UI.Send("Value out of range.", "error");
+                                user.Send("Value out of range.", "error");
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            user.Send("Invalid input.", "error");
                         break;
 
                     case "8":
@@ -173,12 +172,12 @@ namespace Yocto_Roger.UI
                         if (float.TryParse(Console.ReadLine(), out float newLR))
                         {
                             if (newLR > 0 && newLR <= 1.0)
-                                Parameters.learningRate = newLR;
+                                param.learningRate = newLR;
                             else
-                                UI.Send("Learning rate out of range.", "error");
+                                user.Send("Learning rate out of range.", "error");
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            user.Send("Invalid input.", "error");
                         break;
 
                     case "9":
@@ -188,12 +187,12 @@ namespace Yocto_Roger.UI
                         if (int.TryParse(Console.ReadLine(), out int newPasses))
                         {
                             if (newPasses > 0)
-                                Parameters.passes = newPasses;
+                                param.passes = newPasses;
                             else
-                                UI.Send("Passes must be greater than zero.", "error");
+                                user.Send("Passes must be greater than zero.", "error");
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            user.Send("Invalid input.", "error");
                         break;
 
                     case "10":

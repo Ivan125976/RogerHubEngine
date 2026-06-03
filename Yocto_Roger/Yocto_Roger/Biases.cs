@@ -1,6 +1,4 @@
-﻿using static Yocto_Roger.UI.UI;
-
-namespace Yocto_Roger.Yocto_Roger
+﻿namespace Yocto_Roger.Yocto_Roger
 {
     /* 
 Yocto Roger ;)
@@ -14,7 +12,7 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Class for initializing arrays of biases
     /// </summary>
-    
+
     internal class Biases
     {
         /// <summary>
@@ -24,16 +22,18 @@ Copyright 2025-2026 Emotion Corp.
 
         public static void Init(ref double[] biases)
         {
-            if (Parameters.isDebug)
+            Parameters param = new();
+            UI.UI user = new();
+            if (param.isDebug)
                 Console.Write($"biases[] = \n");
             for (int i = 0; i < biases.Length; i++)
             {
                 biases[i] = AIMath.rand.NextDouble() * 0.2 - 0.1;
-                if (Parameters.isDebug)
+                if (param.isDebug)
                     Console.Write($"{biases[i]} ");
             }
-            if (Parameters.isDebug)
-                Send("\nThe biases have been successfully adjusted!");
+            if (param.isDebug)
+                user.Send("\nThe biases have been successfully adjusted!");
         }
 
         /// <summary>
@@ -43,21 +43,23 @@ Copyright 2025-2026 Emotion Corp.
 
         public static void Init(ref double[,] biases)
         {
-            if (Parameters.isDebug)
+            Parameters param = new();
+            UI.UI user = new();
+            if (param.isDebug)
                 Console.Write($"biases[,] = \n");
             for (int i = 0; i < biases.GetLength(0); i++)
             {
                 for (int j = 0; j < biases.GetLength(1); j++)
                 {
                     biases[i, j] = AIMath.rand.NextDouble() * 0.2 - 0.1;
-                    if (Parameters.isDebug)
+                    if (param.isDebug)
                         Console.Write($"{biases[i, j]} ");
                 }
-                if (Parameters.isDebug)
+                if (param.isDebug)
                     Console.WriteLine();
             }
-            if (Parameters.isDebug)
-                Send("The biases have been successfully adjusted!");
+            if (param.isDebug)
+                user.Send("The biases have been successfully adjusted!");
         }
     }
 }

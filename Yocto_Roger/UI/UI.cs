@@ -18,8 +18,15 @@ Copyright 2025-2026 Emotion Corp.
     /// </summary>
     public class UI
     {
-        static void Main()
+
+        /// <summary>
+        /// Launches the console UI
+        /// </summary>
+        public void Start()
         {
+            NeuralNetwork roger = new();
+            SetUpInterface setUp = new();
+            Parameters param = new();
             Console.WriteLine("Configuring console...");
             if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
             {
@@ -35,10 +42,10 @@ Copyright 2025-2026 Emotion Corp.
             while (true)
             {
                 Console.Clear();
-                if (Parameters.isDebug == false)
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                if (param.isDebug == false)
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{RogerHubEngine.GetVersion(true)} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 else
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{Parameters.version}{Parameters.revision} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{RogerHubEngine.GetVersion(true)} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 Send("This project is still in the development stage.", "warning");
                 Send("This is a BETA build. Some functionality may not work. Have fun testing :D", "warning");
                 Console.Write("""
@@ -57,27 +64,15 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         case 1:
                             Console.WriteLine("Starting Roger...");
-                            NeuralNetwork.StartAI(0);
+                            roger.StartAI(0);
                             break;
 
                         case 2:
-                            Console.Write("Write an absolute path to your .json file\nSTRING> ");
-                            string? userInput = Console.ReadLine();
-                            if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
-                            {
-                                NeuralNetwork.rogerIsCreated = true;
-                                InitNeuralNetwork(LoadNeuralNetworkStateFromJson(inputChecked), false);
-                                NeuralNetwork.StartAI(1);
-                            }
-                            else
-                            {
-                                Send("Incorrect input (-_0)", "error");
-                                Send("Maybe file which you entered, doesn't exists, please check it and retry");
-                            }
+                            roger.StartAI(1);
                             break;
 
                         case 3:
-                            SetUp.SetUpMenu();
+                            setUp.SetUpMenu();
                             break;
 
                         case 4:
@@ -85,7 +80,7 @@ Copyright 2025-2026 Emotion Corp.
                             break;
 
                         case 5:
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{Parameters.version}{Parameters.revision} build:BETA \n" +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{RogerHubEngine.GetVersion(true)} build:BETA \n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;
@@ -131,7 +126,7 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="color">Background text color</param>
         /// <param name="leftText">Left text</param>
         /// <param name="rightText">Right text</param>
-        public static void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
+        public void DrawLine(ConsoleColor color, string leftText = "", string rightText = "")
         {
             Console.ForegroundColor = color switch
             {
@@ -163,7 +158,7 @@ Copyright 2025-2026 Emotion Corp.
         /// </summary>
         /// <param name="message">Message text</param>
         /// <param name="mode">The color and meaning of the message will depend on the mode. Available modes are "error," "warning," and "message." The default mode is "message."</param>
-        public static void Send(string message, string mode = "message")
+        public void Send(string message, string mode = "message")
         {
             switch (mode.ToLower())
             {

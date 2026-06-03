@@ -44,21 +44,22 @@ Copyright 2025-2026 Emotion Corp.
                                      double[,] educationArray,
                                      Progressbar? status = null)
         {
+            Parameters param = new();
             double progress = 0;
             bool done = false;
             object lockObj = new();
 
             string correctOutput;
-            int[] input = new int[Parameters.inputNeuronsCount];
+            int[] input = new int[param.inputNeuronsCount];
             double[] output;
             double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
             double[] deltaOut = new double[outputNeurons.Length];
             double[,] oldOutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
-            double[][,] oldMiddleWeights = new double[Parameters.Mlayers - 1][,];
-            for (int x = 0; x < Parameters.Mlayers - 1; x++)
-                oldMiddleWeights[x] = new double[middleNeurons.GetLength(1), middleNeurons.GetLength(1)];
+            double[][,] oldMiddleWeights = new double[param.layers - 3][,];
+            for (int x = 0; x < param.layers - 3; x++)
+                oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
 
             Thread uiThread = new(() =>
             {
@@ -79,7 +80,7 @@ Copyright 2025-2026 Emotion Corp.
             };
             uiThread.Start();
 
-            for (int passes = 0; passes < Parameters.passes; passes++)
+            for (int passes = 0; passes < param.passes; passes++)
             {
                 for (int i = 0; i < educationArray.GetLength(0); i++)
                 {
@@ -95,7 +96,7 @@ Copyright 2025-2026 Emotion Corp.
                         for (int y = 0; y < outputWeights.GetLength(1); y++)
                             oldOutputWeights[x, y] = outputWeights[x, y];
 
-                    for (int x = 0; x < Parameters.Mlayers - 1; x++)
+                    for (int x = 0; x < param.layers - 3; x++)
                     {
                         for (int y = 0; y < middleWeights[x].GetLength(0); y++)
                             for (int z = 0; z < middleWeights[x].GetLength(1); z++)
@@ -119,38 +120,38 @@ Copyright 2025-2026 Emotion Corp.
                         deltaOut[j] = errorOut[j] * (1 - outputNeurons[j] * outputNeurons[j]); //дельта
 
                         for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            outputWeights[k, j] -= middleNeurons[Parameters.Mlayers - 1, k] * deltaOut[j] * Parameters.learningRate;
+                            outputWeights[k, j] -= middleNeurons[param.layers - 3, k] * deltaOut[j] * param.learningRate;
 
-                        outputBiases[j] -= deltaOut[j] * Parameters.learningRate;
+                        outputBiases[j] -= deltaOut[j] * param.learningRate;
                     }
 
                     for (int j = 0; j < middleNeurons.GetLength(1); j++) //update output->middle weights
                     {
                         for (int l = 0; l < outputNeurons.Length; l++)
-                            errorMid[Parameters.Mlayers - 1, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
+                            errorMid[param.layers - 3, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
 
-                        deltaMid[Parameters.Mlayers - 1, j] = errorMid[Parameters.Mlayers - 1, j] * (1 - middleNeurons[Parameters.Mlayers - 1, j] * middleNeurons[Parameters.Mlayers - 1, j]); //дельта
-                        deltaMid[Parameters.Mlayers - 1, j] *= dropOut[Parameters.Mlayers - 1, j];
+                        deltaMid[param.layers - 3, j] = errorMid[param.layers - 3, j] * (1 - middleNeurons[param.layers - 3, j] * middleNeurons[param.layers - 3, j]); //дельта
+                        deltaMid[param.layers - 3, j] *= dropOut[param.layers - 3, j];
 
-                        if (Parameters.Mlayers > 1)
+                        if ((param.layers - 2) > 1)
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                middleWeights[Parameters.Mlayers - 2][k, j] -=
-                                    middleNeurons[Parameters.Mlayers - 2, k] *
-                                    deltaMid[Parameters.Mlayers - 1, j] *
-                                    Parameters.learningRate;
+                                middleWeights[param.layers - 3][k, j] -=
+                                    middleNeurons[param.layers - 3, k] *
+                                    deltaMid[param.layers - 3, j] *
+                                    param.learningRate;
                         else
                             for (int k = 0; k < inputNeurons.Length; k++)
                                 inputWeights[k, j] -=
                                     input[k] *
                                     deltaMid[0, j] *
-                                    Parameters.learningRate;
+                                    param.learningRate;
 
-                        middleBiases[Parameters.Mlayers - 1, j] -= deltaMid[Parameters.Mlayers - 1, j] * Parameters.learningRate;
+                        middleBiases[param.layers - 3, j] -= deltaMid[param.layers - 3, j] * param.learningRate;
                     }
 
-                    if (Parameters.Mlayers > 1)
+                    if ((param.layers - 2) > 1)
                     {
-                        for (int layer = Parameters.Mlayers - 2; layer >= 0; layer--) //update middle->middle weights
+                        for (int layer = param.layers - 4; layer >= 0; layer--) //update middle->middle weights
                         {
                             int oldLayer = layer + 1;
                             for (int j = 0; j < middleNeurons.GetLength(1); j++)
@@ -162,22 +163,22 @@ Copyright 2025-2026 Emotion Corp.
                                 deltaMid[layer, j] *= dropOut[layer, j];
                                 if (layer > 0)
                                     for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                        middleWeights[layer - 1][k, j] -= middleNeurons[layer - 1, k] * deltaMid[layer, j] * Parameters.learningRate;
+                                        middleWeights[layer - 1][k, j] -= middleNeurons[layer - 1, k] * deltaMid[layer, j] * param.learningRate;
 
-                                middleBiases[layer, j] -= deltaMid[layer, j] * Parameters.learningRate;
+                                middleBiases[layer, j] -= deltaMid[layer, j] * param.learningRate;
                             }
                         }
 
                         for (int j = 0; j < inputNeurons.Length; j++) //update middle->input weights
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                inputWeights[j, k] -= input[j] * deltaMid[0, k] * Parameters.learningRate;
+                                inputWeights[j, k] -= input[j] * deltaMid[0, k] * param.learningRate;
                     }
 
                     lock (lockObj)
                     {
                         progress =
                             (double)(passes * educationArray.GetLength(0) + i + 1)
-                            / (Parameters.passes * educationArray.GetLength(0));
+                            / (param.passes * educationArray.GetLength(0));
                     }
                 }
             }

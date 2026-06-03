@@ -18,11 +18,13 @@ Internal AIMath lib
         }
         public static int BinToNum(double[] obj) //binary to int
         {
+            Parameters param = new();
+
             int result = 0;
             for (int i = 0; i < obj.Length; i++)
                 if (obj[i] != 0.0)
                     result += 1 << 7 - i;
-            if (Parameters.isDebug)
+            if (param.isDebug)
                 Console.WriteLine("binToNum -> " + result);
             return result;
         }
@@ -35,13 +37,15 @@ Internal AIMath lib
         /// <returns></returns>
         public static int[] NumToBin(int obj, int bits)
         {
-            if (Parameters.isDebug)
+            Parameters param = new();
+
+            if (param.isDebug)
                 Console.WriteLine("numToBin (" + bits + " bits) -> ");
             int[] bin = new int[bits];
             for (int i = 0; i < bits; i++)
             {
                 bin[bits - 1 - i] = obj >> i & 1;
-                if (Parameters.isDebug)
+                if (param.isDebug)
                     Console.Write(bin[bits - 1 - i] + " ");
             }
             return bin;
@@ -57,8 +61,10 @@ Internal AIMath lib
         }
         public static double[] SplitOutputEducation(string obj)
         {
+            Parameters param = new();
+
             string[] parsedObj = obj.Split(' ');
-            double[] parsedArray = new double[Parameters.outputNeuronsCount];
+            double[] parsedArray = new double[param.outputNeuronsCount];
             for (int i = 0; i < parsedArray.Length; i++)
                 parsedArray[i] = Convert.ToDouble(parsedObj[i]);
             return parsedArray;

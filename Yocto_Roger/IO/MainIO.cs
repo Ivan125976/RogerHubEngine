@@ -21,42 +21,43 @@ Internal I/O lib
         {
             using (StreamWriter writer = new(MakeFileSplitOnIndexIfExists("roger", "roger")))
             {
+                Parameters param = new();
                 writer.Write(
                     $"""
                  [roger]
-                 AIversion = {Parameters.version}
-                 passes = {Parameters.passes}
-                 learningRate = {Parameters.learningRate}
-                 DropOutPercent = {Parameters.DropOutPercent}
+                 AIversion = {RogerHubEngine.GetVersion(false)}
+                 passes = {param.passes}
+                 learningRate = {param.learningRate}
+                 DropOutPercent = {param.DropOutPercent}
 
                  [neurons]
-                 inputNeuronsCount = {Parameters.inputNeuronsCount}
-                 middleNeuronsCount = {Parameters.middleNeuronsCount}
-                 outputNeuronsCount = {Parameters.outputNeuronsCount}
+                 inputNeuronsCount = {param.inputNeuronsCount}
+                 middleNeuronsCount = {param.middleNeuronsCount}
+                 outputNeuronsCount = {param.outputNeuronsCount}
 
                  [layers]
-                 Layers = {Parameters.layers}
-                 Mlayers = {Parameters.Mlayers}
+                 Layers = {param.layers}
                  """);
             }
         }
 
         public static void SaveRogerToJson()
         {
+            Parameters param = new();
+
             Roger roger = new()
             {
-                AIversion = Parameters.version,
-                Passes = Parameters.passes,
+                AIversion = RogerHubEngine.GetVersion(false),
+                Passes = param.passes,
 
-                LearingRate = Parameters.learningRate,
-                DropOutPercent = Parameters.DropOutPercent,
+                LearingRate = param.learningRate,
+                DropOutPercent = param.DropOutPercent,
 
-                InputNeuronsCount = Parameters.inputNeuronsCount,
-                MiddleNeuronsCount = Parameters.outputNeuronsCount,
-                OutputNeuronsCount = Parameters.outputNeuronsCount,
+                InputNeuronsCount = param.inputNeuronsCount,
+                MiddleNeuronsCount = param.middleNeuronsCount,
+                OutputNeuronsCount = param.outputNeuronsCount,
 
-                Layers = Parameters.layers,
-                MLayers = Parameters.Mlayers,
+                Layers = param.layers,
             };
 
             JsonSerializerOptions options = new() { WriteIndented = true };
@@ -72,8 +73,11 @@ Internal I/O lib
         /// <returns>Roger class object. If happened any error, for example something with null, so it's returning an empty object of class Roger</returns>
         public static Roger? LoadRoger()
         {
-            if (!File.Exists(Parameters.roger2))
-                Send("Roger file not found", "error");
+            Parameters param = new();
+            UI.UI user = new();
+
+            if (!File.Exists(param.roger2))
+                user.Send("Roger file not found", "error");
             else // I made an else clause so that if the file does not exist, the code will not be executed further.
             {
                 switch (CheckFormat())
@@ -94,9 +98,11 @@ Internal I/O lib
         /// <returns>true - json format, false - roger format</returns>
         private static bool? CheckFormat()
         {
-            if (Parameters.roger2.EndsWith(".json"))
+            Parameters param = new();
+
+            if (param.roger2.EndsWith(".json"))
                 return true;
-            else if (Parameters.roger2.EndsWith(".roger") || Parameters.roger2.EndsWith(".roger2"))
+            else if (param.roger2.EndsWith(".roger") || param.roger2.EndsWith(".roger2"))
                 return false;
 
             else return null;
@@ -129,8 +135,10 @@ Internal I/O lib
         /// </summary>
         private static Roger LoadRogerFromRoger()
         {
-                var parser = new FileIniDataParser();
-                IniData data = parser.ReadFile(Parameters.roger2);
+            Parameters param = new();
+
+            var parser = new FileIniDataParser();
+                IniData data = parser.ReadFile(param.roger2);
 
                 Roger roger = new()
                 {
@@ -155,10 +163,12 @@ Internal I/O lib
         /// </summary>
         private static Roger? LoadRogerFromJson()
         {
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(Parameters.roger2));
+            Parameters param = new();
+
+            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(param.roger2));
             JsonElement root = document.RootElement;
 
-            Roger roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(Parameters.roger2));
+            Roger roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(param.roger2));
 
             return roger ?? null;
         }
@@ -206,7 +216,6 @@ Internal I/O lib
             public string? OutputWeights { get; set; }
 
             public int Layers { get; set; }
-            public int MLayers { get; set; }
 
             public string? Mbias { get; set; }
             public string? Obias { get; set; }
@@ -214,29 +223,30 @@ Internal I/O lib
 
         public static void InitNeuralNetwork(NeuralNetworkState nN, bool isNeededToInitEducationArray = false)
         {
+            Parameters param = new();
+            NeuralNetwork roger = new();
             if (isNeededToInitEducationArray)
                 if (nN?.EducationArray is not null)
-                    NeuralNetwork.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
+                    roger.educationArray = Auxiliary.ReadMatrixFromArray([.. nN.EducationArray.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture!))]);
 
-            NeuralNetwork.inputNeurons = nN?.InputNeurons?.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-            NeuralNetwork.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray((nN?.MiddleNeurons is not null) ? [.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            NeuralNetwork.outputNeurons = nN?.OutputNeurons?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            roger.inputNeurons = nN?.InputNeurons?.Split(';').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            roger.middleNeurons = Auxiliary.ReadMatrixFromDoublesArray((nN?.MiddleNeurons is not null) ? [.. nN.MiddleNeurons.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            roger.outputNeurons = nN?.OutputNeurons?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 
             // Если null - значения по умолчанию
-            Parameters.inputNeuronsCount = nN?.InputNeuronsCount ?? 14;
-            Parameters.middleNeuronsCount = nN?.MiddleNeuronsCount ?? 16;
-            Parameters.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
+            param.inputNeuronsCount = nN?.InputNeuronsCount ?? 14;
+            param.middleNeuronsCount = nN?.MiddleNeuronsCount ?? 16;
+            param.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
 
-            NeuralNetwork.inputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.InputWeights is not null) ? [.. nN.InputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            NeuralNetwork.middleWeights = Auxiliary.ReadJaggedMatrixFromArray((nN?.MiddleWeights is not null) ? [.. nN.MiddleWeights!.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null );
-            NeuralNetwork.outputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.OutputWeights is not null) ? [.. nN.OutputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            roger.inputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.InputWeights is not null) ? [.. nN.InputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            roger.middleWeights = Auxiliary.ReadJaggedMatrixFromArray((nN?.MiddleWeights is not null) ? [.. nN.MiddleWeights!.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null );
+            roger.outputWeights = Auxiliary.ReadMatrixFromDoublesArray((nN?.OutputWeights is not null) ? [.. nN.OutputWeights!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
 
             // Значения по умолчанию в случае null или пустого элемента
-            Parameters.layers = nN?.Layers ?? 3;
-            Parameters.Mlayers = nN?.MLayers ?? 1; // Layers -1
+            param.layers = nN?.Layers ?? 3;
 
-            NeuralNetwork.Mbias = Auxiliary.ReadMatrixFromDoublesArray((nN?.Mbias != null) ? [..nN.Mbias!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
-            NeuralNetwork.Obias = nN?.Obias?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+            roger.Mbias = Auxiliary.ReadMatrixFromDoublesArray((nN?.Mbias != null) ? [..nN.Mbias!.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture))] : null);
+            roger.Obias = nN?.Obias?.Split(';').Select(s => double.Parse(s, CultureInfo.InvariantCulture)).ToArray();
                  
         }
 
@@ -251,26 +261,27 @@ Internal I/O lib
 
         public static NeuralNetworkState FixTheStateOfNeuralNetwork(bool isNeedToFixTheEducationArray)
         {
+            Parameters param = new();
+            NeuralNetwork roger = new();
             NeuralNetworkState nN = new()
             {
-                EducationArray = (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(NeuralNetwork.educationArray) ?? null : String.Empty,
-                InputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.inputNeurons) ?? null,
-                MiddleNeurons = Auxiliary.BuildStringMatrix(NeuralNetwork.middleNeurons) ?? null,
-                OutputNeurons = Auxiliary.BuildStringArray(NeuralNetwork.outputNeurons) ?? null,
+                EducationArray = (isNeedToFixTheEducationArray) ? Auxiliary.BuildStringMatrix(roger.educationArray) ?? null : String.Empty,
+                InputNeurons = Auxiliary.BuildStringArray(roger.inputNeurons) ?? null,
+                MiddleNeurons = Auxiliary.BuildStringMatrix(roger.middleNeurons) ?? null,
+                OutputNeurons = Auxiliary.BuildStringArray(roger.outputNeurons) ?? null,
 
-                InputNeuronsCount = Parameters.inputNeuronsCount,
-                MiddleNeuronsCount = Parameters.middleNeuronsCount,
-                OutputNeuronsCount = Parameters.outputNeuronsCount,
+                InputNeuronsCount = param.inputNeuronsCount,
+                MiddleNeuronsCount = param.middleNeuronsCount,
+                OutputNeuronsCount = param.outputNeuronsCount,
 
-                InputWeights = Auxiliary.BuildStringArray(NeuralNetwork.inputWeights) ?? null,
-                MiddleWeights = Auxiliary.BuildStringJaggedMatrix(NeuralNetwork.middleWeights) ?? null,
-                OutputWeights = Auxiliary.BuildStringArray(NeuralNetwork.outputWeights) ?? null,
+                InputWeights = Auxiliary.BuildStringArray(roger.inputWeights) ?? null,
+                MiddleWeights = Auxiliary.BuildStringJaggedMatrix(roger.middleWeights) ?? null,
+                OutputWeights = Auxiliary.BuildStringArray(roger.outputWeights) ?? null,
 
-                Layers = Parameters.layers,
-                MLayers = Parameters.Mlayers,
+                Layers = param.layers,
 
-                Obias = Auxiliary.BuildStringMatrix(NeuralNetwork.Mbias) ?? null,
-                Mbias = Auxiliary.BuildStringArray(NeuralNetwork.Obias) ?? null,
+                Obias = Auxiliary.BuildStringMatrix(roger.Mbias) ?? null,
+                Mbias = Auxiliary.BuildStringArray(roger.Obias) ?? null,
             };
 
             return nN;

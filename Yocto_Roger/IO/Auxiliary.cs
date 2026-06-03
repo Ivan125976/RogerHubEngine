@@ -153,18 +153,17 @@ Internal extension I/O lib
         /// <param name="roger"></param>
         public static void InitRogersData(MainIO.Roger? roger)
         {
-            //Parameters.version = roger.AIversion; если надо -- разкомментируй
+            Parameters param = new Parameters();
 
-            Parameters.passes = roger?.Passes ?? 500;
-            Parameters.learningRate = roger?.LearingRate ?? 0.02f;
-            Parameters.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
+            param.passes = roger?.Passes ?? 500;
+            param.learningRate = roger?.LearingRate ?? 0.02f;
+            param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
 
-            Parameters.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
-            Parameters.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
-            Parameters.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
+            param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
+            param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+            param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
 
-            Parameters.layers = roger?.Layers ?? 3;
-            Parameters.Mlayers = roger?.MLayers ?? 1; // Layers -2
+            param.layers = roger?.Layers ?? 3;
         }
 
         public static double[,]? ReadMatrixFromArray(int[]? obj)
