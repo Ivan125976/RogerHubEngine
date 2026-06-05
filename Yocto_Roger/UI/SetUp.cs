@@ -42,38 +42,17 @@ namespace Yocto_Roger.UI
                 switch (choice)
                 {
                     case "0":
-                        Console.Write("""                           
-                            Are you sure, you want to save the settings?
-                            (y/n)
-                            CHAR>>>
-                            """);
-                        if (char.TryParse(Console.ReadLine(), out char userInputChecked))
-                        {
-                            switch (userInputChecked)
-                            {
-                                case 'y' or 'Y':
-                                    _io.SaveRogerToJson();
-                                    break;
+                        Console.WriteLine("Enter the name of the new file...");
+                        string? fileName = Console.ReadLine();
+                        _io.SaveRogerToJson(fileName);
 
-                                case 'n' or 'N':
-                                    break;
-
-                                default:
-                                    UI.Send("What?", "error");
-                                    break;
-                            }
-
-                            Console.WriteLine("Your .params file saved in this directory, let's go, check it!\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
+                            Console.WriteLine($"Your .params file saved in this directory> {fileName}.params\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
                                 "\n Press any key to continue");
                             Console.ReadKey();
-                        }
-                        else
-                            UI.Send("Unknown input", "error");
-
-                        break;
+                    break;
 
                     case "1":
-                        Console.Write("Write an absolute path to the .params file please: ");
+                        Console.Write("Write an absolute path to the .params file please...");
 
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && Path.Exists(input))
                         {

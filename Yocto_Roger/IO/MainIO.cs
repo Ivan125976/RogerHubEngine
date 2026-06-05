@@ -35,7 +35,7 @@ Internal I/O lib
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
         /// </summary>
-        public void SaveRogerToJson()
+        public void SaveRogerToJson(string? fileName = "roger")
         {
 
             Roger roger = new()
@@ -55,7 +55,7 @@ Internal I/O lib
 
             string jsonData = JsonSerializer.Serialize(roger, options);
 
-            using StreamWriter writer = new(MakeFileSplitOnIndexIfExists("roger", "params"));
+            using StreamWriter writer = new(MakeFileSplitOnIndexIfExists("params", fileName));
             writer.Write(jsonData);
         }
 
@@ -154,9 +154,9 @@ Internal I/O lib
         /// <summary>
         /// Attempts to create a file in the same directory; if such a file already exists, it adds an index of attempts until it reaches the index where there is no file with that name.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="fileName"></param>
         /// <param name="extension">File extension (without period)</param>
-        public static string MakeFileSplitOnIndexIfExists(string filename, string extension)
+        public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "roger")
         {
             int index = 0;
 
@@ -164,9 +164,9 @@ Internal I/O lib
             do
             {
                 if (index == 0)
-                    filenameWithIndex = $"{filename}.{extension}";
+                    filenameWithIndex = $"{fileName}.{extension}";
                 else
-                    filenameWithIndex = $"{filename}{index}.{extension}";
+                    filenameWithIndex = $"{fileName}{index}.{extension}";
                 index++;
             }
             while (File.Exists(filenameWithIndex));
