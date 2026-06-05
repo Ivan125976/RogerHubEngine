@@ -9,13 +9,6 @@ namespace Yocto_Roger
     /// </summary>
     public class RogerHubEngine
     {
-        //public RogerHubEngine(UI.UI user, Parameters param, NeuralNetwork nN)
-        //{
-        //    _user = user;
-        //    _param = param;
-        //    _nN = nN;
-        //}
-
         /// <summary>
         /// A class that creates the environment and starts RogerHubEngine
         /// </summary>

@@ -1,10 +1,8 @@
-﻿using IniParser;
-using IniParser.Model;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using Yocto_Roger.Yocto_Roger;
-using static Yocto_Roger.UI.UI;
 using static Yocto_Roger.IO.Auxiliary;
+using static Yocto_Roger.UI.UI;
 
 namespace Yocto_Roger.IO
 {
@@ -33,31 +31,6 @@ Internal I/O lib
         /// </summary>
         public NeuralNetwork _nN = nN;
         private readonly NeuralNetworkState _nNState = nNState;
-
-        /// <summary>
-        /// Saving the current roger settings in the file, which creating automatedly
-        /// </summary>
-        public void SaveRoger()
-        {
-            using StreamWriter writer = new(MakeFileSplitOnIndexIfExists("roger", "roger"));
-
-            writer.Write(
-                $"""
-                 [roger]
-                 AIversion = {_param.version}
-                 passes = {_param.passes}
-                 learningRate = {_param.learningRate}
-                 DropOutPercent = {_param.DropOutPercent}
-
-                 [neurons]
-                 inputNeuronsCount = {_param.inputNeuronsCount}
-                 middleNeuronsCount = {_param.middleNeuronsCount}
-                 outputNeuronsCount = {_param.outputNeuronsCount}
-
-                 [layers]
-                 Layers = {_param.layers}
-                 """);
-        }
 
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
@@ -94,28 +67,25 @@ Internal I/O lib
         {
 
             if (!File.Exists(_param.roger2))
+            {
                 Send($"Roger file [{_param.roger2}] not found", "error");
+                return null;
+            }
             else // I made an else clause so that if the file does not exist, the code will not be executed further.
             {
-                return LoadRogerFromJson();
+                try
+                {
+                    if (LoadRogerFromJson() is Roger roger)
+                        return roger;
+                    else
+                        return null;
+                }
+                catch (JsonException e)
+                {
+                    Send($"Failed to parse the json data: \n{e}", "error");
+                    return null;
+                }
             }
-            return null; //It's a stub to keep the compiler from complaining. I have no idea how to fix it. I can fix it with GOTO, but damn... In theory, it's basically "unreachable code."
-        }
-
-        /// <summary>
-        /// Checking the recording format
-        /// </summary>
-        /// <returns>true - json format, false - roger format</returns>
-        private static bool? CheckFormat()
-        {
-            Parameters param = new();
-
-            if (param.roger2.EndsWith(".json"))
-                return true;
-            else if (param.roger2.EndsWith(".roger") || param.roger2.EndsWith(".roger2"))
-                return false;
-
-            else return null;
         }
 
         /// <summary>
@@ -168,43 +138,15 @@ Internal I/O lib
         }
 
         /// <summary>
-        /// A function that returns a Roger class object with data extracted from a .roger file.
-        /// </summary>
-        private static Roger LoadRogerFromRoger()
-        {
-            Parameters param = new();
-
-            var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile(param.roger2);
-
-            Roger roger = new()
-            {
-                AIversion = data["roger"]["AIversion"],
-                Passes = Convert.ToInt32(data["roger"]["passes"]),
-                LearingRate = float.Parse(data["roger"]["learningRate"]),
-                DropOutPercent = float.Parse(data["roger"]["DropOutPercent"]),
-
-                InputNeuronsCount = Convert.ToInt32(data["neurons"]["inputNeuronsCount"]),
-                MiddleNeuronsCount = Convert.ToInt32(data["neurons"]["middleNeuronsCount"]),
-                OutputNeuronsCount = Convert.ToInt32(data["neurons"]["outputNeuronsCount"]),
-
-                Layers = Convert.ToInt32(data["layers"]["layers"]),
-                MLayers = Convert.ToInt32(data["layers"]["mLayers"])
-            };
-
-            return roger;
-        }
-
-        /// <summary>
         /// Returns an object of the Roger class with all the necessary data to load the neural network.
         /// </summary>
         private Roger? LoadRogerFromJson()
         {
-
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(_param.roger2));
             JsonElement root = document.RootElement;
 
             Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(_param.roger2));
+
 
             return roger ?? null;
         }
@@ -295,6 +237,7 @@ Internal I/O lib
                 MiddleNeurons = BuildStringMatrix(_nN.middleNeurons) ?? null,
                 OutputNeurons = BuildStringArray(_nN.outputNeurons) ?? null,
 
+                // It can't be null (i hope...), so i don't paste "?? null" here
                 InputNeuronsCount = _param.inputNeuronsCount,
                 MiddleNeuronsCount = _param.middleNeuronsCount,
                 OutputNeuronsCount = _param.outputNeuronsCount,
@@ -303,6 +246,7 @@ Internal I/O lib
                 MiddleWeights = BuildStringJaggedMatrix(_nN.middleWeights) ?? null,
                 OutputWeights = BuildStringArray(_nN.outputWeights) ?? null,
 
+                // And here too
                 Layers = _param.layers,
 
                 Obias = BuildStringMatrix(_nN.Mbias) ?? null,

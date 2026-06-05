@@ -271,7 +271,6 @@ Copyright 2025-2026 Emotion Corp.
                             {
                                 if (input is string path && !string.IsNullOrEmpty(path))
                                     MainIO.SaveNeuralNetworkStateToJson(_io.FixTheStateOfNeuralNetwork(false), path);
-
                                 else if (input == string.Empty)
                                     MainIO.SaveNeuralNetworkStateToJson(_io.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
                                 else
