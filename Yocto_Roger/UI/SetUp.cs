@@ -43,23 +43,19 @@ namespace Yocto_Roger.UI
                 {
                     case "0":
                         Console.Write("""                           
-                            How do you want to save roger?
-
-                            1. INI
-                            2. Json (recommended)
-
-                            >>>
+                            Are you sure, you want to save the settings?
+                            (y/n)
+                            CHAR>>>
                             """);
-                        if (int.TryParse(Console.ReadLine(), out int userInputChecked))
+                        if (char.TryParse(Console.ReadLine(), out char userInputChecked))
                         {
                             switch (userInputChecked)
                             {
-                                case 1:
-                                    _io.SaveRoger();
+                                case 'y' or 'Y':
+                                    _io.SaveRogerToJson();
                                     break;
 
-                                case 2:
-                                    _io.SaveRogerToJson();
+                                case 'n' or 'N':
                                     break;
 
                                 default:
@@ -67,7 +63,7 @@ namespace Yocto_Roger.UI
                                     break;
                             }
 
-                            Console.WriteLine("Your roger saved in this directory, let's go, check it!\n If file was not created, write it in issues on our GitHub please ;)" +
+                            Console.WriteLine("Your .params file saved in this directory, let's go, check it!\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
                                 "\n Press any key to continue");
                             Console.ReadKey();
                         }
@@ -77,7 +73,7 @@ namespace Yocto_Roger.UI
                         break;
 
                     case "1":
-                        Console.Write("Write an absolute path to the .roger of .json file please: ");
+                        Console.Write("Write an absolute path to the .params file please: ");
 
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && Path.Exists(input))
                         {

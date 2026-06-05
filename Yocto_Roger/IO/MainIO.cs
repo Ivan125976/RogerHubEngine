@@ -82,7 +82,7 @@ Internal I/O lib
 
             string jsonData = JsonSerializer.Serialize(roger, options);
 
-            using StreamWriter writer = new(MakeFileSplitOnIndexIfExists("roger", "json"));
+            using StreamWriter writer = new(MakeFileSplitOnIndexIfExists("roger", "params"));
             writer.Write(jsonData);
         }
 
@@ -94,17 +94,10 @@ Internal I/O lib
         {
 
             if (!File.Exists(_param.roger2))
-                Send("Roger file not found", "error");
+                Send($"Roger file [{_param.roger2}] not found", "error");
             else // I made an else clause so that if the file does not exist, the code will not be executed further.
             {
-                switch (CheckFormat())
-                {
-                    case true: // Json
-                        return LoadRogerFromJson();
-
-                    case false: // Roger 
-                        return LoadRogerFromRoger();
-                }
+                return LoadRogerFromJson();
             }
             return null; //It's a stub to keep the compiler from complaining. I have no idea how to fix it. I can fix it with GOTO, but damn... In theory, it's basically "unreachable code."
         }
@@ -205,14 +198,13 @@ Internal I/O lib
         /// <summary>
         /// Returns an object of the Roger class with all the necessary data to load the neural network.
         /// </summary>
-        private static Roger? LoadRogerFromJson()
+        private Roger? LoadRogerFromJson()
         {
-            Parameters param = new();
 
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(param.roger2));
+            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(_param.roger2));
             JsonElement root = document.RootElement;
 
-            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(param.roger2));
+            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(_param.roger2));
 
             return roger ?? null;
         }
