@@ -269,7 +269,7 @@ Copyright 2025-2026 Emotion Corp.
 
                             try
                             {
-                                if (input is string path && !string.IsNullOrEmpty(path))
+                                if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
                                     MainIO.SaveNeuralNetworkStateToJson(_io.FixTheStateOfNeuralNetwork(false), path);
                                 else if (input == string.Empty)
                                     MainIO.SaveNeuralNetworkStateToJson(_io.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
@@ -278,7 +278,8 @@ Copyright 2025-2026 Emotion Corp.
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine("Somethin' wrong with me, here's my exception: " + e.Message);
+                                Console.WriteLine("Somethin' wrong with me, here's my exception: ");
+                                throw;
                             }
                         }
                         else if (userInputChecked.Length == _param.inputNeuronsCount)

@@ -219,7 +219,7 @@ Internal I/O lib
         {
             string json = JsonSerializer.Serialize(nN, options);
 
-            string path = MakeFileSplitOnIndexIfExists(Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"), "json");
+            string path = MakeFileSplitOnIndexIfExists("json", Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"));
 
             File.WriteAllText(path, json);
         }
@@ -265,24 +265,25 @@ Internal I/O lib
         {
             using (JsonDocument doc = JsonDocument.Parse(File.ReadAllText(absolute_path)))
             {
-                var root = doc.RootElement;
+                NeuralNetworkState nNState = JsonSerializer.Deserialize<NeuralNetworkState>(doc);
 
-                _nNState.EducationArray = root.GetProperty("EducationArray").GetString() ?? null;
+                _nNState.EducationArray = nNState?.EducationArray ?? null;
 
-                _nNState.InputNeurons = root.GetProperty("InputNeurons").GetString() ?? null;
-                _nNState.MiddleNeurons = root.GetProperty("MiddleNeurons").GetString() ?? null;
-                _nNState.OutputNeurons = root.GetProperty("OutputNeurons").GetString() ?? null;
+                _nNState.InputNeurons = nNState?.InputNeurons ?? null;
+                _nNState.MiddleNeurons = nNState?.MiddleNeurons ?? null;
+                _nNState.OutputNeurons = nNState?.OutputNeurons ?? null;
 
-                _nNState.InputNeuronsCount = root.GetProperty("InputNeuronsCount").GetInt32();
-                _nNState.MiddleNeuronsCount = root.GetProperty("MiddleNeuronsCount").GetInt32();
-                _nNState.OutputNeuronsCount = root.GetProperty("OutputNeuronsCount").GetInt32();
+                // If null - Values as default
+                _nNState.InputNeuronsCount = nNState?.InputNeuronsCount ?? 14;
+                _nNState.MiddleNeuronsCount = nNState?.MiddleNeuronsCount ?? 16;
+                _nNState.OutputNeuronsCount = nNState?.OutputNeuronsCount ?? 8;
 
-                _nNState.InputWeights = root.GetProperty("InputWeights").GetString() ?? null;
-                _nNState.MiddleWeights = root.GetProperty("MiddleWeights").GetString() ?? null;
-                _nNState.OutputWeights = root.GetProperty("OutputWeights").GetString() ?? null;
+                _nNState.InputWeights = nNState?.InputWeights ?? null;
+                _nNState.MiddleWeights = nNState?.MiddleWeights ?? null;
+                _nNState.OutputWeights = nNState?.OutputWeights ?? null;
 
-                _nNState.Obias = root.GetProperty("Obias").GetString() ?? null;
-                _nNState.Mbias = root.GetProperty("Mbias").GetString() ?? null;
+                _nNState.Obias = nNState?.Obias ?? null;
+                _nNState.Mbias = nNState?.Mbias ?? null;
             }
 
             return _nNState;
