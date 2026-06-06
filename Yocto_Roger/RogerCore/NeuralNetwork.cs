@@ -1,7 +1,11 @@
 ﻿using System.Globalization;
 using Yocto_Roger.IO;
-using static Yocto_Roger.UI.UI;
-using static Yocto_Roger.Yocto_Roger.RogerMath;
+using Yocto_Roger.Yocto_Roger.Initialization;
+using Yocto_Roger.Yocto_Roger.UtilityTools;
+using Yocto_Roger.UI.GUI;
+using static Yocto_Roger.UI.GUI.GUI;
+using static Yocto_Roger.Yocto_Roger.UtilityTools.RogerMath;
+using static Yocto_Roger.IO.Splitter;
 
 namespace Yocto_Roger.Yocto_Roger
 {
@@ -17,13 +21,13 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
-    public class NeuralNetwork(Parameters param, MainIO io, Weights weights, Biases biases, Training training)
+    public class NeuralNetwork(Parameters param, MainIO io, Weights weights, Biases biases, Training.Training training)
     {
         private readonly Parameters _param = param;
         private readonly MainIO _io = io;
         private readonly Weights _weights = weights;
         private readonly Biases _biases = biases;
-        private readonly Training _training = training;
+        private readonly Training.Training _training = training;
 
         /// <summary>
         /// Flag indicating whether Roger has been created
@@ -89,7 +93,7 @@ Copyright 2025-2026 Emotion Corp.
                 case 0:
                     if (!File.Exists(_param.knowledgeFile))
                     {
-                        Send("I can't find the training file!", "error");
+                        Send("I can't find the training file!", MessageType.message);
                         break;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
@@ -106,7 +110,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (input.Length != _param.inputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", "error");
+                        Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.inputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -122,7 +126,7 @@ Copyright 2025-2026 Emotion Corp.
                     else if (output.Length != _param.outputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", "error");
+                        Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.outputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -180,7 +184,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        Send("Failed to initialize the Biases: \n" + ex.Message, "error");
+                        Send("Failed to initialize the Biases: \n" + ex.Message, MessageType.error);
                         Thread.Sleep(5000);
                         break;
                     }
@@ -194,16 +198,16 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        Send($"Failed to initialize the Weights: \n{ex.Message}", "error");
+                        Send($"Failed to initialize the Weights: \n{ex.Message}", MessageType.error);
                         Thread.Sleep(5000);
                         break;
                     }
                     Send("done");
-                    Send("Initialization complete", "message");
+                    Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");
                     DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                     Console.WriteLine();
-                    UI.Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
+                    Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
 
                     try
                     {
@@ -211,7 +215,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     catch (Exception ex)
                     {
-                        Send($"Failed to educate the data: \n{ex.Message}", "error");
+                        Send($"Failed to educate the data: \n{ex.Message}", MessageType.error);
                         Thread.Sleep(5000);
                         break;
                     }
@@ -237,7 +241,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     else
                     {
-                        Send("Incorrect input (-_0)", "error");
+                        Send("Incorrect input (-_0)", MessageType.error);
                         Send("Maybe file which you entered, doesn't exists, please check it and retry");
                     }
                     break;
@@ -250,7 +254,7 @@ Copyright 2025-2026 Emotion Corp.
                 while (true)
                 {
                     Console.Clear();
-                    Send("Enter \"save\"  to fix the state of neural network in the file, for load at this point later. Or \"exit\" to exit to main menu", "warning");
+                    Send("Enter \"save\"  to fix the state of neural network in the file, for load at this point later. Or \"exit\" to exit to main menu", MessageType.warning);
                     Console.WriteLine($"Roger have {_param.inputNeuronsCount} input neurons, and {_param.outputNeuronsCount} output neurons." +
                         $"Write input format: <datain1>,<datain2>,<datain3>...");
                     DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
@@ -274,11 +278,11 @@ Copyright 2025-2026 Emotion Corp.
                                 else if (input == string.Empty)
                                     MainIO.SaveNeuralNetworkStateToJson(_io.FixTheStateOfNeuralNetwork(false), Directory.GetCurrentDirectory());
                                 else
-                                    Send("Incorrect input (-_0)", "error");
+                                    Send("Incorrect input (-_0)", MessageType.error);
                             }
                             catch (Exception e)
                             {
-                                Send("Somethin' wrong with me, here's my exception: ", "error");
+                                Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
                                 Console.WriteLine($"Error: {e}", ConsoleColor.Red);
                                 Thread.Sleep(5000);
                             }
@@ -297,11 +301,11 @@ Copyright 2025-2026 Emotion Corp.
                             Console.Clear();
                         }
                         else
-                            Send("It looks like you entered the wrong amount of information for the neurons or made a mistake with the command. No worries — it happens.", "error");
+                            Send("It looks like you entered the wrong amount of information for the neurons or made a mistake with the command. No worries — it happens.", MessageType.error);
                     }
                     else
                     {
-                        Send("Incorrect input (-_0)", "error");
+                        Send("Incorrect input (-_0)", MessageType.error);
                     }
                 }
             }
@@ -441,7 +445,7 @@ Copyright 2025-2026 Emotion Corp.
                 for (int i = 0; i < neurons.Length; i++)
                     neurons[i] = writeArray[i];
             else
-                Send("NeuralNetwork.WriteToNN>The size of the neuron array and the data array do not match, it is impossible to write data", "error");
+                Send("NeuralNetwork.WriteToNN>The size of the neuron array and the data array do not match, it is impossible to write data", MessageType.error);
         }
 
         /// <summary>

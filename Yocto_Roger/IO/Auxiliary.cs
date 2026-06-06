@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Text;
-using Yocto_Roger.Yocto_Roger;
 
 namespace Yocto_Roger.IO
 /* 

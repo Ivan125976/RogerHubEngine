@@ -1,6 +1,7 @@
-﻿using Yocto_Roger.UI;
+﻿using Yocto_Roger.UI.GUI;
+using Yocto_Roger.Yocto_Roger.UtilityTools;
 
-namespace Yocto_Roger.Yocto_Roger
+namespace Yocto_Roger.Yocto_Roger.Training
 {
     /* 
 Yocto Roger ;)
@@ -16,7 +17,7 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Learning Algorithm Class
     /// </summary>
-    public class Training(Parameters param, NeuralNetwork nN, RogerMath aiMath)
+    public class Training(Parameters param, NeuralNetwork nN)
     {
         private readonly Parameters _param = param;
 
@@ -24,8 +25,6 @@ Copyright 2025-2026 Emotion Corp.
         /// Link to a method containing a neural network
         /// </summary>
         public NeuralNetwork roger = nN;
-
-        private readonly RogerMath _rogerMath = aiMath;
 
 
         /// <summary>
@@ -56,9 +55,8 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-            string correctOutput;
-            int[] input = new int[_param.inputNeuronsCount];
-            double[] output;
+            int[] input = new int[inputNeurons.Length];
+            double[] output = new double[outputNeurons.Length];
             double[,] errorMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[,] deltaMid = new double[middleNeurons.GetLength(0), middleNeurons.GetLength(1)];
             double[] errorOut = new double[outputNeurons.Length];
@@ -115,11 +113,8 @@ Copyright 2025-2026 Emotion Corp.
                     //forward propagation
                     roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, dropOut);
 
-                    correctOutput = "";
-                    for (int l = inputNeurons.Length; l < outputNeurons.Length + inputNeurons.Length; l++)
-                        correctOutput += educationArray[i, l] + " ";
-
-                    output = _rogerMath.SplitOutputEducation(correctOutput);
+                    for (int l = 0; l < outputNeurons.Length; l++)
+                        output[l] = educationArray[i, l + inputNeurons.Length];
 
                     for (int j = 0; j < outputNeurons.Length; j++) //update output weights
                     {
@@ -140,7 +135,7 @@ Copyright 2025-2026 Emotion Corp.
                         deltaMid[_param.layers - 3, j] = errorMid[_param.layers - 3, j] * (1 - middleNeurons[_param.layers - 3, j] * middleNeurons[_param.layers - 3, j]); //дельта
                         deltaMid[_param.layers - 3, j] *= dropOut[_param.layers - 3, j];
 
-                        if ((_param.layers - 2) > 1)
+                        if (_param.layers - 2 > 1)
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
                                 middleWeights[_param.layers - 3][k, j] -=
                                     middleNeurons[_param.layers - 3, k] *
@@ -156,7 +151,7 @@ Copyright 2025-2026 Emotion Corp.
                         middleBiases[_param.layers - 3, j] -= deltaMid[_param.layers - 3, j] * _param.learningRate;
                     }
 
-                    if ((_param.layers - 2) > 1)
+                    if (_param.layers - 2 > 1)
                     {
                         for (int layer = _param.layers - 4; layer >= 0; layer--) //update middle->middle weights
                         {

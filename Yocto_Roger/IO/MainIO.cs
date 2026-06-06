@@ -1,8 +1,9 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using Yocto_Roger.Yocto_Roger;
+using Yocto_Roger.UI.GUI;
 using static Yocto_Roger.IO.Auxiliary;
-using static Yocto_Roger.UI.UI;
+using static Yocto_Roger.UI.GUI.GUI;
 
 namespace Yocto_Roger.IO
 {
@@ -68,7 +69,7 @@ Internal I/O lib
 
             if (!File.Exists(_param.roger2))
             {
-                Send($"Roger file [{_param.roger2}] not found", "error");
+                Send($"Roger file [{_param.roger2}] not found", MessageType.error);
                 return null;
             }
             else // I made an else clause so that if the file does not exist, the code will not be executed further.
@@ -82,7 +83,7 @@ Internal I/O lib
                 }
                 catch (JsonException e)
                 {
-                    Send($"Failed to parse the json data: \n{e}", "error");
+                    Send($"Failed to parse the json data: \n{e}", MessageType.error);
                     return null;
                 }
             }
@@ -265,7 +266,7 @@ Internal I/O lib
         {
             string parsedJson = File.ReadAllText(absolute_path);
 
-            NeuralNetworkState nNState = JsonSerializer.Deserialize<NeuralNetworkState>(parsedJson);
+            NeuralNetworkState? nNState = JsonSerializer.Deserialize<NeuralNetworkState>(parsedJson);
 
             _nNState.EducationArray = nNState?.EducationArray ?? null;
 

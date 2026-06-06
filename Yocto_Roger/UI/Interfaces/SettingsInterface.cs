@@ -1,7 +1,8 @@
 ﻿using Yocto_Roger.IO;
-using Yocto_Roger.Yocto_Roger;
+using Yocto_Roger.UI.GUI;
+using static Yocto_Roger.UI.GUI.GUI;
 
-namespace Yocto_Roger.UI
+namespace Yocto_Roger.UI.Interfaces
 {
 
     /// <summary>
@@ -61,8 +62,8 @@ namespace Yocto_Roger.UI
                             _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
                         }
                         else
-                            UI.Send("Incorrect input (-_0)", "error");
-                        UI.Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
+                            Send("Incorrect input (-_0)", MessageType.error);
+                        Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
                         break;
 
                     case "2":
@@ -74,7 +75,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked1 > 0)
                                 param.inputNeuronsCount = userInputChecked1;
                             else
-                                UI.Send("Value out of range.", "error");
+                                Send("Value out of range.", MessageType.error);
                         }
                         break;
 
@@ -87,7 +88,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked2 > 0)
                                 param.middleNeuronsCount = userInputChecked2;
                             else
-                                UI.Send("Value out of range.", "error");
+                                Send("Value out of range.", MessageType.error);
                         }
                         break;
 
@@ -100,7 +101,7 @@ namespace Yocto_Roger.UI
                             if (userInputChecked3 > 0)
                                 param.outputNeuronsCount = userInputChecked3;
                             else
-                                UI.Send("Value out of range.", "error");
+                                Send("Value out of range.", MessageType.error);
                         }
                         break;
 
@@ -113,7 +114,7 @@ namespace Yocto_Roger.UI
                             if (layersCount > 2)
                                 param.layers = layersCount;
                             else
-                                UI.Send("Value out of range.", "error");
+                                Send("Value out of range.", MessageType.error);
                         }
                         break;
 
@@ -125,7 +126,7 @@ namespace Yocto_Roger.UI
                         if (File.Exists(file))
                             param.knowledgeFile = file;
                         else
-                            UI.Send("I couldn't find such a file :(", "error");
+                            Send("I couldn't find such a file :(", MessageType.error);
                         break;
 
                     case "7":
@@ -137,10 +138,10 @@ namespace Yocto_Roger.UI
                             if (newDrop >= 0 && newDrop <= 70)
                                 param.DropOutPercent = newDrop;
                             else
-                                UI.Send("Value out of range.", "error");
+                                Send("Value out of range.", MessageType.error);
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            Send("Invalid input.", MessageType.error);
                         break;
 
                     case "8":
@@ -152,10 +153,10 @@ namespace Yocto_Roger.UI
                             if (newLR > 0 && newLR <= 1.0)
                                 param.learningRate = newLR;
                             else
-                                UI.Send("Learning rate out of range.", "error");
+                                Send("Learning rate out of range.", MessageType.error);
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            Send("Invalid input.", MessageType.error);
                         break;
 
                     case "9":
@@ -167,10 +168,10 @@ namespace Yocto_Roger.UI
                             if (newPasses > 0)
                                 param.passes = newPasses;
                             else
-                                UI.Send("Passes must be greater than zero.", "error");
+                                Send("Passes must be greater than zero.", MessageType.error);
                         }
                         else
-                            UI.Send("Invalid input.", "error");
+                            Send("Invalid input.", MessageType.error);
                         break;
 
                     case "10":

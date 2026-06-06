@@ -1,4 +1,7 @@
-﻿namespace Yocto_Roger.Yocto_Roger
+﻿using Yocto_Roger.Yocto_Roger.UtilityTools;
+using static Yocto_Roger.UI.GUI.GUI;
+
+namespace Yocto_Roger.Yocto_Roger.Initialization
 {
     /* 
 Yocto Roger ;)
@@ -38,7 +41,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine();
             }
             if (_param.isDebug)
-                UI.UI.Send("The weights have been successfully adjusted!");
+                Send("The weights have been successfully adjusted!");
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine(new string('=', Console.WindowWidth));
             }
             if (_param.isDebug)
-                UI.UI.Send("The weights have been successfully adjusted!");
+                Send("The weights have been successfully adjusted!");
         }
     }
 }
