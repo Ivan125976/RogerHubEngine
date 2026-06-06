@@ -278,8 +278,9 @@ Copyright 2025-2026 Emotion Corp.
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine("Somethin' wrong with me, here's my exception: ");
-                                throw;
+                                Send("Somethin' wrong with me, here's my exception: ", "error");
+                                Console.WriteLine($"Error: {e}", ConsoleColor.Red);
+                                Thread.Sleep(5000);
                             }
                         }
                         else if (userInputChecked.Length == _param.inputNeuronsCount)
