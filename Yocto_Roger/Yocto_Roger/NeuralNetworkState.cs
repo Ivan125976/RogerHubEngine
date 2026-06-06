@@ -24,15 +24,15 @@
         /// <summary>
         /// Input neurons count
         /// </summary>
-        public int InputNeuronsCount { get; set; }
+        public int InputNeuronsCount { get; set; } = 14;
         /// <summary>
         /// middle neurons count
         /// </summary>
-        public int MiddleNeuronsCount { get; set; }
+        public int MiddleNeuronsCount { get; set; } = 16;
         /// <summary>
         /// output neurons count
         /// </summary>
-        public int OutputNeuronsCount { get; set; }
+        public int OutputNeuronsCount { get; set; } = 8;
         /// <summary>
         /// input weights
         /// </summary>

@@ -263,28 +263,27 @@ Internal I/O lib
         /// <returns></returns>
         public NeuralNetworkState LoadNeuralNetworkStateFromJson(string absolute_path)
         {
-            using (JsonDocument doc = JsonDocument.Parse(File.ReadAllText(absolute_path)))
-            {
-                NeuralNetworkState nNState = JsonSerializer.Deserialize<NeuralNetworkState>(doc);
+            string parsedJson = File.ReadAllText(absolute_path);
 
-                _nNState.EducationArray = nNState?.EducationArray ?? null;
+            NeuralNetworkState nNState = JsonSerializer.Deserialize<NeuralNetworkState>(parsedJson);
 
-                _nNState.InputNeurons = nNState?.InputNeurons ?? null;
-                _nNState.MiddleNeurons = nNState?.MiddleNeurons ?? null;
-                _nNState.OutputNeurons = nNState?.OutputNeurons ?? null;
+            _nNState.EducationArray = nNState?.EducationArray ?? null;
 
-                // If null - Values as default
-                _nNState.InputNeuronsCount = nNState?.InputNeuronsCount ?? 14;
-                _nNState.MiddleNeuronsCount = nNState?.MiddleNeuronsCount ?? 16;
-                _nNState.OutputNeuronsCount = nNState?.OutputNeuronsCount ?? 8;
+            _nNState.InputNeurons = nNState?.InputNeurons ?? null;
+            _nNState.MiddleNeurons = nNState?.MiddleNeurons ?? null;
+            _nNState.OutputNeurons = nNState?.OutputNeurons ?? null;
 
-                _nNState.InputWeights = nNState?.InputWeights ?? null;
-                _nNState.MiddleWeights = nNState?.MiddleWeights ?? null;
-                _nNState.OutputWeights = nNState?.OutputWeights ?? null;
+            // If null - Values as default (In NeuralNetwork.cs, there's initialization as default)
+            _nNState.InputNeuronsCount =   nNState!.InputNeuronsCount;
+            _nNState.MiddleNeuronsCount = nNState!.MiddleNeuronsCount;
+            _nNState.OutputNeuronsCount = nNState!.OutputNeuronsCount;
 
-                _nNState.Obias = nNState?.Obias ?? null;
-                _nNState.Mbias = nNState?.Mbias ?? null;
-            }
+            _nNState.InputWeights = nNState?.InputWeights ?? null;
+            _nNState.MiddleWeights = nNState?.MiddleWeights ?? null;
+            _nNState.OutputWeights = nNState?.OutputWeights ?? null;
+
+            _nNState.Obias = nNState?.Obias ?? null;
+            _nNState.Mbias = nNState?.Mbias ?? null;
 
             return _nNState;
         }
