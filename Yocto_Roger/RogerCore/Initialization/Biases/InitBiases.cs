@@ -36,25 +36,9 @@ Copyright 2025-2026 Emotion Corp.
 
         public static void Init(ref double[,] biases)
         {
-#if DEBUG
-            Console.Write($"biases[,] = \n");
-#endif
             for (int i = 0; i < biases.GetLength(0); i++)
-            {
                 for (int j = 0; j < biases.GetLength(1); j++)
-                {
-                    biases[i, j] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
-#if DEBUG
-                    Console.Write($"{biases[i, j]} ");
-#endif
-                }
-#if DEBUG
-                Console.WriteLine();
-#endif
-            }
-#if DEBUG
-            Send("The biases have been successfully adjusted!");
-#endif
+                    biases[i, j] = 0;
         }
     }
 }
