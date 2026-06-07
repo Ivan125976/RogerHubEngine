@@ -119,7 +119,7 @@ Copyright 2025-2026 Emotion Corp.
                     float[,] dropOut = roger.GenerateDropOut();
 
                     //forward propagation
-                    roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, dropOut);
+                    roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
 
                     for (int l = 0; l < outputNeurons.Length; l++)
                         output[l] = educationArray[i, l + inputNeurons.Length];
