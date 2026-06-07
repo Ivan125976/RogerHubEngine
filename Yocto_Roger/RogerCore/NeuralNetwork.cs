@@ -226,8 +226,6 @@ Copyright 2025-2026 Emotion Corp.
             #region NeuralNetworkInterface
             if (rogerIsCreated)
             {
-                float[,]? disabledDropOut = null;
-
                 Console.CursorVisible = true;
                 while (true)
                 {
@@ -272,7 +270,7 @@ Copyright 2025-2026 Emotion Corp.
                             int[] userInput = new int[_param.inputNeuronsCount];
                             for (int i = 0; i < userInput.Length; i++)
                                 userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
-                            ForwardPropagation(userInput, inputNeurons!, inputWeights!, middleNeurons!, middleWeights!, Mbias!, outputNeurons!, Obias!, outputWeights!, disabledDropOut);
+                            ForwardPropagation(userInput, inputNeurons!, inputWeights!, middleNeurons!, middleWeights!, Mbias!, outputNeurons!, Obias!, outputWeights!);
                             Console.Write("Output>>>");
                             for (int i = 0; i < outputNeurons!.Length; i++)
                                 Console.Write(outputNeurons[i] + " ");
@@ -455,26 +453,15 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="outputNeurons">Output neurons array</param>
         /// <param name="outputBiases">Output biases array</param>
         /// <param name="outputWeights">Output weights array</param>
-        /// <param name="dropOutMasks">DropOut matrix</param>
         public void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights, double[,] middleBiases,
-            double[] outputNeurons, double[] outputBiases, double[,] outputWeights, float[,]? dropOutMasks)
+            double[] outputNeurons, double[] outputBiases, double[,] outputWeights)
         {
             WriteToNN(inputNeurons, NNinput);
 
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
 
-            if (dropOutMasks != null)
-                for (int i = 0; i < middleNeurons.GetLength(1); i++)
-                    middleNeurons[0, i] *= dropOutMasks[0, i];
-
             for (int l = 0; l < _param.layers - 3; l++)
-            {
                 SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
-
-                if (dropOutMasks != null)
-                    for (int i = 0; i < middleNeurons.GetLength(1); i++)
-                        middleNeurons[l + 1, i] *= dropOutMasks[l + 1, i];
-            }
 
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
         }
