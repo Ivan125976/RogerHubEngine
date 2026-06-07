@@ -1,6 +1,4 @@
 ﻿using Yocto_Roger.RogerCore.UtilityTools;
-using Yocto_Roger.UI.GUI;
-using static Yocto_Roger.UI.GUI.GUI;
 
 namespace Yocto_Roger.RogerCore.Initialization.Weights
 {

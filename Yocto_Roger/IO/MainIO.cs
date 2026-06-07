@@ -2,9 +2,9 @@
 using System.Text.Json;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.GUI;
+using static Yocto_Roger.Configuration.EngineVersion;
 using static Yocto_Roger.IO.Auxiliary;
 using static Yocto_Roger.UI.GUI.GUI;
-using static Yocto_Roger.Configuration.EngineVersion;
 
 namespace Yocto_Roger.IO
 {
@@ -250,7 +250,7 @@ Internal I/O lib
 
                 // And here too
                 Layers = _param.layers,
-                
+
                 Obias = BuildStringMatrix(_nN.Mbias) ?? null,
                 Mbias = BuildStringArray(_nN.Obias) ?? null,
             };

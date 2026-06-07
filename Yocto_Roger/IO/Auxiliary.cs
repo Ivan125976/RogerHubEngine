@@ -66,7 +66,7 @@ Internal extension I/O lib
                     for (byte c = 0; c < matrix.GetLength(2); c++)
                         writer.Write(matrix[i, j, c].ToString(CultureInfo.InvariantCulture) + ";");
                 }
-                    
+
                 if (line_break)
                     writer.WriteLine();
             }

@@ -1,5 +1,4 @@
 ﻿using Yocto_Roger.UI.GUI;
-using Yocto_Roger.RogerCore.UtilityTools;
 
 namespace Yocto_Roger.RogerCore.Training
 {

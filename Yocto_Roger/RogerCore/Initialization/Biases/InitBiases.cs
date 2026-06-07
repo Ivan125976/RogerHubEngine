@@ -1,7 +1,4 @@
-﻿using Yocto_Roger.RogerCore.UtilityTools;
-using static Yocto_Roger.UI.GUI.GUI;
-
-namespace Yocto_Roger.RogerCore.Initialization.Biases
+﻿namespace Yocto_Roger.RogerCore.Initialization.Biases
 {
     /* 
 Yocto Roger ;)

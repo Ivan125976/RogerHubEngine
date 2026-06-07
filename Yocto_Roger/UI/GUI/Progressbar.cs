@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Yocto_Roger.UI.GUI
+﻿namespace Yocto_Roger.UI.GUI
 {
     /// <summary>
     /// Draws a beautiful progress bar and can erase it automatically.
