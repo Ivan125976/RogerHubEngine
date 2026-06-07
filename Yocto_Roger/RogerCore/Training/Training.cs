@@ -65,23 +65,29 @@ Copyright 2025-2026 Emotion Corp.
             for (int x = 0; x < _param.layers - 3; x++)
                 oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
 
-            Thread uiThread = new(() =>
-            {
-                while (!done)
+            int lastMiddleWeights;
+            if (_param.layers > 3)
+                lastMiddleWeights = middleNeurons.GetLength(0) - 1;
+            else
+                lastMiddleWeights = 0;
+
+                Thread uiThread = new(() =>
                 {
-                    double local;
+                    while (!done)
+                    {
+                        double local;
 
-                    lock (lockObj)
-                        local = progress;
+                        lock (lockObj)
+                            local = progress;
 
-                    status?.Draw((int)(local * 100));
+                        status?.Draw((int)(local * 100));
 
-                    Thread.Sleep(1000);
-                }
-            })
-            {
-                IsBackground = true
-            };
+                        Thread.Sleep(1000);
+                    }
+                })
+                {
+                    IsBackground = true
+                };
             uiThread.Start();
 
             for (int passes = 0; passes < _param.passes; passes++)
@@ -121,7 +127,7 @@ Copyright 2025-2026 Emotion Corp.
                         deltaOut[j] = errorOut[j] * (1 - outputNeurons[j] * outputNeurons[j]); //дельта
 
                         for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            outputWeights[k, j] -= middleNeurons[_param.layers - 3, k] * deltaOut[j] * _param.learningRate;
+                            outputWeights[k, j] -= middleNeurons[lastMiddleWeights, k] * deltaOut[j] * _param.learningRate;
 
                         outputBiases[j] -= deltaOut[j] * _param.learningRate;
                     }
@@ -129,16 +135,16 @@ Copyright 2025-2026 Emotion Corp.
                     for (int j = 0; j < middleNeurons.GetLength(1); j++) //update output->middle weights
                     {
                         for (int l = 0; l < outputNeurons.Length; l++)
-                            errorMid[_param.layers - 3, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
+                            errorMid[lastMiddleWeights, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
 
-                        deltaMid[_param.layers - 3, j] = errorMid[_param.layers - 3, j] * (1 - middleNeurons[_param.layers - 3, j] * middleNeurons[_param.layers - 3, j]); //дельта
-                        deltaMid[_param.layers - 3, j] *= dropOut[_param.layers - 3, j];
+                        deltaMid[lastMiddleWeights, j] = errorMid[lastMiddleWeights, j] * (1 - middleNeurons[lastMiddleWeights, j] * middleNeurons[lastMiddleWeights, j]); //дельта
+                        deltaMid[lastMiddleWeights, j] *= dropOut[lastMiddleWeights, j];
 
                         if (_param.layers - 2 > 1)
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                middleWeights[_param.layers - 3][k, j] -=
-                                    middleNeurons[_param.layers - 3, k] *
-                                    deltaMid[_param.layers - 3, j] *
+                                middleWeights[lastMiddleWeights - 1][k, j] -=
+                                    middleNeurons[lastMiddleWeights, k] *
+                                    deltaMid[lastMiddleWeights, j] *
                                     _param.learningRate;
                         else
                             for (int k = 0; k < inputNeurons.Length; k++)
@@ -147,7 +153,7 @@ Copyright 2025-2026 Emotion Corp.
                                     deltaMid[0, j] *
                                     _param.learningRate;
 
-                        middleBiases[_param.layers - 3, j] -= deltaMid[_param.layers - 3, j] * _param.learningRate;
+                        middleBiases[lastMiddleWeights, j] -= deltaMid[lastMiddleWeights, j] * _param.learningRate;
                     }
 
                     if (_param.layers - 2 > 1)

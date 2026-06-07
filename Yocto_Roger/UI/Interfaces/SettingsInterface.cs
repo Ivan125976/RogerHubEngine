@@ -47,10 +47,10 @@ namespace Yocto_Roger.UI.Interfaces
                         string? fileName = Console.ReadLine();
                         _io.SaveRogerToJson(fileName);
 
-                            Console.WriteLine($"Your .params file saved in this directory> {fileName}.params\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
-                                "\n Press any key to continue");
-                            Console.ReadKey();
-                    break;
+                        Console.WriteLine($"Your .params file saved in this directory> {fileName}.params\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
+                            "\n Press any key to continue");
+                        Console.ReadKey();
+                        break;
 
                     case "1":
                         Console.Write("Write an absolute path to the .params file please...");

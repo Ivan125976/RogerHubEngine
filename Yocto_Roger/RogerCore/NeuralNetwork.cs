@@ -192,16 +192,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine();
                     Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
 
-                    try
-                    {
-                        _training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray, educationStatus);
-                    }
-                    catch (Exception ex)
-                    {
-                        Send($"Failed to educate the data: \n{ex.Message}", MessageType.error);
-                        Thread.Sleep(5000);
-                        break;
-                    }
+                    _training.Education(ref inputNeurons, ref middleNeurons, ref outputNeurons, ref inputWeights, ref middleWeights, ref outputWeights, ref Mbias, ref Obias, educationArray, educationStatus);
 
                     educationStatus.Draw(100);
                     Send("\nEducation Complete");
