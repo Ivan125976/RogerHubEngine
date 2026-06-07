@@ -62,14 +62,17 @@ Copyright 2025-2026 Emotion Corp.
             double[] deltaOut = new double[outputNeurons.Length];
             double[,] oldOutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
             double[][,] oldMiddleWeights = new double[_param.layers - 3][,];
-            for (int x = 0; x < _param.layers - 3; x++)
-                oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
+
+            int nextLayer, oldLayer;
 
             int lastMiddleWeights;
             if (_param.layers > 3)
                 lastMiddleWeights = middleNeurons.GetLength(0) - 1;
             else
                 lastMiddleWeights = 0;
+
+            for (int x = 0; x < lastMiddleWeights; x++)
+                oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
 
                 Thread uiThread = new(() =>
                 {
@@ -160,7 +163,8 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         for (int layer = _param.layers - 4; layer >= 0; layer--) //update middle->middle weights
                         {
-                            int oldLayer = layer + 1;
+                            oldLayer = layer + 1;
+                            nextLayer = layer - 1;
                             for (int j = 0; j < middleNeurons.GetLength(1); j++)
                             {
                                 for (int l = 0; l < middleNeurons.GetLength(1); l++)
@@ -170,7 +174,7 @@ Copyright 2025-2026 Emotion Corp.
                                 deltaMid[layer, j] *= dropOut[layer, j];
                                 if (layer > 0)
                                     for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                        middleWeights[layer - 1][k, j] -= middleNeurons[layer - 1, k] * deltaMid[layer, j] * _param.learningRate;
+                                        middleWeights[nextLayer][k, j] -= middleNeurons[nextLayer, k] * deltaMid[layer, j] * _param.learningRate;
 
                                 middleBiases[layer, j] -= deltaMid[layer, j] * _param.learningRate;
                             }
