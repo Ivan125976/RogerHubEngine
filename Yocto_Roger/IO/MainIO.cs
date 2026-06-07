@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
 using System.Text.Json;
-using Yocto_Roger.Yocto_Roger;
+using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.GUI;
 using static Yocto_Roger.IO.Auxiliary;
 using static Yocto_Roger.UI.GUI.GUI;
+using static Yocto_Roger.Configuration.EngineVersion;
 
 namespace Yocto_Roger.IO
 {
@@ -41,7 +42,7 @@ Internal I/O lib
 
             Roger roger = new()
             {
-                AIversion = _param.version,
+                AIversion = version,
                 Passes = _param.passes,
 
                 LearingRate = _param.learningRate,
@@ -262,7 +263,7 @@ Internal I/O lib
         /// </summary>
         /// <param name="absolute_path">Absolute path to file</param>
         /// <returns></returns>
-        public NeuralNetworkState? LoadNeuralNetworkStateFromJson(string absolute_path)
+        public static NeuralNetworkState? LoadNeuralNetworkStateFromJson(string absolute_path)
         {
             NeuralNetworkState? nNState = JsonSerializer.Deserialize<NeuralNetworkState>(File.ReadAllText(absolute_path));
 

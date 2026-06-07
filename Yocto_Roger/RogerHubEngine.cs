@@ -1,9 +1,9 @@
 ﻿using Yocto_Roger.IO;
+using Yocto_Roger.RogerCore;
+using Yocto_Roger.RogerCore.Initialization.Biases;
+using Yocto_Roger.RogerCore.Initialization.Weights;
+using Yocto_Roger.RogerCore.Training;
 using Yocto_Roger.UI.Interfaces;
-using Yocto_Roger.Yocto_Roger;
-using Yocto_Roger.Yocto_Roger.Initialization;
-using Yocto_Roger.Yocto_Roger.Training;
-using Yocto_Roger.Yocto_Roger.UtilityTools;
 
 namespace Yocto_Roger
 {
@@ -24,14 +24,14 @@ namespace Yocto_Roger
             Parameters param = new();
             NeuralNetworkState nNState = new();
 
-            UI.GUI.GUI user = new(null!, null!, param);
+            UI.GUI.GUI user = new(null!, null!);
             Auxiliary auxiliaryIO = new(param);
             MainIO io = new(param, null!, nNState);
-            Weights weights = new(param);
-            Biases biases = new(param);
-            RogerMath aiMath = new(param);
+            CreateWeights middleWeightsCreator = new(param);
+            InitWeights weights = new();
+            InitBiases biases = new(param);
             Training training = new(param, null!);
-            NeuralNetwork nN = new(param, io, weights, biases, training, user);
+            NeuralNetwork nN = new(param, io, weights, biases, training, user, middleWeightsCreator);
             SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
 
             io._nN = nN;

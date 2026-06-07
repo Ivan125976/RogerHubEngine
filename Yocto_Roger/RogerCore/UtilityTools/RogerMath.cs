@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.Yocto_Roger.UtilityTools
+﻿namespace Yocto_Roger.RogerCore.UtilityTools
 {
     /* 
 Yocto Roger ;)

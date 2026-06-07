@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Yocto_Roger.UI.Interfaces;
-using Yocto_Roger.Yocto_Roger;
+using Yocto_Roger.RogerCore;
+using static Yocto_Roger.Configuration.EngineVersion;
 
 namespace Yocto_Roger.UI.GUI
 /* 
@@ -16,7 +17,7 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Internal library for a beautiful command line
     /// </summary>
-    public class GUI(NeuralNetwork nN, SettingsInterface settingsInterface, Parameters param)
+    public class GUI(NeuralNetwork nN, SettingsInterface settingsInterface)
     {
         /// <summary>
         /// Link to neural network file
@@ -27,8 +28,6 @@ Copyright 2025-2026 Emotion Corp.
         /// Link to SettingsInterface
         /// </summary>
         public SettingsInterface _settingsInterface = settingsInterface;
-
-        private readonly Parameters _param = param;
 
         /// <summary>
         /// Launches the console UI
@@ -57,10 +56,11 @@ Copyright 2025-2026 Emotion Corp.
             while (true)
             {
                 Console.Clear();
-                if (_param.isDebug == false)
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{_param.version} BETA", DateTime.Now.Date.ToString("dd/MM/yyyy"));
-                else
-                    DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{_param.version}.{_param.revision} BETA DEBUG MODE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+#if RELEASE
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{version} CHARLIE", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+#elif DEBUG
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{version}.{revision} CHARLIE >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+#endif
                 Send("This project is still in the development stage.", MessageType.warning);
                 Send("This is a BETA build. Some functionality may not work. Have fun testing :D", MessageType.warning);
                 Console.Write("""
@@ -95,7 +95,7 @@ Copyright 2025-2026 Emotion Corp.
                             break;
 
                         case 5:
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{_param.version}.{_param.revision} build:CHARLIE \n" +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v{version}.{revision} build:CHARLIE \n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;

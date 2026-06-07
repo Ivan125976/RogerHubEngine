@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.Yocto_Roger
+﻿namespace Yocto_Roger.RogerCore
 {
     /// <summary>
     /// Keeping values in string's

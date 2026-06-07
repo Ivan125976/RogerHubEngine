@@ -15,20 +15,6 @@ RogerHub configuration
     public class Parameters
     {
         /// <summary>
-        /// Debug flag. If enabled, logs will be written to the console. This is for developers.
-        /// </summary>
-        public readonly bool isDebug = false;
-
-        /// <summary>
-        /// Version of RogerHubEngine
-        /// </summary>
-        public readonly string version = "2.2.0";
-
-        /// <summary>
-        /// Revision of version RogerHubEngine
-        /// </summary>
-        public readonly string revision = "";
-        /// <summary>
         /// Number of passes during training on training data
         /// </summary>
         public int passes = 500;

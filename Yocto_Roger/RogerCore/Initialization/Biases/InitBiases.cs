@@ -1,7 +1,7 @@
-﻿using Yocto_Roger.Yocto_Roger.UtilityTools;
+﻿using Yocto_Roger.RogerCore.UtilityTools;
 using static Yocto_Roger.UI.GUI.GUI;
 
-namespace Yocto_Roger.Yocto_Roger.Initialization
+namespace Yocto_Roger.RogerCore.Initialization.Biases
 {
     /* 
 Yocto Roger ;)
@@ -15,7 +15,7 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary> 
     /// Class for initializing arrays of biases
     /// </summary>
-    public class Biases(Parameters param)
+    public class InitBiases(Parameters param)
     {
         private readonly Parameters _param = param;
         /// <summary>
@@ -23,18 +23,10 @@ Copyright 2025-2026 Emotion Corp.
         /// </summary>
         /// <param name="biases">Array of biases</param>
 
-        public void Init(ref double[] biases)
+        public static void Init(ref double[] biases)
         {
-            if (_param.isDebug)
-                Console.Write($"biases[] = \n");
             for (int i = 0; i < biases.Length; i++)
-            {
-                biases[i] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
-                if (_param.isDebug)
-                    Console.Write($"{biases[i]} ");
-            }
-            if (_param.isDebug)
-                Send("\nThe biases have been successfully adjusted!");
+                biases[i] = 0;
         }
 
         /// <summary>
@@ -42,23 +34,27 @@ Copyright 2025-2026 Emotion Corp.
         /// </summary>
         /// <param name="biases">Array of biases</param>
 
-        public void Init(ref double[,] biases)
+        public static void Init(ref double[,] biases)
         {
-            if (_param.isDebug)
-                Console.Write($"biases[,] = \n");
+#if DEBUG
+            Console.Write($"biases[,] = \n");
+#endif
             for (int i = 0; i < biases.GetLength(0); i++)
             {
                 for (int j = 0; j < biases.GetLength(1); j++)
                 {
                     biases[i, j] = RogerMath.rand.NextDouble() * 0.2 - 0.1;
-                    if (_param.isDebug)
-                        Console.Write($"{biases[i, j]} ");
+#if DEBUG
+                    Console.Write($"{biases[i, j]} ");
+#endif
                 }
-                if (_param.isDebug)
-                    Console.WriteLine();
+#if DEBUG
+                Console.WriteLine();
+#endif
             }
-            if (_param.isDebug)
-                Send("The biases have been successfully adjusted!");
+#if DEBUG
+            Send("The biases have been successfully adjusted!");
+#endif
         }
     }
 }

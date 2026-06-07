@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
 using Yocto_Roger.IO;
+using Yocto_Roger.RogerCore.Initialization.Biases;
+using Yocto_Roger.RogerCore.Initialization.Weights;
+using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.GUI;
-using Yocto_Roger.Yocto_Roger.Initialization;
-using Yocto_Roger.Yocto_Roger.UtilityTools;
 using static Yocto_Roger.IO.Splitter;
+using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
 using static Yocto_Roger.UI.GUI.GUI;
-using static Yocto_Roger.Yocto_Roger.UtilityTools.RogerMath;
 
-namespace Yocto_Roger.Yocto_Roger
+namespace Yocto_Roger.RogerCore
 {
     /* 
 Yocto Roger ;)
@@ -21,14 +22,15 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
-    public class NeuralNetwork(Parameters param, MainIO io, Weights weights, Biases biases, Training.Training training, GUI gui)
+    public class NeuralNetwork(Parameters param, MainIO io, InitWeights weights, InitBiases biases, Training.Training training, GUI gui, CreateWeights weightsCreator)
     {
         private readonly Parameters _param = param;
         private readonly MainIO _io = io;
-        private readonly Weights _weights = weights;
-        private readonly Biases _biases = biases;
+        private readonly InitWeights _weights = weights;
+        private readonly InitBiases _biases = biases;
         private readonly Training.Training _training = training;
         private readonly GUI _gui = gui;
+        private readonly CreateWeights _weightsCreator = weightsCreator;
         /// <summary>
         /// Flag indicating whether Roger has been created
         /// </summary>
@@ -175,13 +177,14 @@ Copyright 2025-2026 Emotion Corp.
                     Obias = new double[_param.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization biases...");
-                    _biases.Init(ref Mbias);
-                    _biases.Init(ref Obias);
+                    InitBiases.Init(ref Mbias);
+                    InitBiases.Init(ref Obias);
                     Send("done");
                     Console.Write("Initialization weights...");
-                    _weights.Init(ref inputWeights);
-                    _weights.Init(ref middleWeights);
-                    _weights.Init(ref outputWeights);
+                    InitWeights.Init(ref inputWeights);
+                    _weightsCreator.CreateMiddleWeights(ref middleWeights);
+                    InitWeights.Init(ref middleWeights);
+                    InitWeights.Init(ref outputWeights);
                     Send("done");
                     Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");
@@ -216,7 +219,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
                     {
                         Console.WriteLine("Loading your Roger... please wait :D");
-                        _io.InitNeuralNetwork(_io.LoadNeuralNetworkStateFromJson(inputChecked), false);
+                        _io.InitNeuralNetwork(MainIO.LoadNeuralNetworkStateFromJson(inputChecked), false);
                         rogerIsCreated = true;
                     }
                     else
@@ -229,6 +232,7 @@ Copyright 2025-2026 Emotion Corp.
                 case 3:
                     return;
             }
+            #region NeuralNetworkInterface
             if (rogerIsCreated)
             {
                 float[,]? disabledDropOut = null;
@@ -294,6 +298,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
                 }
             }
+            #endregion
         }
 
         /// <summary>
@@ -302,8 +307,9 @@ Copyright 2025-2026 Emotion Corp.
         /// <returns></returns>
         public float[,] GenerateDropOut()
         {
-            if (_param.isDebug)
-                Console.WriteLine("DropOut Matrix = ");
+#if DEBUG
+            Console.WriteLine("DropOut Matrix = ");
+#endif
             float[,] masks = new float[_param.layers - 2, _param.middleNeuronsCount];
             float keepProb = 1.00f - _param.DropOutPercent * 0.01f;
 
@@ -314,11 +320,13 @@ Copyright 2025-2026 Emotion Corp.
                     for (int j = 0; j < masks.GetLength(1); j++)
                     {
                         masks[i, j] = 1.0f;
-                        if (_param.isDebug)
-                            Console.Write(masks[i, j] + " ");
+#if DEBUG
+                        Console.Write(masks[i, j] + " ");
+#endif
                     }
-                    if (_param.isDebug)
-                        Console.WriteLine();
+#if DEBUG
+                    Console.WriteLine();
+#endif
                 }
                 return masks;
             }
@@ -332,11 +340,13 @@ Copyright 2025-2026 Emotion Corp.
                             masks[i, j] = 0;
                         else
                             masks[i, j] = 1.0f / keepProb;
-                        if (_param.isDebug)
-                            Console.Write(masks[i, j] + " ");
+#if DEBUG
+                        Console.Write(masks[i, j] + " ");
+#endif
                     }
-                    if (_param.isDebug)
-                        Console.WriteLine();
+#if DEBUG
+                    Console.WriteLine();
+#endif
                 }
             }
             return masks;
@@ -349,11 +359,12 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="oldNeurons">Input neurons</param>
         /// <param name="newNeurons">Middle neurons</param>
         /// <param name="biases">Middle biases</param>
-        public void SumWeights(double[,] oldweights, int[] oldNeurons, double[,] newNeurons, double[,] biases)
+        public static void SumWeights(double[,] oldweights, int[] oldNeurons, double[,] newNeurons, double[,] biases)
         {
 
-            if (_param.isDebug)
-                Console.Write("Sum of weights ([]->[,]) - ");
+#if DEBUG
+            Console.Write("Sum of weights ([]->[,]) - ");
+#endif
             for (int i = 0; i < newNeurons.GetLength(1); i++)
             {
                 double temp = 0;
@@ -361,11 +372,13 @@ Copyright 2025-2026 Emotion Corp.
                     temp += oldweights[j, i] * oldNeurons[j];
                 temp += biases[0, i];
                 newNeurons[0, i] = Tanh(temp);
-                if (_param.isDebug)
-                    Console.Write(newNeurons[0, i] + " ");
+#if DEBUG
+                Console.Write(newNeurons[0, i] + " ");
+#endif
             }
-            if (_param.isDebug)
-                Console.WriteLine();
+#if DEBUG
+            Console.WriteLine();
+#endif
         }
 
         /// <summary>
@@ -375,11 +388,12 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="neurons">Middle neurons</param>
         /// <param name="biases">Middle biases</param>
         /// <param name="layer">Layer</param>
-        public void SumWeights(double[,] oldweights, double[,] neurons, double[,] biases, int layer) //нахождение новых нейронов (middle -> middle)
+        public static void SumWeights(double[,] oldweights, double[,] neurons, double[,] biases, int layer) //нахождение новых нейронов (middle -> middle)
         {
 
-            if (_param.isDebug)
-                Console.Write("Sum of weights ([,]->[,]) - ");
+#if DEBUG
+            Console.Write("Sum of weights ([,]->[,]) - ");
+#endif
             for (int i = 0; i < neurons.GetLength(1); i++)
             {
                 double temp = 0;
@@ -387,11 +401,13 @@ Copyright 2025-2026 Emotion Corp.
                     temp += oldweights[j, i] * neurons[layer, j];
                 temp += biases[layer + 1, i];
                 neurons[layer + 1, i] = Tanh(temp);
-                if (_param.isDebug)
-                    Console.Write(neurons[layer + 1, i] + " ");
+#if DEBUG
+                Console.Write(neurons[layer + 1, i] + " ");
+#endif
             }
-            if (_param.isDebug)
-                Console.WriteLine();
+#if DEBUG
+            Console.WriteLine();
+#endif
         }
 
         /// <summary>
@@ -401,10 +417,11 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="oldNeurons">Middle neurons</param>
         /// <param name="newNeurons">Output neurons</param>
         /// <param name="biases">Output biases</param>
-        public void SumWeights(double[,] oldweights, double[,] oldNeurons, double[] newNeurons, double[] biases) //нахождение новых нейронов (middle -> output)
+        public static void SumWeights(double[,] oldweights, double[,] oldNeurons, double[] newNeurons, double[] biases) //нахождение новых нейронов (middle -> output)
         {
-            if (_param.isDebug)
-                Console.Write("Sum of weights ([,]->[]) - ");
+#if DEBUG
+            Console.Write("Sum of weights ([,]->[]) - ");
+#endif
             for (int i = 0; i < newNeurons.GetLength(0); i++)
             {
                 double temp = 0;
@@ -412,15 +429,17 @@ Copyright 2025-2026 Emotion Corp.
                     temp += oldweights[j, i] * oldNeurons[oldNeurons.GetLength(0) - 1, j];
                 temp += biases[i];
                 newNeurons[i] = Tanh(temp);
-                if (_param.isDebug)
-                    Console.Write(newNeurons[i] + " ");
+#if DEBUG
+                Console.Write(newNeurons[i] + " ");
+#endif
             }
-            if (_param.isDebug)
-                Console.WriteLine();
+#if DEBUG
+            Console.WriteLine();
+#endif
         }
 
         /// <summary>
-        /// 
+        /// Write array to input neurons
         /// </summary>
         /// <param name="neurons"></param>
         /// <param name="writeArray"></param>
