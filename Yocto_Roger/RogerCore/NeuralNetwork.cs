@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using Yocto_Roger.IO;
+using Yocto_Roger.UI.GUI;
 using Yocto_Roger.Yocto_Roger.Initialization;
 using Yocto_Roger.Yocto_Roger.UtilityTools;
-using Yocto_Roger.UI.GUI;
+using static Yocto_Roger.IO.Splitter;
 using static Yocto_Roger.UI.GUI.GUI;
 using static Yocto_Roger.Yocto_Roger.UtilityTools.RogerMath;
-using static Yocto_Roger.IO.Splitter;
 
 namespace Yocto_Roger.Yocto_Roger
 {
@@ -175,31 +175,13 @@ Copyright 2025-2026 Emotion Corp.
                     Obias = new double[_param.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization biases...");
-                    try
-                    {
-                        _biases.Init(ref Mbias);
-                        _biases.Init(ref Obias);
-                    }
-                    catch (Exception ex)
-                    {
-                        Send("Failed to initialize the Biases: \n" + ex.Message, MessageType.error);
-                        Thread.Sleep(5000);
-                        break;
-                    }
+                    _biases.Init(ref Mbias);
+                    _biases.Init(ref Obias);
                     Send("done");
                     Console.Write("Initialization weights...");
-                    try
-                    {
-                        _weights.Init(ref inputWeights);
-                        _weights.Init(ref middleWeights);
-                        _weights.Init(ref outputWeights);
-                    }
-                    catch (Exception ex)
-                    {
-                        Send($"Failed to initialize the Weights: \n{ex.Message}", MessageType.error);
-                        Thread.Sleep(5000);
-                        break;
-                    }
+                    _weights.Init(ref inputWeights);
+                    _weights.Init(ref middleWeights);
+                    _weights.Init(ref outputWeights);
                     Send("done");
                     Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");
