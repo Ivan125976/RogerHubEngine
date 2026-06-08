@@ -59,5 +59,9 @@ RogerHub configuration
         /// </summary>
         public int layers = 3;
 
+        /// <summary>
+        /// Cache Management in RMS Optimization
+        /// </summary>
+        public float rms_decay = 0.95f;
     }
 }

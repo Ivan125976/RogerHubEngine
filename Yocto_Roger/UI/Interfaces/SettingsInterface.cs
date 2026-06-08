@@ -36,7 +36,8 @@ namespace Yocto_Roger.UI.Interfaces
                                         7. DropOut sys percent...{param.DropOutPercent}% (0% - disable DropOut)
                                         8. Learning Rate...{param.learningRate}
                                         9. Passes...{param.passes}
-                                        10. Exit 
+                                        10. RMS Decay...{param.rms_decay}
+                                        11. Exit
                                         >>> 
                                         """);
                 string? choice = Console.ReadLine();
@@ -148,10 +149,10 @@ namespace Yocto_Roger.UI.Interfaces
                         Console.Clear();
                         Console.WriteLine("*LEARNING RATE PARAMETER*");
                         Console.Write("FLOAT> Enter new learning rate (0,0 – 1,0)... ");
-                        if (float.TryParse(Console.ReadLine(), out float newLR))
+                        if (float.TryParse(Console.ReadLine(), out float LR))
                         {
-                            if (newLR > 0 && newLR <= 1.0)
-                                param.learningRate = newLR;
+                            if (LR > 0 && LR <= 1.0)
+                                param.learningRate = LR;
                             else
                                 Send("Learning rate out of range.", MessageType.error);
                         }
@@ -175,6 +176,21 @@ namespace Yocto_Roger.UI.Interfaces
                         break;
 
                     case "10":
+                        Console.Clear();
+                        Console.WriteLine("*RMS PROP DECAY OPTIMIZATION*");
+                        Console.Write("DOUBLE> Enter new RMS Decay (0,9 - 0,999)... ");
+                        if (float.TryParse(Console.ReadLine(), out float RMSDECAY))
+                        {
+                            if (!(RMSDECAY < 0.9f ||  RMSDECAY > 0.999))
+                                param.rms_decay = RMSDECAY;
+                            else
+                                Send("Invalid input.", MessageType.error);
+                        }
+                        else
+                            Send("Invalid input.", MessageType.error);
+                        break;
+
+                    case "11":
                         i++;
                         break;
                 }

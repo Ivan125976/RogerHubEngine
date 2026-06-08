@@ -1,4 +1,5 @@
-﻿using Yocto_Roger.UI.GUI;
+﻿using System.ComponentModel.Design;
+using Yocto_Roger.UI.GUI;
 
 namespace Yocto_Roger.RogerCore.Training
 {
@@ -10,7 +11,7 @@ Yocto Roger ;)
 Copyright 2025-2026 Emotion Corp.
     Education With Teacher Algorithm v1.1
 
-    EducationWithTeacher, DropOut, multilayer, biases
+    EducationWithTeacher, DropOut, multilayer, biases, RMSProp
 */
 
     /// <summary>
@@ -53,6 +54,9 @@ Copyright 2025-2026 Emotion Corp.
             double progress = 0;
             bool done = false;
             object lockObj = new();
+
+            double eps = 1e-8;
+            double decay = 0.95;
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];
