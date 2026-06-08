@@ -181,7 +181,7 @@ namespace Yocto_Roger.UI.Interfaces
                         Console.Write("DOUBLE> Enter new RMS Decay (0,9 - 0,999)... ");
                         if (float.TryParse(Console.ReadLine(), out float RMSDECAY))
                         {
-                            if (!(RMSDECAY < 0.9f ||  RMSDECAY > 0.999))
+                            if (!(RMSDECAY < 0.9f ||  RMSDECAY > 0.999f))
                                 param.rms_decay = RMSDECAY;
                             else
                                 Send("Invalid input.", MessageType.error);

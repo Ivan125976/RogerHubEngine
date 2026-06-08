@@ -56,7 +56,6 @@ Copyright 2025-2026 Emotion Corp.
             object lockObj = new();
 
             double eps = 1e-8;
-            double decay = 0.95;
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];
@@ -67,9 +66,8 @@ Copyright 2025-2026 Emotion Corp.
             double[,] oldOutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
             double[][,] oldMiddleWeights = new double[_param.layers - 3][,];
 
-            int nextLayer, oldLayer;
+            int nextLayer, oldLayer, lastMiddleWeights;
 
-            int lastMiddleWeights;
             if (_param.layers > 3)
                 lastMiddleWeights = middleNeurons.GetLength(0) - 1;
             else
