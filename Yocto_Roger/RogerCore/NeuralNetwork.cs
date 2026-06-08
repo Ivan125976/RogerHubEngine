@@ -465,5 +465,37 @@ Copyright 2025-2026 Emotion Corp.
 
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
         }
+
+        /// <summary>
+        /// Forward propogation algorithm for Training Mode
+        /// </summary>
+        /// <param name="NNinput">Current input to the neural network</param>
+        /// <param name="inputNeurons">Input neurons array</param>
+        /// <param name="inputWeights">Input weights array</param>
+        /// <param name="middleNeurons">Middle neurons array</param>
+        /// <param name="middleWeights">Middle weights array</param>
+        /// <param name="middleBiases">Middle biases array</param>
+        /// <param name="outputNeurons">Output neurons array</param>
+        /// <param name="outputBiases">Output biases array</param>
+        /// <param name="outputWeights">Output weights array</param>
+        /// <param name="dropOutMatrix">DropOut Matrix</param>
+        public void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights, double[,] middleBiases,
+            double[] outputNeurons, double[] outputBiases, double[,] outputWeights, float[,] dropOutMatrix)
+        {
+            WriteToNN(inputNeurons, NNinput);
+
+            SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
+            for (int i = 0; i < middleNeurons.GetLength(1); i++)
+                middleNeurons[0, i] *= dropOutMatrix[0, i];
+
+            for (int l = 0; l < _param.layers - 3; l++)
+            {
+                SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
+                for (int j = 0; j < middleNeurons.GetLength(1); j++)
+                    middleNeurons[l + 1, j] *= dropOutMatrix[l + 1, j];
+            }
+
+            SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
+        }
     }
 }

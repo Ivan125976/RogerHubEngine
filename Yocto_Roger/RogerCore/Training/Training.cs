@@ -71,7 +71,7 @@ Copyright 2025-2026 Emotion Corp.
             else
                 lastMiddleWeights = 0;
 
-            for (int x = 0; x < lastMiddleWeights; x++)
+            for (int x = 0; x < middleWeights.Length; x++)
                 oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
 
                 Thread uiThread = new(() =>
@@ -119,7 +119,7 @@ Copyright 2025-2026 Emotion Corp.
                     float[,] dropOut = roger.GenerateDropOut();
 
                     //forward propagation
-                    roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights);
+                    roger.ForwardPropagation(input, inputNeurons, inputWeights, middleNeurons, middleWeights, middleBiases, outputNeurons, outputBiases, outputWeights, dropOut);
 
                     for (int l = 0; l < outputNeurons.Length; l++)
                         output[l] = educationArray[i, l + inputNeurons.Length];
@@ -146,7 +146,7 @@ Copyright 2025-2026 Emotion Corp.
                         if (_param.layers - 2 > 1)
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
                                 middleWeights[lastMiddleWeights - 1][k, j] -=
-                                    middleNeurons[lastMiddleWeights, k] *
+                                    middleNeurons[lastMiddleWeights - 1, k] *
                                     deltaMid[lastMiddleWeights, j] *
                                     _param.learningRate;
                         else
