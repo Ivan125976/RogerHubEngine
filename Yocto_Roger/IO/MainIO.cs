@@ -165,7 +165,7 @@ Internal I/O lib
         /// <summary>
         /// Attempts to create a file in the same directory; if such a file already exists, it adds an index of attempts until it reaches the index where there is no file with that name.
         /// </summary>
-        /// <param name="fileName">Can be path + filename. Example: C:\Users\Noob\Desktop\roger, where roger is filename, without extenshion. Then file will be created in Desktop</param>
+        /// <param name="fileName">Can be path + filename. Example: C:\Users\Noob\Desktop\roger, where roger is filename, without extension. Then file will be created in Desktop</param>
         /// <param name="extension">File extension (without period)</param>
         public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "roger")
         {

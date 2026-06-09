@@ -215,8 +215,20 @@ Copyright 2025-2026 Emotion Corp.
                     if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
                     {
                         Console.WriteLine("Loading your Roger... please wait :D");
-                        _io.InitNeuralNetwork(MainIO.LoadNeuralNetworkStateFromBin(inputChecked));
-                        rogerIsCreated = true;
+                        try
+                        {
+                            _io.InitNeuralNetwork(MainIO.LoadNeuralNetworkStateFromBin(inputChecked));
+                            rogerIsCreated = true;
+                        }
+                        catch (MemoryPackSerializationException e)
+                        {
+                            Send($"I can't to serialize the data, here's my error: \n", MessageType.error);
+                            Console.WriteLine(e.ToString(), ConsoleColor.Red);
+                            Console.WriteLine("This could mean that the developers screwed up somewhere. If you have a time, then please write an issue about this error on our Github (0v0). Here's url:\n" +
+                                "https://github.com/Ivan125976/AI_Roger/issues/new", ConsoleColor.Blue);
+                            Console.Write("Press enter to continue");
+                            Console.ReadLine();
+                        }
                     }
                     else
                     {
