@@ -19,7 +19,7 @@
         /// Redraws the progressbar
         /// </summary>
         /// <param name="percent">Fill percentage</param>
-        public void Draw(int percent)
+        public void Draw(int percent) //Ivan: Очень плохо использовать Thread, для прогрессбара, лучше сделайть этот метод ассинхронный и вызывай его с помощью await, это намного лучше, и читается лучше
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;

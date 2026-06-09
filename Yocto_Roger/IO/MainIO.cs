@@ -46,6 +46,8 @@ Internal I/O lib
                 AIversion = version,
                 Passes = _param.passes,
 
+                KnowledgeFile = _param.knowledgeFile,
+
                 LearingRate = _param.learningRate,
                 DropOutPercent = _param.DropOutPercent,
 
@@ -54,6 +56,8 @@ Internal I/O lib
                 OutputNeuronsCount = _param.outputNeuronsCount,
 
                 Layers = _param.layers,
+
+                Rms_decay = _param.rms_decay
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -104,6 +108,10 @@ Internal I/O lib
             public string? AIversion { get; set; }
 
             /// <summary>
+            /// Knowledge.know file
+            /// </summary>
+            public string? KnowledgeFile { get; set; }
+            /// <summary>
             /// Passes
             /// </summary>
             public int Passes { get; set; }
@@ -138,6 +146,11 @@ Internal I/O lib
             /// MLayers
             /// </summary>
             public int MLayers { get; set; }
+
+            /// <summary>
+            /// Rms_Decay. I don't know what it is, Ivan knows, asking him
+            /// </summary>
+            public float Rms_decay { get; set; } = 0.95f;
         }
 
         /// <summary>
@@ -145,12 +158,7 @@ Internal I/O lib
         /// </summary>
         private Roger? LoadRogerFromJson()
         {
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(_param.roger2));
-            JsonElement root = document.RootElement;
-
             Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(_param.roger2));
-
-
             return roger ?? null;
         }
 
@@ -194,7 +202,7 @@ Internal I/O lib
             _param.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
 
             _nN.inputWeights = nN?.InputWeights!;
-            _nN.middleWeights = nN?.MiddleWeights!;
+            _nN.middleWeights = nN?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
             _nN.outputWeights = nN?.OutputWeights!;
 
             // If null - values by default

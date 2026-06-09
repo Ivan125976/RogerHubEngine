@@ -55,7 +55,8 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-            double eps = 1e-8;
+            //Закомментировал, потому что вижуал студио ругается что оно нигде не используется - расход памяти впустую
+            //double eps = 1e-8;
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];

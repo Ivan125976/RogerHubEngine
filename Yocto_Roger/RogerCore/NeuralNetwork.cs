@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using MemoryPack;
 
+// При компиляции в Release дллка NewtonsoftJson.dll всё равно почему-то линкуется в папку с бинарником, вероятно изза того что он добавленн в проект как nuget пакет. Так вот, в release когда компилируешь, дллку эту можно удалить, ибо она не нужна и весит 700кб целых
 #if DEBUG
 using Newtonsoft.Json; // For middleWeights
 #endif
+
 using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore.Initialization.Biases;
 using Yocto_Roger.RogerCore.Initialization.Weights;

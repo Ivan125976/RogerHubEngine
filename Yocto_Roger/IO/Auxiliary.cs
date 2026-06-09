@@ -29,11 +29,15 @@ Internal extension I/O lib
             _param.learningRate = roger?.LearingRate ?? 0.02f;
             _param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
 
+            _param.knowledgeFile = roger?.KnowledgeFile ?? String.Empty;
+
             _param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
             _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
             _param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
 
             _param.layers = roger?.Layers ?? 3;
+
+            _param.rms_decay = roger?.Rms_decay ?? 0.95f;
         }
     }
 }
