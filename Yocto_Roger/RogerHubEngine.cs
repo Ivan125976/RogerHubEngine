@@ -1,12 +1,19 @@
-﻿using Yocto_Roger.IO;
+﻿using System.Text;
+using Yocto_Roger.IO;
+using static Yocto_Roger.Configuration.EngineVersion;
 using Yocto_Roger.RogerCore;
-using Yocto_Roger.RogerCore.Initialization.Biases;
 using Yocto_Roger.RogerCore.Initialization.Weights;
 using Yocto_Roger.RogerCore.Training;
+using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
+using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger
 {
+    // We are not idiots.
+    // We are idiots++.
+    // © Emotion Corp.
+
     /// <summary>
     /// Main class
     /// </summary>
@@ -17,28 +24,38 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            // We are not idiots.
-            // We are idiots++.
-            // © Emotion Corp.
+            Console.WriteLine("Configuring console...");
+
+            if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
+            {
+                Send("The window is too small >:(", MessageType.error);
+                Environment.Exit(1);
+            }
+
+            Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} CharLie";
+
+            Console.InputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode;
 
             Parameters param = new();
             NeuralNetworkState nNState = new();
 
-            UI.GUI.GUI user = new(null!, null!);
-            Auxiliary auxiliaryIO = new(param);
             MainIO io = new(param, null!, nNState);
-            CreateWeights middleWeightsCreator = new(param);
-            InitWeights weights = new();
-            Training training = new(param, null!);
-            NeuralNetwork nN = new(param, io, training, user, middleWeightsCreator);
+            Auxiliary auxiliaryIO = new(param);
             SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
+            CreateWeights middleWeightsCreator = new(param);
+            Training training = new(param, null!);
+            MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
+            NeuralNetwork nN = new(param, io, training, middleWeightsCreator, mainMenuInterface);
 
             io._nN = nN;
-            user._roger = nN;
-            user._settingsInterface = settingsInterface;
             training.roger = nN;
+            mainMenuInterface._roger = nN;
 
-            user.StartEngine(true);
+            DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
+            Thread.Sleep(3000);
+
+            mainMenuInterface.StartInterface();
         }
     }
 }

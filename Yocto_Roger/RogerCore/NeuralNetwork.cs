@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using MemoryPack;
+using static Yocto_Roger.UI.CUI.CUI;
 
 // При компиляции в Release дллка NewtonsoftJson.dll всё равно почему-то линкуется в папку с бинарником, вероятно изза того что он добавленн в проект как nuget пакет. Так вот, в release когда компилируешь, дллку эту можно удалить, ибо она не нужна и весит 700кб целых
 #if DEBUG
@@ -10,10 +11,10 @@ using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore.Initialization.Biases;
 using Yocto_Roger.RogerCore.Initialization.Weights;
 using Yocto_Roger.RogerCore.UtilityTools;
-using Yocto_Roger.UI.GUI;
+using Yocto_Roger.UI.CUI;
 using static Yocto_Roger.IO.Splitter;
 using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
-using static Yocto_Roger.UI.GUI.GUI;
+using Yocto_Roger.UI.Interfaces;
 
 namespace Yocto_Roger.RogerCore
 {
@@ -29,13 +30,13 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
-    public class NeuralNetwork(Parameters param, MainIO io, Training.Training training, GUI gui, CreateWeights weightsCreator)
+    public class NeuralNetwork(Parameters param, MainIO io, Training.Training training, CreateWeights weightsCreator, MainMenuInterface mainMenuInterface)
     {
         private readonly Parameters _param = param;
         private readonly MainIO _io = io;
         private readonly Training.Training _training = training;
-        private readonly GUI _gui = gui;
         private readonly CreateWeights _weightsCreator = weightsCreator;
+        private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
         /// <summary>
         /// Flag indicating whether Roger has been created
         /// </summary>
@@ -98,7 +99,7 @@ Copyright 2025-2026 Emotion Corp.
                 case 0:
                     if (!File.Exists(_param.knowledgeFile))
                     {
-                        Send("I can't find the training file!", MessageType.message);
+                        Send("I can't find the training file!", MessageType.error);
                         break;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
@@ -259,7 +260,7 @@ Copyright 2025-2026 Emotion Corp.
                         string[] userInputChecked = userInputString.Split(',');
                         if (userInputString == "exit")
                         {
-                            _gui.StartEngine(false); // Go to main menu
+                            _mainMenuInterface.StartInterface();
                         }
                         else if (userInputString == "save")
                         {

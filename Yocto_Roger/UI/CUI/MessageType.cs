@@ -1,10 +1,15 @@
-﻿namespace Yocto_Roger.UI.GUI
+﻿namespace Yocto_Roger.UI.CUI
 {
     /// <summary>
     /// Message type
     /// </summary>
     public enum MessageType
     {
+        /// <summary>
+        /// Draws the message in blue
+        /// </summary>
+        note,
+
         /// <summary>
         /// Draws the message in green, then advances one line
         /// </summary>

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Design;
-using Yocto_Roger.UI.GUI;
+using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore.Training
 {
@@ -55,8 +55,7 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-            //Закомментировал, потому что вижуал студио ругается что оно нигде не используется - расход памяти впустую
-            //double eps = 1e-8;
+            double eps = 1e-8;
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];

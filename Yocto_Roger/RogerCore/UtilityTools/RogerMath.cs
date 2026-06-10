@@ -25,7 +25,6 @@ Internal AIMath lib
         /// Tanh Activation
         /// </summary>
         /// <param name="value">Value</param>
-        /// <returns></returns>
         public static double Tanh(double value)
         {
             return Math.Tanh(value);

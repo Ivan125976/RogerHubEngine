@@ -1,6 +1,6 @@
 ﻿using Yocto_Roger.IO;
-using Yocto_Roger.UI.GUI;
-using static Yocto_Roger.UI.GUI.GUI;
+using Yocto_Roger.UI.CUI;
+using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces
 {
@@ -8,7 +8,7 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// Settings interface
     /// </summary>
-    public class SettingsInterface(Parameters param, MainIO io, Auxiliary auxiliaryIO)
+    public class SettingsInterface(Parameters param, MainIO io, Auxiliary auxiliaryIO) : IUserInterface
     {
         private readonly MainIO _io = io;
         private readonly Auxiliary _auxiliaryIO = auxiliaryIO;
@@ -16,7 +16,7 @@ namespace Yocto_Roger.UI.Interfaces
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
-        public void SetUpMenu()
+        public void StartInterface()
         {
             int i = 0;
             while (i == 0)

@@ -3,12 +3,22 @@
     /// <summary>
     /// Contains immutable variables
     /// </summary>
-    public static class EngineVersion
+    public class EngineVersion
     {
         /// <summary>
-        /// Version of RogerHubEngine
+        /// Major version of RogerHubEngine
         /// </summary>
-        public const string version = "2.2.0";
+        public const char majorVersion = '2';
+
+        /// <summary>
+        /// Minor version of RogerHubEngine
+        /// </summary>
+        public const char minorVersion = '2';
+
+        /// <summary>
+        /// Patch version of RogerHubEngine
+        /// </summary>
+        public const char patchVersion = '0';
 
         /// <summary>
         /// Revision of version RogerHubEngine

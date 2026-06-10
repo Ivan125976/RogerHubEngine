@@ -1,14 +1,14 @@
 ﻿using Velopack;
 using Velopack.Sources;
-using Yocto_Roger.UI.GUI;
-using static Yocto_Roger.UI.GUI.GUI;
+using Yocto_Roger.UI.CUI;
+using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.IO
 {
     /// <summary>
     /// Class of Update Manager
     /// </summary>
-    public class UpdateManager_
+    public class UpdateManager
     {
         /// <summary>
         /// Menu of update manager + logic and exceptions. Can writing some text in console, be careful when using it in your project
@@ -18,7 +18,7 @@ namespace Yocto_Roger.IO
             VelopackApp.Build().Run();
 
             GithubSource githubSource = new("https://github.com/Ivan125976/AI_Roger", null, false);
-            var mgr = new UpdateManager(githubSource);
+            var mgr = new Velopack.UpdateManager(githubSource);
 
             if (mgr.IsInstalled)
             {
