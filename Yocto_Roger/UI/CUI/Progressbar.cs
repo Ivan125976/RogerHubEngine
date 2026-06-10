@@ -42,8 +42,7 @@
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
-            Console.SetCursorPosition(_x + _parts + 2, _y);
-            Console.Write(new string('\b', _parts + 2));
+            Console.Write(new string(' ', _parts + 2));
             Console.SetCursorPosition(cursorX, cursorY);
         }
     }
