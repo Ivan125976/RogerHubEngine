@@ -5,6 +5,7 @@ using Yocto_Roger.UI.Interfaces;
 using Velopack;
 using Velopack.Sources;
 using static Yocto_Roger.Configuration.EngineVersion;
+using Yocto_Roger.IO;
 
 namespace Yocto_Roger.UI.GUI
 /* 
@@ -99,73 +100,7 @@ Copyright 2025-2026 Emotion Corp.
                             break;
 
                         case 5:
-                            VelopackApp.Build().Run();
-                            GithubSource githubSource = new("https://github.com/Ivan125976/AI_Roger", null, false);
-                            var mgr = new UpdateManager(githubSource);
-
-                            if (mgr.IsInstalled)
-                            {
-
-                                Console.WriteLine(
-                                    $"""
-                                1. Check for updates and update
-                                2. Get outta here to main menu
-                                """);
-                                if (int.TryParse(Console.ReadLine(), out int choice))
-                                {
-                                    switch (choice)
-                                    {
-                                        case 1:
-                                            UpdateInfo info = mgr.CheckForUpdates();
-
-                                            if (info != null)
-                                            {
-                                                Console.WriteLine("Updates found! Downloading...");
-                                                try
-                                                {
-                                                    mgr.DownloadUpdates(info);
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    Console.WriteLine($"Failed to download the update: {ex}");
-                                                    break;
-                                                }
-                                                Console.WriteLine("Updates was downloaded successful!\nTrying to apply it, the app will be restarted in new version...");
-                                                Thread.Sleep(5000); // For user can to read the message
-                                                try
-                                                {
-                                                    mgr.ApplyUpdatesAndRestart(info);
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    Send("Failed to apply updates, here's my error: ", MessageType.error);
-                                                    Console.WriteLine(ex.ToString(), ConsoleColor.Red);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                Send("Hey, hey, calm down, you have the latest version");
-                                                Thread.Sleep(5000);
-                                            }
-                                            break;
-
-                                        case 2:
-                                            break;
-
-                                    }
-
-                                }
-                                else
-                                {
-                                    Send("Incorrect input (-_0)", MessageType.error);
-                                    Thread.Sleep(1000);
-                                }
-                                break;
-                            }
-                            else
-                            {
-                                Send("I can't find installed tools, maybe you run it in ide? If you run it in visual studio for example, then the library which response for updates, won't working", MessageType.error);
-                            }
+                            UpdateManager_.UpdateManagerMenu();
                             break;
 
                         case 6:
