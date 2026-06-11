@@ -63,5 +63,10 @@ RogerHub configuration
         /// Cache Management in RMS Optimization
         /// </summary>
         public float rms_decay = 0.95f;
+
+        /// <summary>
+        /// RMS Optimization Switch
+        /// </summary>
+        public bool rms_enabled = false;
     }
 }

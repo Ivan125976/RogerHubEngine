@@ -33,11 +33,12 @@ namespace Yocto_Roger.UI.Interfaces
                                         4. Count of output neurons...{param.outputNeuronsCount}
                                         5. Count of Layers...{param.layers}
                                         6. Knowledge file...{param.knowledgeFile}
-                                        7. DropOut sys percent...{param.DropOutPercent}% (0% - disable DropOut)
+                                        7. DropOut sys percent...{param.DropOutPercent}%
                                         8. Learning Rate...{param.learningRate}
                                         9. Passes...{param.passes}
-                                        10. RMS Decay...{param.rms_decay}
-                                        11. Exit
+                                        10. RMS Enabled...{param.rms_enabled}
+                                        11. RMS Decay...{param.rms_decay}
+                                        12. Exit
                                         >>> 
                                         """);
                 string? choice = Console.ReadLine();
@@ -177,20 +178,39 @@ namespace Yocto_Roger.UI.Interfaces
 
                     case "10":
                         Console.Clear();
-                        Console.WriteLine("*RMS PROP DECAY OPTIMIZATION*");
-                        Console.Write("DOUBLE> Enter new RMS Decay (0,9 - 0,999)... ");
-                        if (float.TryParse(Console.ReadLine(), out float RMSDECAY))
-                        {
-                            if (!(RMSDECAY < 0.9f ||  RMSDECAY > 0.999f))
-                                param.rms_decay = RMSDECAY;
-                            else
-                                Send("Invalid input.", MessageType.error);
-                        }
+                        Console.WriteLine("*RMS PROP OPTIMIZATION*");
+                        Send("This optimization speeds up training, but consumes twice as much memory allocated to the neural network during training", MessageType.warning);
+                        Console.Write("BOOL> Enter the switch value (True/False)... ");
+                        if (bool.TryParse(Console.ReadLine(), out bool RMS))
+                            param.rms_enabled = RMS;
                         else
                             Send("Invalid input.", MessageType.error);
                         break;
 
                     case "11":
+                        Console.Clear();
+                        if (param.rms_enabled)
+                        {
+                            Console.WriteLine("*RMS PROP DECAY OPTIMIZATION*");
+                            Console.Write("DOUBLE> Enter new RMS Decay (0,9 - 0,999)... ");
+                            if (float.TryParse(Console.ReadLine(), out float RMSDECAY))
+                            {
+                                if (!(RMSDECAY < 0.9f || RMSDECAY > 0.999f))
+                                    param.rms_decay = RMSDECAY;
+                                else
+                                    Send("Invalid input.", MessageType.error);
+                            }
+                            else
+                                Send("Invalid input.", MessageType.error);
+                            break;
+                        }
+                        else
+                        {
+                            Send("RMS not enabled", MessageType.error);
+                            break;
+                        }
+
+                    case "12":
                         i++;
                         break;
                 }
