@@ -1,11 +1,9 @@
-﻿using System.Globalization;
+﻿using MemoryPack;
 using System.Text.Json;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.CUI;
 using static Yocto_Roger.Configuration.EngineVersion;
-using static Yocto_Roger.IO.Auxiliary;
 using static Yocto_Roger.UI.CUI.CUI;
-using MemoryPack;
 
 namespace Yocto_Roger.IO
 {

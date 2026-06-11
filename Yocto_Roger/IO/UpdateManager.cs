@@ -74,7 +74,7 @@ namespace Yocto_Roger.IO
             }
             else
             {
-                Send("It's Don't work in developer mode. I guess you run it in visual studio, with simple compiler, but this future works only when it compiled with VPK, so forget about it, you don't need it. If you are an simple user, and u see this message, please write about it in Issues on our Github: https://github.com/Ivan125976/AI_Roger/issues/new/choose", MessageType.error);
+                Send("It's Doesn't work in the developer mode. I guess you run it in visual studio, with simple compiler, but this future works only when it compiled with VPK, so forget about it, you don't need it. If you are an simple user, and u see this message, please write about it in Issues on our Github: https://github.com/Ivan125976/AI_Roger/issues/new/choose", MessageType.error);
             }
         }
     }

@@ -55,7 +55,7 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-            double eps = 1e-8;
+            //double eps = 1e-8; - Переменной "eps" присвоено значение, но оно ни разу не использовано.
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];
