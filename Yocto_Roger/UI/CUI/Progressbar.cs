@@ -10,8 +10,8 @@
 
     public class Progressbar(ConsoleColor color, int parts, int x, int y)
     {
-        private readonly int _parts = parts;
         private readonly ConsoleColor _color = color;
+        private readonly int _parts = parts;
         private readonly int _x = x;
         private readonly int _y = y;
 
@@ -23,8 +23,7 @@
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
-            Console.SetCursorPosition(_x + _parts + 2, _y);
-            Console.Write(new string('\b', _parts + 2));
+            Console.SetCursorPosition(_x, _y);
             Console.Write("[");
             Console.ForegroundColor = _color;
             int filled = Math.Clamp(percent * _parts / 100, 0, _parts);
@@ -42,6 +41,7 @@
         {
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
+            Console.SetCursorPosition(_x,_y);
             Console.Write(new string(' ', _parts + 2));
             Console.SetCursorPosition(cursorX, cursorY);
         }
