@@ -1,6 +1,6 @@
 ﻿namespace Yocto_Roger.UI.Interfaces
 {
-    interface IUserInterface
+    internal interface IUserInterface
     {
         public void StartInterface();
     }

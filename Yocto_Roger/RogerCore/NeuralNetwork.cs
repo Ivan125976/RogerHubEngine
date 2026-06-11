@@ -8,7 +8,6 @@ using Newtonsoft.Json; // For middleWeights
 #endif
 
 using Yocto_Roger.IO;
-using Yocto_Roger.RogerCore.Initialization.Biases;
 using Yocto_Roger.RogerCore.Initialization.Weights;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
@@ -181,10 +180,6 @@ Copyright 2025-2026 Emotion Corp.
                     outputWeights = new double[_param.middleNeuronsCount, _param.outputNeuronsCount];
                     Mbias = new double[_param.layers - 2, _param.middleNeuronsCount];
                     Obias = new double[_param.outputNeuronsCount];
-                    Send("done");
-                    Console.Write("Initialization biases...");
-                    InitBiases.Init(Mbias);
-                    InitBiases.Init(Obias);
                     Send("done");
                     Console.Write("Initialization weights...");
                     InitWeights.Init(inputWeights);

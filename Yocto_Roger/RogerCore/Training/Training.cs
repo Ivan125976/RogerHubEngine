@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using Yocto_Roger.UI.CUI;
+﻿using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore.Training
 {
@@ -55,7 +54,16 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-            //double eps = 1e-8; - Переменной "eps" присвоено значение, но оно ни разу не использовано.
+            double eps = 1e-8;
+
+            if(_param.rms_enabled)
+            {
+                double[,] RMSinputWeights = new double[inputWeights.GetLength(0), inputWeights.GetLength(1)];
+                double[,] RMSoutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
+                double[][,] RMSmiddleWeights = new double[middleWeights.Length][,];
+                double[,] RMSmiddleBiases = new double[middleBiases.GetLength(0), middleBiases.GetLength(1)];
+                double[] RMSoutputBiases = new double[outputBiases.Length];
+            }
 
             int[] input = new int[inputNeurons.Length];
             double[] output = new double[outputNeurons.Length];
