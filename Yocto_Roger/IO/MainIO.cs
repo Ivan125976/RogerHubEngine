@@ -66,6 +66,7 @@ Internal I/O lib
 
         /// <summary>
         /// This method determines the type and parses Roger's file and provides an object in which all the data is in the form of strings, they will have to be converted to the required data types using the appropriate functions that seem to be in this class
+        /// This method calls function SEND, with error, which outputs text to the console. Be careful, with this method when you will using it in your project. replace SEND call, on exception throwing
         /// </summary>
         /// <returns>Roger class object. If happened any error, for example something with null, so it's returning an empty object of class Roger</returns>
         public Roger? LoadRoger()
@@ -154,6 +155,8 @@ Internal I/O lib
         /// <summary>
         /// Returns an object of the Roger class with all the necessary data to load the neural network.
         /// </summary>
+        /// <exception cref="ArgumentNullException">This Exception throwing, when file which it parsing (params.roger2), is null or empty, meaning it's doesn't exists</exception>
+        /// <exception cref="JsonException">This exception is thrown when the text cannot be serialized into json format, meaning that the file being parsed contains strange text that is not actually suitable for serialization into json.</exception>
         private Roger? LoadRogerFromJson()
         {
             Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(_param.roger2));
@@ -165,6 +168,9 @@ Internal I/O lib
         /// </summary>
         /// <param name="fileName">Can be path + filename. Example: C:\Users\Noob\Desktop\roger, where roger is filename, without extension. Then file will be created in Desktop</param>
         /// <param name="extension">File extension (without period)</param>
+        /// <exception cref="DirectoryNotFoundException">When directory, which you entered, doesn't exist</exception>
+        /// <exception cref="UnauthorizedAccessException">This exception occurs when there are insufficient rights to create files in a particular directory. For example: The program does not have administrator rights, but the path specified is C:\Windows\System32, which requires administrator rights to write to this directory. </exception>
+        /// <exception cref="IOException"></exception>
         public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "roger")
         {
             int index = 0;
@@ -215,6 +221,10 @@ Internal I/O lib
         /// </summary>
         /// <param name="nN"></param>
         /// <param name="pathToDirectoryToSave"></param>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="MemoryPackSerializationException"></exception>
         public static void SaveNeuralNetworkStateToBin(NeuralNetworkState nN, string pathToDirectoryToSave)
         {
             byte[] binData = MemoryPackSerializer.Serialize(nN);

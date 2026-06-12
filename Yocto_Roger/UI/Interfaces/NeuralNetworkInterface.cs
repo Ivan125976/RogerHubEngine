@@ -2,6 +2,8 @@
 using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.CUI;
+using MemoryPack;
+using Newtonsoft.Json;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces

@@ -54,9 +54,11 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
+#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
             double eps = 1e-8;
+#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
 
-            if(_param.rms_enabled)
+            if (_param.rms_enabled)
             {
                 double[,] RMSinputWeights = new double[inputWeights.GetLength(0), inputWeights.GetLength(1)];
                 double[,] RMSoutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
