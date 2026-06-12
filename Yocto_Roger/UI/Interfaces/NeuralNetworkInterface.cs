@@ -3,7 +3,9 @@ using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.CUI;
 using MemoryPack;
+#if DEBUG
 using Newtonsoft.Json;
+#endif
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces

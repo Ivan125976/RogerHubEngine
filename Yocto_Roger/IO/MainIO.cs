@@ -55,7 +55,9 @@ Internal I/O lib
 
                 Layers = _param.layers,
 
-                Rms_decay = _param.rms_decay
+                Rms_decay = _param.rms_decay,
+
+                Rms_enabled = _param.rms_enabled
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -150,6 +152,11 @@ Internal I/O lib
             /// Rms_Decay. I don't know what it is, Ivan knows, asking him
             /// </summary>
             public float Rms_decay { get; set; } = 0.95f;
+
+            /// <summary>
+            /// is RMS enabled
+            /// </summary>
+            public bool Rms_enabled { get; set; } = false;
         }
 
         /// <summary>
