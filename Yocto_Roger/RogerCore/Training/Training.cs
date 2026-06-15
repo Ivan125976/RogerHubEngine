@@ -1,5 +1,5 @@
-﻿using Yocto_Roger.UI.CUI;
-using Yocto_Roger.RogerCore.Initialization.Weights;
+﻿using Yocto_Roger.RogerCore.Initialization.Weights;
+using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore.Training
 {
@@ -55,9 +55,8 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
             const double eps = 1e-8;
-#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
+            double grad;
 
             double[,] RMSinputWeights = null!;
             double[,] RMSoutputWeights = null!;
@@ -95,23 +94,23 @@ Copyright 2025-2026 Emotion Corp.
             for (int x = 0; x < middleWeights.Length; x++)
                 oldMiddleWeights[x] = new double[middleWeights[x].GetLength(0), middleWeights[x].GetLength(1)];
 
-                Thread uiThread = new(() =>
+            Thread uiThread = new(() =>
+            {
+                while (!done)
                 {
-                    while (!done)
-                    {
-                        double local;
+                    double local;
 
-                        lock (lockObj)
-                            local = progress;
+                    lock (lockObj)
+                        local = progress;
 
-                        status?.Draw((int)(local * 100));
+                    status?.Draw((int)(local * 100));
 
-                        Thread.Sleep(1000);
-                    }
-                })
-                {
-                    IsBackground = true
-                };
+                    Thread.Sleep(1000);
+                }
+            })
+            {
+                IsBackground = true
+            };
             uiThread.Start();
 
             for (int passes = 0; passes < _param.passes; passes++)
@@ -150,10 +149,26 @@ Copyright 2025-2026 Emotion Corp.
                         errorOut[j] = outputNeurons[j] - output[j]; //ошибка
                         deltaOut[j] = errorOut[j] * (1 - outputNeurons[j] * outputNeurons[j]); //дельта
 
-                        for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                            outputWeights[k, j] -= middleNeurons[lastMiddleWeights, k] * deltaOut[j] * _param.learningRate;
+                        if (_param.rms_enabled)
+                        {
+                            for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                            {
+                                grad = middleNeurons[lastMiddleWeights, k] * deltaOut[j];
+                                RMSoutputWeights[k, j] = _param.rms_decay * RMSoutputWeights[k,j] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
 
-                        outputBiases[j] -= deltaOut[j] * _param.learningRate;
+                                outputWeights[k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSoutputWeights[k,j]) + eps);
+                            }
+
+                            RMSoutputBiases[j] = _param.rms_decay * RMSoutputBiases[j] + (1.0 - _param.rms_decay) * Math.Pow(deltaOut[j], 2.0);
+                            outputBiases[j] -= _param.learningRate * deltaOut[j] / (Math.Sqrt(RMSoutputBiases[j]) + eps);
+                        }
+                        else
+                        {
+                            for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                outputWeights[k, j] -= middleNeurons[lastMiddleWeights, k] * deltaOut[j] * _param.learningRate;
+
+                            outputBiases[j] -= deltaOut[j] * _param.learningRate;
+                        }
                     }
 
                     for (int j = 0; j < middleNeurons.GetLength(1); j++) //update output->middle weights
