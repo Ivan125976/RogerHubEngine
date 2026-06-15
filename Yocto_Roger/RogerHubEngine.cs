@@ -26,6 +26,7 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
+            const ushort minWindowSize = 50;
             Console.WriteLine("""
                  _____                       _    _       _     ______             _            
                 |  __ \                     | |  | |     | |   |  ____|           (_)           
@@ -38,9 +39,9 @@ namespace Yocto_Roger
                 """);
             Console.WriteLine("Configuring console...");
 
-            if (Console.WindowHeight < 50 || Console.WindowWidth < 50)
+            if (Console.WindowHeight < minWindowSize || Console.WindowWidth < minWindowSize)
             {
-                Send("The window is too small >:(", MessageType.error);
+                Send($"The window is too small (min - {minWindowSize}x{minWindowSize}) >:(", MessageType.error);
                 Environment.Exit(1);
             }
 
