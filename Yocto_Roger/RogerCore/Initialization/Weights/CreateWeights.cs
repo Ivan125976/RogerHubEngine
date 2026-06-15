@@ -3,18 +3,17 @@
     /// <summary>
     /// Creates an array of middle weights
     /// </summary>
-    public class CreateWeights(Parameters param)
+    public class CreateWeights
     {
-        private readonly Parameters _param = param;
-
         /// <summary>
         /// Creates an array of middle weights.
         /// </summary>
         /// <param name="weights">Array of middle weights</param>
-        public void CreateMiddleWeights(double[][,] weights)
+        /// <param name="size">Size of array</param>
+        public static void CreateMiddleWeights(double[][,] weights, int size)
         {
             for (int i = 0; i < weights.Length; i++)
-                weights[i] = new double[_param.middleNeuronsCount, _param.middleNeuronsCount];
+                weights[i] = new double[size, size];
         }
     }
 }

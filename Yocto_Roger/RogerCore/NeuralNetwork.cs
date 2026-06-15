@@ -2,13 +2,14 @@
 using MemoryPack;
 using static Yocto_Roger.UI.CUI.CUI;
 
+using Yocto_Roger.RogerCore.Initialization.Weights;
+
 // При компиляции в Release дллка NewtonsoftJson.dll всё равно почему-то линкуется в папку с бинарником, вероятно изза того что он добавленн в проект как nuget пакет. Так вот, в release когда компилируешь, дллку эту можно удалить, ибо она не нужна и весит 700кб целых
 #if DEBUG
 using Newtonsoft.Json; // For middleWeights
 #endif
 
 using Yocto_Roger.IO;
-using Yocto_Roger.RogerCore.Initialization.Weights;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
 using static Yocto_Roger.IO.Splitter;
@@ -29,12 +30,11 @@ Copyright 2025-2026 Emotion Corp.
     /// <summary>
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
-    public class NeuralNetwork(Parameters param, MainIO io, Training.Training training, CreateWeights weightsCreator, NeuralNetworkInterface neuralNetworkInterface)
+    public class NeuralNetwork(Parameters param, MainIO io, Training.Training training, NeuralNetworkInterface neuralNetworkInterface)
     {
         private readonly Parameters _param = param;
         private readonly MainIO _io = io;
         private readonly Training.Training _training = training;
-        private readonly CreateWeights _weightsCreator = weightsCreator;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
         /// <summary>
         /// Flag indicating whether Roger has been created
@@ -183,7 +183,7 @@ Copyright 2025-2026 Emotion Corp.
                     Send("done");
                     Console.Write("Initialization weights...");
                     InitWeights.Init(inputWeights);
-                    _weightsCreator.CreateMiddleWeights(middleWeights);
+                    CreateWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
                     InitWeights.Init(middleWeights);
                     InitWeights.Init(outputWeights);
                     Send("done");

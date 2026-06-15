@@ -1,4 +1,5 @@
 ﻿using Yocto_Roger.UI.CUI;
+using Yocto_Roger.RogerCore.Initialization.Weights;
 
 namespace Yocto_Roger.RogerCore.Training
 {
@@ -54,17 +55,23 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
-#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
-            double eps = 1e-8;
-#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
+            const double eps = 1e-8;
+
+            double[,] RMSinputWeights = null!;
+            double[,] RMSoutputWeights = null!;
+            double[][,] RMSmiddleWeights = null!;
+            double[,] RMSmiddleBiases = null!;
+            double[] RMSoutputBiases = null!;
 
             if (_param.rms_enabled)
             {
-                double[,] RMSinputWeights = new double[inputWeights.GetLength(0), inputWeights.GetLength(1)];
-                double[,] RMSoutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
-                double[][,] RMSmiddleWeights = new double[middleWeights.Length][,];
-                double[,] RMSmiddleBiases = new double[middleBiases.GetLength(0), middleBiases.GetLength(1)];
-                double[] RMSoutputBiases = new double[outputBiases.Length];
+                RMSinputWeights = new double[inputWeights.GetLength(0), inputWeights.GetLength(1)];
+                RMSoutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
+                RMSmiddleWeights = new double[middleWeights.Length][,];
+                RMSmiddleBiases = new double[middleBiases.GetLength(0), middleBiases.GetLength(1)];
+                RMSoutputBiases = new double[outputBiases.Length];
+
+                CreateWeights.CreateMiddleWeights(RMSmiddleWeights, _param.middleNeuronsCount);
             }
 
             int[] input = new int[inputNeurons.Length];
@@ -121,7 +128,7 @@ Copyright 2025-2026 Emotion Corp.
                         for (int y = 0; y < outputWeights.GetLength(1); y++)
                             oldOutputWeights[x, y] = outputWeights[x, y];
 
-                    for (int x = 0; x < _param.layers - 3; x++)
+                    for (int x = 0; x < oldMiddleWeights.Length; x++)
                     {
                         for (int y = 0; y < middleWeights[x].GetLength(0); y++)
                             for (int z = 0; z < middleWeights[x].GetLength(1); z++)

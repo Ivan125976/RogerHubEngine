@@ -43,11 +43,10 @@ namespace Yocto_Roger
             MainIO io = new(param, null!, nNState);
             Auxiliary auxiliaryIO = new(param);
             SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
-            CreateWeights middleWeightsCreator = new(param);
             Training training = new(param, null!);
             MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
             NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
-            NeuralNetwork nN = new(param, io, training, middleWeightsCreator, neuralNetworkInterface);
+            NeuralNetwork nN = new(param, io, training, neuralNetworkInterface);
 
             io._nN = nN;
             training.roger = nN;
