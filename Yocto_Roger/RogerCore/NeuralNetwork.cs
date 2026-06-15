@@ -127,6 +127,8 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         Send("Invalid knowledge file. Check if this is it, or check if its contents are correct", MessageType.error);
                         Console.WriteLine("Here's exception, if you are programmer, you can make a pull request on our github, with fix this exception, or write Issue with this problem, and add to it this exception please\nGithub: https://github.com/Ivan125976/AI_Roger/tree/v2.2-beta\n Exception:\n" + ex.Message);
+                        Console.Write("Press enter to continue", ConsoleColor.Blue);
+                        Console.ReadLine();
                         _mainMenu.StartInterface();
                     }
 
