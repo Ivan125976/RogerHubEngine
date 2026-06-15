@@ -38,7 +38,7 @@ namespace Yocto_Roger
                 """);
             Console.WriteLine("Configuring console...");
 
-            if (Console.WindowHeight < 20 || Console.WindowWidth < 50)
+            if (Console.WindowHeight < 50 || Console.WindowWidth < 50)
             {
                 Send("The window is too small >:(", MessageType.error);
                 Environment.Exit(1);

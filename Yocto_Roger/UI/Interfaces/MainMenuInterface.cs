@@ -1,8 +1,8 @@
-﻿using Yocto_Roger.UI.CUI;
-using Yocto_Roger.IO;
-using static Yocto_Roger.UI.CUI.CUI;
-using static Yocto_Roger.Configuration.EngineVersion;
+﻿using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
+using Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Configuration.EngineVersion;
+using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces
 {
@@ -72,6 +72,23 @@ namespace Yocto_Roger.UI.Interfaces
                             break;
 
                         case 6:
+                            Console.WriteLine("""                                
+        ▒▒████████████▒▒        
+      ▒▒                ▒▒      
+      ██                ██      
+      ██    ██    ██    ██      
+      ██    ██    ██    ██      
+      ██                ██      
+      ██                ██      
+    ▒▒██                ██▒▒    
+  ▓▓  ██                ██  ▓▓  
+  ██  ██                ██  ██  
+  ██  ██                ██  ██  
+  ▓▓  ██                ██  ▓▓  
+    ▒▒██                ██▒▒    
+      ██                ██      
+      ██                ██             
+""");
                             Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}{revision} build:CHARLIE \n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
