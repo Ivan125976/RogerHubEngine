@@ -55,7 +55,9 @@ Copyright 2025-2026 Emotion Corp.
             bool done = false;
             object lockObj = new();
 
+#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
             const double eps = 1e-8;
+#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
 
             double[,] RMSinputWeights = null!;
             double[,] RMSoutputWeights = null!;
