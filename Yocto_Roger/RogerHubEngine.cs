@@ -1,11 +1,10 @@
 ﻿using System.Text;
 using Yocto_Roger.IO;
-using static Yocto_Roger.Configuration.EngineVersion;
 using Yocto_Roger.RogerCore;
-using Yocto_Roger.RogerCore.Initialization.Weights;
 using Yocto_Roger.RogerCore.Training;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
+using static Yocto_Roger.Configuration.EngineVersion;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger
@@ -41,8 +40,25 @@ namespace Yocto_Roger
 
             if (Console.WindowHeight < minWindowSize || Console.WindowWidth < minWindowSize)
             {
-                Send($"The window is too small (min - {minWindowSize}x{minWindowSize}) >:(", MessageType.error);
-                Environment.Exit(1);
+                Send($"The window is too small (min - {minWindowSize}x{minWindowSize}) >:(", MessageType.warning);
+                Console.Write("""
+                    Make the window bigger
+
+                    1. Restart Engine
+                    2. Exit
+                    >
+                    """);
+                switch (Console.ReadKey().KeyChar)
+                {
+                    case '1':
+                        Console.Clear();
+                        Main();
+                        break;
+
+                    case '2':
+                        Environment.Exit(1);
+                        break;
+                }
             }
 
             Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} CharLie";
