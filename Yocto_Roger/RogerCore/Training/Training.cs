@@ -9,9 +9,9 @@ Yocto Roger ;)
 *Emotion Corp ;)*
 *****************
 Copyright 2025-2026 Emotion Corp.
-    Education With Teacher Algorithm v1.1
+    Education With Teacher Algorithm v1.2
 
-    EducationWithTeacher, DropOut, multilayer, biases, RMSProp
+    EducationWithTeacher, DropOut, multilayer, biases, RMS
 */
 
     /// <summary>
@@ -64,7 +64,7 @@ Copyright 2025-2026 Emotion Corp.
             double[,] RMSmiddleBiases = null!;
             double[] RMSoutputBiases = null!;
 
-            if (_param.rms_enabled)
+            if (_param.rms_enabled) //RMS cache
             {
                 RMSinputWeights = new double[inputWeights.GetLength(0), inputWeights.GetLength(1)];
                 RMSoutputWeights = new double[outputWeights.GetLength(0), outputWeights.GetLength(1)];
@@ -147,16 +147,16 @@ Copyright 2025-2026 Emotion Corp.
                     for (int j = 0; j < outputNeurons.Length; j++) //update output weights
                     {
                         errorOut[j] = outputNeurons[j] - output[j]; //ошибка
-                        deltaOut[j] = errorOut[j] * (1 - outputNeurons[j] * outputNeurons[j]); //дельта
+                        deltaOut[j] = errorOut[j] * (1 - Math.Pow(outputNeurons[j], 2.0)); //дельта
 
                         if (_param.rms_enabled)
                         {
                             for (int k = 0; k < middleNeurons.GetLength(1); k++)
                             {
                                 grad = middleNeurons[lastMiddleWeights, k] * deltaOut[j];
-                                RMSoutputWeights[k, j] = _param.rms_decay * RMSoutputWeights[k,j] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
+                                RMSoutputWeights[k, j] = _param.rms_decay * RMSoutputWeights[k, j] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
 
-                                outputWeights[k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSoutputWeights[k,j]) + eps);
+                                outputWeights[k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSoutputWeights[k, j]) + eps);
                             }
 
                             RMSoutputBiases[j] = _param.rms_decay * RMSoutputBiases[j] + (1.0 - _param.rms_decay) * Math.Pow(deltaOut[j], 2.0);
@@ -173,26 +173,52 @@ Copyright 2025-2026 Emotion Corp.
 
                     for (int j = 0; j < middleNeurons.GetLength(1); j++) //update output->middle weights
                     {
+                        int penultimateLayer = lastMiddleWeights - 1;
                         for (int l = 0; l < outputNeurons.Length; l++)
                             errorMid[lastMiddleWeights, j] += deltaOut[l] * oldOutputWeights[j, l]; //ошибка
 
-                        deltaMid[lastMiddleWeights, j] = errorMid[lastMiddleWeights, j] * (1 - middleNeurons[lastMiddleWeights, j] * middleNeurons[lastMiddleWeights, j]); //дельта
+                        deltaMid[lastMiddleWeights, j] = errorMid[lastMiddleWeights, j] * (1 - Math.Pow(middleNeurons[lastMiddleWeights, j], 2.0)); //дельта
                         deltaMid[lastMiddleWeights, j] *= dropOut[lastMiddleWeights, j];
 
-                        if (_param.layers - 2 > 1)
-                            for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                middleWeights[lastMiddleWeights - 1][k, j] -=
-                                    middleNeurons[lastMiddleWeights - 1, k] *
-                                    deltaMid[lastMiddleWeights, j] *
-                                    _param.learningRate;
-                        else
-                            for (int k = 0; k < inputNeurons.Length; k++)
-                                inputWeights[k, j] -=
-                                    input[k] *
-                                    deltaMid[0, j] *
-                                    _param.learningRate;
+                        if (_param.rms_enabled)
+                        {
+                            if (_param.layers - 2 > 1)
+                                for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                {
+                                    grad = middleNeurons[penultimateLayer, k] * deltaMid[lastMiddleWeights, j];
+                                    RMSmiddleWeights[penultimateLayer][k, j] = _param.rms_decay * RMSmiddleWeights[penultimateLayer][k, j] +
+                                        (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
+                                    middleWeights[penultimateLayer][k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSmiddleWeights[penultimateLayer][k, j]) + eps);
+                                }
+                            else
+                                for (int k = 0; k < inputNeurons.Length; k++)
+                                {
+                                    grad = input[k] * deltaMid[0, j];
+                                    RMSinputWeights[k, j] = _param.rms_decay * RMSinputWeights[k, j] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
+                                    inputWeights[k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSinputWeights[k, j]) + eps);
+                                }
 
-                        middleBiases[lastMiddleWeights, j] -= deltaMid[lastMiddleWeights, j] * _param.learningRate;
+                            RMSmiddleBiases[lastMiddleWeights, j] = _param.rms_decay * RMSmiddleBiases[lastMiddleWeights, j] + (1.0 - _param.rms_decay) *
+                                Math.Pow(deltaMid[lastMiddleWeights, j], 2.0);
+                            middleBiases[lastMiddleWeights, j] -= _param.learningRate * deltaMid[lastMiddleWeights, j] / (Math.Sqrt(RMSmiddleBiases[lastMiddleWeights, j]) + eps);
+                        }
+                        else
+                        {
+                            if (_param.layers - 2 > 1)
+                                for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                    middleWeights[penultimateLayer][k, j] -=
+                                        middleNeurons[penultimateLayer, k] *
+                                        deltaMid[lastMiddleWeights, j] *
+                                        _param.learningRate;
+                            else
+                                for (int k = 0; k < inputNeurons.Length; k++)
+                                    inputWeights[k, j] -=
+                                        input[k] *
+                                        deltaMid[0, j] *
+                                        _param.learningRate;
+
+                            middleBiases[lastMiddleWeights, j] -= deltaMid[lastMiddleWeights, j] * _param.learningRate;
+                        }
                     }
 
                     if (_param.layers - 2 > 1)
@@ -201,6 +227,7 @@ Copyright 2025-2026 Emotion Corp.
                         {
                             oldLayer = layer + 1;
                             nextLayer = layer - 1;
+
                             for (int j = 0; j < middleNeurons.GetLength(1); j++)
                             {
                                 for (int l = 0; l < middleNeurons.GetLength(1); l++)
@@ -208,17 +235,49 @@ Copyright 2025-2026 Emotion Corp.
 
                                 deltaMid[layer, j] = errorMid[layer, j] * (1 - middleNeurons[layer, j] * middleNeurons[layer, j]); //дельта
                                 deltaMid[layer, j] *= dropOut[layer, j];
-                                if (layer > 0)
-                                    for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                        middleWeights[nextLayer][k, j] -= middleNeurons[nextLayer, k] * deltaMid[layer, j] * _param.learningRate;
+                                if (_param.rms_enabled)
+                                {
+                                    if (layer > 0)
+                                        for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                        {
+                                            grad = middleNeurons[nextLayer, k] * deltaMid[layer, j];
+                                            RMSmiddleWeights[nextLayer][k,j] = _param.rms_decay * RMSmiddleWeights[nextLayer][k,j] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
+                                            middleWeights[nextLayer][k, j] -= _param.learningRate * grad / (Math.Sqrt(RMSmiddleWeights[nextLayer][k,j]) + eps);
+                                        }
 
-                                middleBiases[layer, j] -= deltaMid[layer, j] * _param.learningRate;
+                                    RMSmiddleBiases[layer, j] = _param.rms_decay * RMSmiddleBiases[layer, j] + (1.0 - _param.rms_decay) * Math.Pow(deltaMid[layer, j], 2.0);
+                                    middleBiases[layer, j] -= _param.learningRate * deltaMid[layer, j] / (Math.Sqrt(RMSmiddleBiases[layer,j]) + eps);
+                                }
+
+                                else
+                                {
+                                    if (layer > 0)
+                                        for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                            middleWeights[nextLayer][k, j] -= middleNeurons[nextLayer, k] * deltaMid[layer, j] * _param.learningRate;
+
+                                    middleBiases[layer, j] -= deltaMid[layer, j] * _param.learningRate;
+                                }
                             }
                         }
+                    }
 
+                    if (_param.layers - 2 > 1)
+                    {
                         for (int j = 0; j < inputNeurons.Length; j++) //update middle->input weights
-                            for (int k = 0; k < middleNeurons.GetLength(1); k++)
-                                inputWeights[j, k] -= input[j] * deltaMid[0, k] * _param.learningRate;
+                        {
+                            if (_param.rms_enabled)
+                            {
+                                for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                {
+                                    grad = inputNeurons[j] * deltaMid[0, k];
+                                    RMSinputWeights[j, k] = _param.rms_decay * RMSinputWeights[j, k] + (1.0 - _param.rms_decay) * Math.Pow(grad, 2.0);
+                                    inputWeights[j, k] -= _param.learningRate * grad / (Math.Sqrt(RMSinputWeights[j, k]) + eps);
+                                }
+                            }
+                            else
+                                for (int k = 0; k < middleNeurons.GetLength(1); k++)
+                                    inputWeights[j, k] -= inputNeurons[j] * deltaMid[0, k] * _param.learningRate;
+                        }
                     }
 
                     lock (lockObj)

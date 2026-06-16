@@ -97,6 +97,7 @@ namespace Yocto_Roger
 
                                 default:
                                     Send("BRUH", MessageType.error);
+                                    Main();
                                     break;
                             }
                         }
@@ -105,7 +106,7 @@ namespace Yocto_Roger
                             Send("Bruh... Incorrect input, are you serious?", MessageType.error);
                             Thread.Sleep(500);
                             Send("Please, press Enter and don't screw up again", MessageType.note);
-                            Console.ReadLine();
+                            Console.ReadKey();
                             continue;
                         }
                     }
