@@ -23,7 +23,7 @@ namespace Yocto_Roger
     /// <summary>
     /// Keeps minimal size of the console
     /// </summary>
-    struct MinConsoleSize(ushort height, ushort width) // By default, in Windows, the console size is 25 in height and 80 in width.
+    struct ConsoleSize(ushort height, ushort width) // By default, in Windows, the console size is 25 in height and 80 in width.
     {
         public ushort Height = height;
         public ushort Width = width;
@@ -39,7 +39,7 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            MinConsoleSize minSize = new(40, 80);
+            ConsoleSize minSize = new(40, 90);
 
             while (true)
             {
