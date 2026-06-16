@@ -39,21 +39,19 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            MinConsoleSize minSize = new(50, 50);
+            MinConsoleSize minSize = new(40, 80);
 
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine($"""
                      _____                       _    _       _     ______             _            
-
                     |  __ \                     | |  | |     | |   |  ____|           (_)           
                     | |__) |___   __ _  ___ _ __| |__| |_   _| |__ | |__   _ __   __ _ _ _ __   ___ 
                     |  _  // _ \ / _` |/ _ \ '__|  __  | | | | '_ \|  __| | '_ \ / _` | | '_ \ / _ \
                     | | \ \ (_) | (_| |  __/ |  | |  | | |_| | |_) | |____| | | | (_| | | | | |  __/
                     |_|  \_\___/ \__, |\___|_|  |_|  |_|\__,_|_.__/|______|_| |_|\__, |_|_| |_|\___| V{majorVersion}.{minorVersion}
                                   __/ |                                           __/ |             
-
                                  |___/                                           |___/        
                     """);
                 Console.WriteLine("Configuring console...");
@@ -82,9 +80,8 @@ namespace Yocto_Roger
                                 case 'y':
                                     try
                                     {
-#pragma warning disable CA1416 // Проверка совместимости платформы
-                                        Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
-#pragma warning restore CA1416 // Проверка совместимости платформы
+                                        if (isWindows)
+                                            Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
                                     }
                                     catch (PlatformNotSupportedException)
                                     {
@@ -163,28 +160,23 @@ namespace Yocto_Roger
             mainMenuInterface.StartInterface();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Проверка совместимости платформы", Justification = "<Ожидание>")]
         [SupportedOSPlatform("windows")]
         static bool IsWindowsTerminal() // This Method Work Only On Windows
         {
             try
             {
-                int currentPid = Process.GetCurrentProcess().Id;
+                int currentPid = Environment.ProcessId;
 
                 string query = $"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {currentPid}";
-                using (var searcher = new ManagementObjectSearcher(query))
-                using (var results = searcher.Get())
+                using var searcher = new ManagementObjectSearcher(query);
+                using var results = searcher.Get();
+                foreach (ManagementObject mO in results)
                 {
-                    foreach (ManagementObject mO in results)
-                    {
-                        int parentPid = Convert.ToInt32(mO["ParentProcessId"]);
-                        if (parentPid == 0) return false;
+                    int parentPid = Convert.ToInt32(mO["ParentProcessId"]);
+                    if (parentPid == 0) return false;
 
-                        using (Process parentProcess = Process.GetProcessById(parentPid))
-                        {
-                            return parentProcess.ProcessName.Equals("WindowsTerminal", StringComparison.OrdinalIgnoreCase);
-                        }
-                    }
+                    using Process parentProcess = Process.GetProcessById(parentPid);
+                    return parentProcess.ProcessName.Equals("WindowsTerminal", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch
