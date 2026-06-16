@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Management;
+using System.Runtime.Versioning;
+using System.Text;
 using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.Training;
@@ -7,13 +10,24 @@ using Yocto_Roger.UI.Interfaces;
 using static Yocto_Roger.Configuration.EngineVersion;
 using static Yocto_Roger.UI.CUI.CUI;
 
+
 namespace Yocto_Roger
 {
+
     /* 
-         We are not idiots.
-         We are idiots++.
-         © Emotion Corp.
+     We are not idiots.
+     We are idiots++.
+     © Emotion Corp.
     */
+
+    /// <summary>
+    /// Keeps minimal size of the console
+    /// </summary>
+    struct MinConsoleSize(ushort height, ushort width) // By default, in Windows, the console size is 25 in height and 80 in width.
+    {
+        public ushort Height = height;
+        public ushort Width = width;
+    }
 
     /// <summary>
     /// Main class
@@ -25,43 +39,104 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            const ushort minWindowSize = 50;
-            Console.WriteLine($"""
-                 _____                       _    _       _     ______             _            
-                |  __ \                     | |  | |     | |   |  ____|           (_)           
-                | |__) |___   __ _  ___ _ __| |__| |_   _| |__ | |__   _ __   __ _ _ _ __   ___ 
-                |  _  // _ \ / _` |/ _ \ '__|  __  | | | | '_ \|  __| | '_ \ / _` | | '_ \ / _ \
-                | | \ \ (_) | (_| |  __/ |  | |  | | |_| | |_) | |____| | | | (_| | | | | |  __/
-                |_|  \_\___/ \__, |\___|_|  |_|  |_|\__,_|_.__/|______|_| |_|\__, |_|_| |_|\___| V{majorVersion}.{minorVersion}
-                              __/ |                                           __/ |             
-                             |___/                                           |___/        
-                """);
-            Console.WriteLine("Configuring console...");
+            MinConsoleSize minSize = new(50, 50);
 
-            if (Console.WindowHeight < minWindowSize || Console.WindowWidth < minWindowSize)
+            while (true)
             {
-                Send($"The window is too small (min - {minWindowSize}x{minWindowSize}) >:(", MessageType.warning);
-                Console.Write("""
-                    Make the window bigger
+                Console.Clear();
+                Console.WriteLine($"""
+                     _____                       _    _       _     ______             _            
 
-                    1. Restart Engine
-                    2. Exit
-                    >
+                    |  __ \                     | |  | |     | |   |  ____|           (_)           
+                    | |__) |___   __ _  ___ _ __| |__| |_   _| |__ | |__   _ __   __ _ _ _ __   ___ 
+                    |  _  // _ \ / _` |/ _ \ '__|  __  | | | | '_ \|  __| | '_ \ / _` | | '_ \ / _ \
+                    | | \ \ (_) | (_| |  __/ |  | |  | | |_| | |_) | |____| | | | (_| | | | | |  __/
+                    |_|  \_\___/ \__, |\___|_|  |_|  |_|\__,_|_.__/|______|_| |_|\__, |_|_| |_|\___| V{majorVersion}.{minorVersion}
+                                  __/ |                                           __/ |             
+
+                                 |___/                                           |___/        
                     """);
-                switch (Console.ReadKey().KeyChar)
-                {
-                    case '1':
-                        Console.Clear();
-                        Main();
-                        break;
+                Console.WriteLine("Configuring console...");
 
-                    case '2':
-                        Environment.Exit(1);
-                        break;
+                if (Console.WindowWidth < minSize.Width || Console.WindowHeight < minSize.Height)
+                {
+                    Send($"The window is too small (min - {minSize.Width}x{minSize.Height}) >:(", MessageType.warning);
+
+                    bool isWinTerm = false;
+                    bool isWindows = OperatingSystem.IsWindows();
+
+                    if (isWindows) isWinTerm = IsWindowsTerminal();
+
+                    bool isModernTerminal = isWinTerm || !isWindows;
+
+                    if (isModernTerminal == false) // Checking if running in Windows11 Terminal, so "Windows Terminal" doesn't allow changing window size
+                    {
+                        Console.Write("""
+                        Can i change the window size?
+                        (y/n) >>> 
+                        """);
+                        if (char.TryParse(Console.ReadLine()?.ToLower(), out char input))
+                        {
+                            switch (input)
+                            {
+                                case 'y':
+                                    try
+                                    {
+#pragma warning disable CA1416 // Проверка совместимости платформы
+                                        Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
+#pragma warning restore CA1416 // Проверка совместимости платформы
+                                    }
+                                    catch (PlatformNotSupportedException)
+                                    {
+                                        Console.WriteLine($"Your terminal doesn't allow changing the window size, please change is yourself. Size need to be: Width: {minSize.Width} | Height: {minSize.Height}");
+                                    }
+                                    continue;
+
+                                case 'n':
+                                    Console.WriteLine("Whatever you want... then bye... :/");
+                                    Thread.Sleep(2000);
+                                    Environment.Exit(0);
+                                    break;
+
+                                default:
+                                    Send("BRUH", MessageType.error);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Send("Bruh... Incorrect input, are you serious?", MessageType.error);
+                            Thread.Sleep(500);
+                            Send("Please, press Enter and don't screw up again", MessageType.note);
+                            Console.ReadLine();
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Send("You running it on Windows 11 (or just using Windows Terminal on windows 10) - it's using Windows Terminal, and he doesn't allow changing window size with default tools, so i try to change it with experimental function, with escape-code.\n\nPress Enter when you'll be ready", MessageType.warning);
+                        Console.ReadLine();
+                        Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
+                        Thread.Sleep(200);
+
+                        if (Console.WindowWidth < minSize.Width || Console.WindowHeight < minSize.Height)
+                        {
+                            Console.WriteLine("Window size still didn't changed, it means escape-code doesn't work, so please change it yourself.\nPress Enter to exit");
+                            Console.ReadLine();
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            Console.WriteLine("I've successfully changed it, yappy.");
+                            Thread.Sleep(2000);
+                        }
+                    }
                 }
+
+                break;
             }
 
-            Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} CharLie";
+            try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} CharLie"; } catch { }
 
             Console.InputEncoding = Encoding.Unicode;
             Console.OutputEncoding = Encoding.Unicode;
@@ -86,6 +161,37 @@ namespace Yocto_Roger
             Thread.Sleep(3000);
 
             mainMenuInterface.StartInterface();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Проверка совместимости платформы", Justification = "<Ожидание>")]
+        [SupportedOSPlatform("windows")]
+        static bool IsWindowsTerminal() // This Method Work Only On Windows
+        {
+            try
+            {
+                int currentPid = Process.GetCurrentProcess().Id;
+
+                string query = $"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {currentPid}";
+                using (var searcher = new ManagementObjectSearcher(query))
+                using (var results = searcher.Get())
+                {
+                    foreach (ManagementObject mO in results)
+                    {
+                        int parentPid = Convert.ToInt32(mO["ParentProcessId"]);
+                        if (parentPid == 0) return false;
+
+                        using (Process parentProcess = Process.GetProcessById(parentPid))
+                        {
+                            return parentProcess.ProcessName.Equals("WindowsTerminal", StringComparison.OrdinalIgnoreCase);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
         }
     }
 }
