@@ -80,7 +80,7 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine("ERROR>" + message);
                     Console.ResetColor();
                     Console.WriteLine("Press any key to continue");
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     break;
 
                 default:

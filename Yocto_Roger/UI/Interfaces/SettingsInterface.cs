@@ -64,8 +64,7 @@ namespace Yocto_Roger.UI.Interfaces
                             _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
                         }
                         else
-                            Send("Incorrect input (-_0)", MessageType.error);
-                        Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors");
+                            Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors", MessageType.error);
                         break;
 
                     case "2":
