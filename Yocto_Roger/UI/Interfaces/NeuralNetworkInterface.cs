@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
+using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
-using MemoryPack;
 #if DEBUG
 using Newtonsoft.Json;
 #endif
@@ -41,22 +41,21 @@ namespace Yocto_Roger.UI.Interfaces
                 string? userInputString = Console.ReadLine();
                 if (!string.IsNullOrEmpty(userInputString))
                 {
-
-                    string[] userInputChecked = userInputString.Split(',');
-                    if (userInputString == "exit")
+                    if (RogerMath.CleanInput(userInputString, out string cleanedUserInputString))
                     {
-                        _mainMenuInterface.StartInterface();
-                    }
-                    else if (userInputString == "save")
-                    {
-                        Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
-                        string input = Console.ReadLine() ?? string.Empty;
-
-                        try
+                        string[] userInputChecked = cleanedUserInputString.Split(',');
+                        if (userInputString == "exit")
+                            _mainMenuInterface.StartInterface();
+                        else if (userInputString == "save")
                         {
-                            if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
+                            Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
+                            string input = Console.ReadLine() ?? string.Empty;
+
+                            try
                             {
-                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
+                                if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
+                                {
+                                    MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
 #if DEBUG
                                     string data = JsonConvert.SerializeObject(
                                         MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(path)),
@@ -66,44 +65,46 @@ namespace Yocto_Roger.UI.Interfaces
                                     Console.WriteLine("Enter any button to continue");
                                     Console.ReadLine();
 #endif
-                            }
+                                }
 
-                            else if (input == string.Empty)
-                            {
-                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
+                                else if (input == string.Empty)
+                                {
+                                    MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
 #if DEBUG
                                     NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.bin")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
                                     Console.WriteLine("Enter any button to continue");
                                     Console.ReadLine();
 #endif
+                                }
+                                else
+                                    Send("Incorrect input (-_0)", MessageType.error);
                             }
-                            else
-                                Send("Incorrect input (-_0)", MessageType.error);
+                            catch (Exception e)
+                            {
+                                Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
+                                Console.WriteLine($"Error: {e}", ConsoleColor.Red);
+                                Thread.Sleep(5000);
+                            }
                         }
-                        catch (Exception e)
+                        else if (userInputChecked.Length == _param.inputNeuronsCount)
                         {
-                            Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
-                            Console.WriteLine($"Error: {e}", ConsoleColor.Red);
-                            Thread.Sleep(5000);
+
+                            int[] userInput = new int[_param.inputNeuronsCount];
+                            for (int i = 0; i < userInput.Length; i++)
+                                userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
+                            _neuralNetwork.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
+                                _neuralNetwork.middleWeights!, _neuralNetwork.Mbias!, _neuralNetwork.outputNeurons!, _neuralNetwork.Obias!, _neuralNetwork.outputWeights!);
+                            Console.Write("Output>>>");
+                            for (int i = 0; i < _neuralNetwork.outputNeurons!.Length; i++)
+                                Console.Write(_neuralNetwork.outputNeurons[i] + " ");
+                            Console.WriteLine("Press any key to continue");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
+                        else
+                            Send("It looks like you entered the wrong amount of information for the neurons or made a mistake with the command. No worries — it happens.", MessageType.error);
                     }
-                    else if (userInputChecked.Length == _param.inputNeuronsCount)
-                    {
-                        int[] userInput = new int[_param.inputNeuronsCount];
-                        for (int i = 0; i < userInput.Length; i++)
-                            userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
-                        _neuralNetwork.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
-                            _neuralNetwork.middleWeights!, _neuralNetwork.Mbias!, _neuralNetwork.outputNeurons!, _neuralNetwork.Obias!, _neuralNetwork.outputWeights!);
-                        Console.Write("Output>>>");
-                        for (int i = 0; i < _neuralNetwork.outputNeurons!.Length; i++)
-                            Console.Write(_neuralNetwork.outputNeurons[i] + " ");
-                        Console.WriteLine("Press any key to continue");
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
-                    else
-                        Send("It looks like you entered the wrong amount of information for the neurons or made a mistake with the command. No worries — it happens.", MessageType.error);
                 }
                 else
                 {

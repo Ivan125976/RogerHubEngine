@@ -1,4 +1,6 @@
-﻿namespace Yocto_Roger.RogerCore.UtilityTools
+﻿using System.Text.RegularExpressions;
+
+namespace Yocto_Roger.RogerCore.UtilityTools
 {
     /* 
 Yocto Roger ;)
@@ -12,7 +14,7 @@ Internal AIMath lib
     /// <summary>
     /// Internal Math lib for Roger
     /// </summary>
-    public class RogerMath(Parameters param)
+    public partial class RogerMath(Parameters param)
     {
         private readonly Parameters _param = param;
 
@@ -29,5 +31,34 @@ Internal AIMath lib
         {
             return Math.Tanh(value);
         }
+
+        /// <summary>
+        /// Cleanses the number from all otherworldly symbols
+        /// </summary>
+        /// <param name="input">String with numbers</param>
+        /// <param name="cleaned">Cleaned line</param>
+        public static bool CleanInput(string input, out string cleaned)
+        {
+            cleaned = "";
+
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            cleaned = CleanNumberPattern().Replace(input, "");
+
+            cleaned = DublicatePattern().Replace(cleaned, ",");
+
+            cleaned = cleaned.Trim(',');
+
+            if (string.IsNullOrEmpty(cleaned))
+                return false;
+
+            return true;
+        }
+
+        [GeneratedRegex(@"[^0-9,\-]")]
+        private static partial Regex CleanNumberPattern();
+        [GeneratedRegex(@",{2,}")]
+        private static partial Regex DublicatePattern();
     }
 }
