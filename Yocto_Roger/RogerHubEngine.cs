@@ -85,14 +85,20 @@ namespace Yocto_Roger
                             if (!(Console.WindowHeight > minSize.Height && Console.WindowWidth > minSize.Width))
                             {
                                 Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} | Height: {minSize.Height}", MessageType.error);
-                                Environment.Exit(2);
+                                Console.WriteLine("Press Enter to exit outta here....");
+                                Environment.Exit(0);
                             }
                         }
                     }
                     else
                     {
-                        Send("This terminal is not supported", MessageType.error);
-                        Environment.Exit(3);
+                        Console.WriteLine($"\x1b[8;{minSize.Height};{minSize.Width}t");
+                        if (!(Console.WindowHeight > minSize.Height && Console.WindowWidth > minSize.Width))
+                            Send($"You using a Windows Terminal, so it's very problem, so i can't to change the window size here, you'll have to do it yourself  ╮ (. ❛ ᴗ ❛.) ╭", MessageType.error);
+                            Send($"Need size - Height: {minSize.Height} and Width: {minSize.Width}", MessageType.note);
+                            Console.WriteLine("Press Enter to exit out of this scary place ༼ つ ◕_◕ ༽つ");
+                            Console.ReadLine();
+                            Environment.Exit(0);
                     }
                 }
 
@@ -101,8 +107,8 @@ namespace Yocto_Roger
 
             try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} DELTA!"; } catch { Send("Couldn't change the title", MessageType.warning); }
 
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
+            try { Console.InputEncoding = Encoding.Unicode; } catch { Console.InputEncoding = Encoding.UTF8; }
+            try { Console.OutputEncoding = Encoding.Unicode; } catch { Console.OutputEncoding = Encoding.UTF8; }
 
             Parameters param = new();
             NeuralNetworkState nNState = new();
