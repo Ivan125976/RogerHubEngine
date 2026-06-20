@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Management;
-using System.Runtime.Versioning;
-using System.Text;
+﻿using System.Text;
 using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.Training;
@@ -9,7 +6,6 @@ using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
 using static Yocto_Roger.Configuration.EngineVersion;
 using static Yocto_Roger.UI.CUI.CUI;
-
 
 namespace Yocto_Roger
 {
@@ -62,100 +58,71 @@ namespace Yocto_Roger
                     """);
                 Console.WriteLine("Configuring console...");
 
-                if (Console.WindowWidth < minSize.Width || Console.WindowHeight < minSize.Height)
+                if (!CheckMinWindowSize(minSize))
                 {
-                    bool isWinTerm = false;
-                    bool isWindows = OperatingSystem.IsWindows();
-
-                    if (isWindows) isWinTerm = IsWindowsTerminal();
-
-                    bool isModernTerminal = isWinTerm || !isWindows;
-
-                    if (isModernTerminal == false) // Checking if running in Windows11 Terminal, so "Windows Terminal" doesn't allow changing window size
+                    try
                     {
-                        try
+#pragma warning disable CA1416 // Проверка совместимости платформы
+                        Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
+#pragma warning restore CA1416 // Проверка совместимости платформы
+                    }
+                    catch (PlatformNotSupportedException)
+                    {
+                        Console.Write("\n");
+                        Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
+
+                        Thread.Sleep(250); // Delay to allow time for the size to change
+
+                        if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
                         {
-                            if (isWindows)
-                                Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
-                        }
-                        catch (PlatformNotSupportedException)
-                        {
-                            Console.Write("\n");
-                            Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
-                            if (!(Console.WindowHeight > minSize.Height && Console.WindowWidth > minSize.Width))
+                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} | Height: {minSize.Height}", MessageType.error);
+                            Send("Resize the window until i say \"DONE\". Let's go.", MessageType.note);
+                            while (!CheckMinWindowSize(minSize))
                             {
-                                Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} | Height: {minSize.Height}", MessageType.error);
-                                Console.WriteLine("Press Enter to exit outta here....");
-                                Environment.Exit(0);
+                                bool check = CheckMinWindowSize(minSize);
+
+                                if (check) { Console.WriteLine("DONE", ConsoleColor.Green); }
                             }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"\x1b[8;{minSize.Height};{minSize.Width}t");
-                        if (!(Console.WindowHeight > minSize.Height && Console.WindowWidth > minSize.Width))
-                            Send($"You using a Windows Terminal, so it's very problem, so i can't to change the window size here, you'll have to do it yourself  ╮ (. ❛ ᴗ ❛.) ╭", MessageType.error);
-                            Send($"Need size - Height: {minSize.Height} and Width: {minSize.Width}", MessageType.note);
-                            Console.WriteLine("Press Enter to exit out of this scary place ༼ つ ◕_◕ ༽つ");
-                            Console.ReadLine();
-                            Environment.Exit(0);
+
                     }
                 }
 
-                break;
+
+                try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} DELTA!"; } catch { Send("Couldn't change the title", MessageType.warning); }
+
+                // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
+                try { Console.InputEncoding = Encoding.Unicode; } catch { Console.InputEncoding = Encoding.UTF8; }
+                try { Console.OutputEncoding = Encoding.Unicode; } catch { Console.OutputEncoding = Encoding.UTF8; }
+
+                Parameters param = new();
+                NeuralNetworkState nNState = new();
+
+                MainIO io = new(param, null!, nNState);
+                Auxiliary auxiliaryIO = new(param);
+                SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
+                Training training = new(param, null!);
+                MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
+                NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
+                NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
+
+                io._nN = nN;
+                training.roger = nN;
+                mainMenuInterface._roger = nN;
+                neuralNetworkInterface._neuralNetwork = nN;
+
+                DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
+                Thread.Sleep(3000);
+
+                mainMenuInterface.StartInterface();
             }
-
-            try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} DELTA!"; } catch { Send("Couldn't change the title", MessageType.warning); }
-
-            try { Console.InputEncoding = Encoding.Unicode; } catch { Console.InputEncoding = Encoding.UTF8; }
-            try { Console.OutputEncoding = Encoding.Unicode; } catch { Console.OutputEncoding = Encoding.UTF8; }
-
-            Parameters param = new();
-            NeuralNetworkState nNState = new();
-
-            MainIO io = new(param, null!, nNState);
-            Auxiliary auxiliaryIO = new(param);
-            SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
-            Training training = new(param, null!);
-            MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
-            NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
-            NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
-
-            io._nN = nN;
-            training.roger = nN;
-            mainMenuInterface._roger = nN;
-            neuralNetworkInterface._neuralNetwork = nN;
-
-            DrawLine(ConsoleColor.Magenta, "Emotion ;) 2026", "Roger :D");
-            Thread.Sleep(3000);
-
-            mainMenuInterface.StartInterface();
         }
 
-        [SupportedOSPlatform("windows")]
-        static bool IsWindowsTerminal() // This Method Work Only On Windows
-        {
-            try
-            {
-                int currentPid = Environment.ProcessId;
-
-                string query = $"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {currentPid}";
-                using var searcher = new ManagementObjectSearcher(query);
-                using var results = searcher.Get();
-                foreach (ManagementObject mO in results.Cast<ManagementObject>())
-                {
-                    int parentPid = Convert.ToInt32(mO["ParentProcessId"]);
-                    if (parentPid == 0) return false;
-
-                    using Process parentProcess = Process.GetProcessById(parentPid);
-                    return parentProcess.ProcessName.Equals("WindowsTerminal", StringComparison.OrdinalIgnoreCase);
-                }
-            }
-            catch
-            {
-                return false;
-            }
-            return false;
-        }
+        /// <summary>
+        /// If Console Size > ConsoleSize - true. Else - false
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public static bool CheckMinWindowSize(ConsoleSize size) => (Console.WindowWidth > size.Width && Console.WindowHeight > size.Height);
     }
 }
