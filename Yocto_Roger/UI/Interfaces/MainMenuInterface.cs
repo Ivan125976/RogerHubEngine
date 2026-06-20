@@ -72,23 +72,7 @@ namespace Yocto_Roger.UI.Interfaces
                             break;
 
                         case 6:
-                            Console.WriteLine("""                                
-        ▒▒████████████▒▒        
-      ▒▒                ▒▒      
-      ██                ██      
-      ██    ██    ██    ██      
-      ██    ██    ██    ██      
-      ██                ██      
-      ██                ██      
-    ▒▒██                ██▒▒    
-  ▓▓  ██                ██  ▓▓  
-  ██  ██                ██  ██  
-  ██  ██                ██  ██  
-  ▓▓  ██                ██  ▓▓  
-    ▒▒██                ██▒▒    
-      ██                ██      
-      ██                ██             
-""");
+                            ASCIIDraw.Logo(false);
                             Console.WriteLine($" Github: https://github.com/Ivan125976/AI_Roger\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}{revision} build:DELTA! \n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
