@@ -60,28 +60,24 @@ namespace Yocto_Roger
 
                 if (!CheckMinWindowSize(minSize))
                 {
-                    try
-                    {
-#pragma warning disable CA1416 // Проверка совместимости платформы
+                    if(OperatingSystem.IsWindows())
                         Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
-#pragma warning restore CA1416 // Проверка совместимости платформы
-                    }
-                    catch (PlatformNotSupportedException)
+                    else
                     {
                         Console.Write("\n");
                         Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
 
-                        Thread.Sleep(250); // Delay to allow time for the size to change
+                        Thread.Sleep(25); // Delay to allow time for the size to change
 
                         if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
                         {
-                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} | Height: {minSize.Height}", MessageType.error);
-                            Send("Resize the window until i say \"DONE\". Let's go.", MessageType.note);
+                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
+                            Send("Resize the window until i say \"Done\"", MessageType.note);
                             while (!CheckMinWindowSize(minSize))
                             {
                                 bool check = CheckMinWindowSize(minSize);
 
-                                if (check) { Console.WriteLine("DONE", ConsoleColor.Green); }
+                                if (check) { Send("Done"); }
                             }
                         }
 
@@ -92,8 +88,14 @@ namespace Yocto_Roger
                 try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision} DELTA!"; } catch { Send("Couldn't change the title", MessageType.warning); }
 
                 // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
-                try { Console.InputEncoding = Encoding.Unicode; } catch { Console.InputEncoding = Encoding.UTF8; }
-                try { Console.OutputEncoding = Encoding.Unicode; } catch { Console.OutputEncoding = Encoding.UTF8; }
+                try { Console.InputEncoding = Encoding.Unicode; } catch { 
+                    Console.InputEncoding = Encoding.UTF8;
+                    Send("RogerHubEngine.InputEncoding> Yout system doesn't support Unicode!", MessageType.warning);
+                }
+                try { Console.OutputEncoding = Encoding.Unicode; } catch { 
+                    Console.OutputEncoding = Encoding.UTF8;
+                    Send("RogerHubEngine.OutputEncoding> Your system doesn't support Unicode!", MessageType.warning);
+                }
 
                 Parameters param = new();
                 NeuralNetworkState nNState = new();
