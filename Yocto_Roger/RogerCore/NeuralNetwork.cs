@@ -105,9 +105,9 @@ Copyright 2025-2026 Emotion Corp.
 
                     // In the future, these variables can't be null, because if they don't receive a value, the while(true) method is called, which eliminates the use of null values.
                     string[] allLines = null!;
-                    string[] parsedString = null!;
+                    string[] parsedString;
                     int[] input = null!;
-                    string[] splitingSecond = null!;
+                    string[] splitingSecond;
                     double[] output = null!;
                     int length = 0!;
 
@@ -116,19 +116,16 @@ Copyright 2025-2026 Emotion Corp.
                         allLines = File.ReadAllLines(_param.knowledgeFile);
 
                         parsedString = allLines[0].Split(' ');
-                        input = StringParse(parsedString[0], ',');
+                        input = StringParse(parsedString[0], ';');
                         splitingSecond = parsedString[1].Split(';');
                         output = new double[splitingSecond.Length];
                         for (int j = 0; j < splitingSecond.Length; j++)
                             output[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                         length = input.Length + output.Length;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Send("Invalid knowledge file. Check if this is it, or check if its contents are correct", MessageType.error);
-                        Console.WriteLine("Here's exception, if you are programmer, you can make a pull request on our github, with fix this exception, or write Issue with this problem, and add to it this exception please\nGithub: https://github.com/Ivan125976/AI_Roger/tree/v2.2-beta\n Exception:\n" + ex.Message);
-                        Console.Write("Press enter to continue", ConsoleColor.Blue);
-                        Console.ReadLine();
+                        Send("Your training file is corrupted or is not in our format.", MessageType.error);
                         _mainMenu.StartInterface();
                     }
 
@@ -141,7 +138,7 @@ Copyright 2025-2026 Emotion Corp.
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
                         {
-                            case 'y':
+                            case 'y' or 'Y':
                                 _param.inputNeuronsCount = input.Length;
                                 Console.Clear();
                                 StartAI(0);
@@ -157,7 +154,7 @@ Copyright 2025-2026 Emotion Corp.
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
                         {
-                            case 'y':
+                            case 'y' or 'Y':
                                 _param.outputNeuronsCount = output.Length;
                                 Console.Clear();
                                 StartAI(0);
@@ -174,7 +171,7 @@ Copyright 2025-2026 Emotion Corp.
                     for (int i = 0; i < allLines.Length; i++)
                     {
                         parsedString = allLines[i].Split(' ');
-                        input = StringParse(parsedString[0], ',');
+                        input = StringParse(parsedString[0], ';');
                         splitingSecond = parsedString[1].Split(';');
                         for (int j = 0; j < input.Length; j++)
                             educationArray[i, j] = input[j];
@@ -241,10 +238,10 @@ Copyright 2025-2026 Emotion Corp.
                         {
                             Send("I can't to serialize the data, here's my error: \n", MessageType.error);
                             Console.WriteLine(e.Message, ConsoleColor.Red);
-                            Console.WriteLine("This could mean that the developers screwed up somewhere. If you have a time, then please write an issue about this error on our Github (0v0). Here's url:\n" +
-                                "https://github.com/Ivan125976/AI_Roger/issues/new", ConsoleColor.Blue);
-                            Console.Write("Press enter to continue");
-                            Console.ReadLine();
+                            Send("This could mean that the developers screwed up somewhere. If you have a time, then please write an issue about this error on our Github (0v0). Here's url:\n" +
+                                "https://github.com/Ivan125976/AI_Roger/issues/new", MessageType.note);
+                            Console.Write("Press any key to continue");
+                            Console.ReadKey(true);
                         }
                     }
                     else

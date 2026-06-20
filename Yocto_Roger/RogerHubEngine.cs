@@ -41,7 +41,7 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            ConsoleSize minSize = new(40, 90);
+            ConsoleSize minSize = new(40, 120);
 
             while (true)
             {
