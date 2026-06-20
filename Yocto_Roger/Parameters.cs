@@ -17,17 +17,17 @@ RogerHub configuration
         /// <summary>
         /// Number of passes during training on training data
         /// </summary>
-        public int passes = 500;
+        public int passes = 10000;
 
         /// <summary>
         /// The coefficient of change of weights and biases of the neural network.
         /// </summary>
-        public float learningRate = 0.02f;
+        public float learningRate = 0.01f;
 
         /// <summary>
         /// The percentage of response of the built-in DropOut subsystem during neural network training
         /// </summary>
-        public float DropOutPercent = 3.0f;
+        public float DropOutPercent = 8.0f;
 
         /// <summary>
         /// The path to the neural network's knowledge base on which it will need to be trained
@@ -42,12 +42,12 @@ RogerHub configuration
         /// <summary>
         /// Number of input neurons
         /// </summary>
-        public int inputNeuronsCount = 14;
+        public int inputNeuronsCount = 8;
 
         /// <summary>
         /// Number of middle neurons
         /// </summary>
-        public int middleNeuronsCount = 16;
+        public int middleNeuronsCount = 12;
 
         /// <summary>
         /// Number of output neurons
@@ -57,7 +57,7 @@ RogerHub configuration
         /// <summary>
         /// Number of layers in a neural network
         /// </summary>
-        public int layers = 3;
+        public int layers = 4;
 
         /// <summary>
         /// Cache Management in RMS Optimization
