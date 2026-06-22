@@ -22,58 +22,53 @@ namespace Yocto_Roger.UI.Interfaces
 
             if (mgr.IsInstalled)
             {
-
-                Console.WriteLine(
-                    $"""
-                                1. Check for updates and update
-                                2. Get outta here to main menu
-                                """);
-                if (int.TryParse(Console.ReadLine(), out int choice))
+                try
                 {
-                    switch (choice)
-                    {
-                        case 1:
-                            UpdateInfo info = mgr.CheckForUpdates();
+                    UpdateInfo? info = mgr.CheckForUpdates();
 
-                            if (info != null)
-                            {
-                                Console.WriteLine("Updates found! Downloading...");
-                                try
+                    if (info != null)
+                    {
+                        Console.WriteLine($" Update found! New version: {info.TargetFullRelease}. Do you want to install it? (y/n)\n >>>");
+                        switch (Console.ReadKey().KeyChar)
+                        {
+                            case 'Y' or 'y':
                                 {
-                                    mgr.DownloadUpdates(info);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Failed to download the update: {ex}");
+                                    try
+                                    {
+                                        mgr.DownloadUpdates(info);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Failed to download the update: {ex}");
+                                    }
+                                    Console.WriteLine("Updates was downloaded successful!\nTrying to apply it, the app will be restarted in new version...");
+                                    Thread.Sleep(5000); // For user can to read the message
+                                    try
+                                    {
+                                        mgr.ApplyUpdatesAndRestart(info);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Send($"Failed to apply updates, here's my error: {ex}", MessageType.error);
+                                    }
                                     break;
                                 }
-                                Console.WriteLine("Updates was downloaded successful!\nTrying to apply it, the app will be restarted in new version...");
-                                Thread.Sleep(5000); // For user can to read the message
-                                try
-                                {
-                                    mgr.ApplyUpdatesAndRestart(info);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Send("Failed to apply updates, here's my error: ", MessageType.error);
-                                    Console.WriteLine(ex.ToString(), ConsoleColor.Red);
-                                }
-                            }
-                            else
-                            {
-                                Send("Hey, hey, calm down, you have the latest version");
-                                Thread.Sleep(5000);
-                            }
-                            break;
-
-                        case 2:
-                            break;
-
+                        }
                     }
+                    else
+                    {
+                        Send("Hey, you have the latest version");
+                        Console.WriteLine("Press any ker to continue");
+                        Console.ReadKey(true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Send($"{ex}", MessageType.error);
                 }
             }
             else
-                Send("It's Doesn't work in the developer mode. I guess you run it in visual studio, with simple compiler, but this future works only when it compiled with VPK, so forget about it, you don't need it. If you are an simple user, and u see this message, please write about it in Issues on our Github: https://github.com/Ivan125976/RogerHubEngine/issues/new/choose", MessageType.error);
+                Send("You can't update in development mode", MessageType.error);
         }
     }
 }
