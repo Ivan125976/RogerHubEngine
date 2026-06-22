@@ -17,8 +17,8 @@ namespace Yocto_Roger.UI.Interfaces
         {
             VelopackApp.Build().Run();
 
-            GithubSource githubSource = new("https://github.com/Ivan125976/AI_Roger", null, false);
-            var mgr = new Velopack.UpdateManager(githubSource);
+            GithubSource githubSource = new("https://github.com/Ivan125976/RogerHubEngine", null, false);
+            var mgr = new UpdateManager(githubSource);
 
             if (mgr.IsInstalled)
             {
@@ -73,7 +73,7 @@ namespace Yocto_Roger.UI.Interfaces
                 }
             }
             else
-                Send("It's Doesn't work in the developer mode. I guess you run it in visual studio, with simple compiler, but this future works only when it compiled with VPK, so forget about it, you don't need it. If you are an simple user, and u see this message, please write about it in Issues on our Github: https://github.com/Ivan125976/AI_Roger/issues/new/choose", MessageType.error);
+                Send("It's Doesn't work in the developer mode. I guess you run it in visual studio, with simple compiler, but this future works only when it compiled with VPK, so forget about it, you don't need it. If you are an simple user, and u see this message, please write about it in Issues on our Github: https://github.com/Ivan125976/RogerHubEngine/issues/new/choose", MessageType.error);
         }
     }
 }

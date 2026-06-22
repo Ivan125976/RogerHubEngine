@@ -9,11 +9,6 @@ using static Yocto_Roger.IO.Splitter;
 using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
 using static Yocto_Roger.UI.CUI.CUI;
 
-// При компиляции в Release дллка NewtonsoftJson.dll всё равно почему-то линкуется в папку с бинарником, вероятно изза того что он добавлен в проект как nuget пакет. Так вот, в release когда компилируешь, дллку эту можно удалить, ибо она не нужна и весит 700кб целых
-#if DEBUG
-using Newtonsoft.Json; // For middleWeights
-#endif
-
 namespace Yocto_Roger.RogerCore
 {
     /* 
@@ -239,7 +234,7 @@ Copyright 2025-2026 Emotion Corp.
                             Send("I can't to serialize the data, here's my error: \n", MessageType.error);
                             Console.WriteLine(e.Message, ConsoleColor.Red);
                             Send("This could mean that the developers screwed up somewhere. If you have a time, then please write an issue about this error on our Github (0v0). Here's url:\n" +
-                                "https://github.com/Ivan125976/AI_Roger/issues/new", MessageType.note);
+                                "https://github.com/Ivan125976/RogerHubEngine/issues/new", MessageType.note);
                             Console.Write("Press any key to continue");
                             Console.ReadKey(true);
                         }
