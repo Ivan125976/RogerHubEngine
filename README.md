@@ -30,6 +30,7 @@ This is a cute little neural network for your robot or your Unity game.
 - Debug mode for developers
 - Ability to choose the number of layers
 
+
 ### :mailbox: Method of communication and error reporting
 > Discord
 + Axolotl512 - @antipin_ivan
