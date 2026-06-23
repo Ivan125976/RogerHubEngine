@@ -40,9 +40,12 @@ namespace Yocto_Roger.UI.Interfaces
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Failed to download the update: {ex}");
+                                        Console.Write("Press Enter to continue");
+                                        Console.ReadLine();
+                                        break;
                                     }
                                     Console.WriteLine("Updates was downloaded successful!\nTrying to apply it, the app will be restarted in new version...");
-                                    Thread.Sleep(5000); // For user can to read the message
+                                    Console.Write("Press Enter to continue"); // For user can to read the message
                                     try
                                     {
                                         mgr.ApplyUpdatesAndRestart(info);
@@ -50,6 +53,8 @@ namespace Yocto_Roger.UI.Interfaces
                                     catch (Exception ex)
                                     {
                                         Send($"Failed to apply updates, here's my error: {ex}", MessageType.error);
+                                        Console.Write("Press Enter to continue");
+                                        Console.ReadLine();
                                     }
                                     break;
                                 }
@@ -58,7 +63,7 @@ namespace Yocto_Roger.UI.Interfaces
                     else
                     {
                         Send("Hey, you have the latest version");
-                        Console.WriteLine("Press any ker to continue");
+                        Console.WriteLine("Press any key to continue");
                         Console.ReadKey(true);
                     }
                 }
@@ -69,6 +74,10 @@ namespace Yocto_Roger.UI.Interfaces
             }
             else
                 Send("You can't update in development mode", MessageType.error);
+            /*
+             Development mode is when you compile a program using Visual Studio, which is a simple compiler,
+             but updating only works when you compile it using VPK, which is a command-line tool that creates a self-updating file from a simple binary file.
+             */
         }
     }
 }

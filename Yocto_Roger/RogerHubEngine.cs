@@ -48,7 +48,6 @@ namespace Yocto_Roger
                 Console.Clear();
                 ASCIIDraw.Logo(true);
                 Console.WriteLine("Creating a software environment...");
-
                 if (!CheckMinWindowSize(minSize))
                 {
                     if (OperatingSystem.IsWindows())
