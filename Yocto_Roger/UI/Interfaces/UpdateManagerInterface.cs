@@ -28,8 +28,8 @@ namespace Yocto_Roger.UI.Interfaces
 
                     if (info != null)
                     {
-                        Console.WriteLine($" Update found! New version: {info.TargetFullRelease}. Do you want to install it? (y/n)\n >>>");
-                        switch (Console.ReadKey().KeyChar)
+                        Console.WriteLine($" Update found! New version: {info.TargetFullRelease.Version}. Do you want to install it? (y/n)\n >>>");
+                        switch (Console.ReadKey(true).KeyChar)
                         {
                             case 'Y' or 'y':
                                 {
@@ -39,7 +39,7 @@ namespace Yocto_Roger.UI.Interfaces
                                     }
                                     catch (Exception ex)
                                     {
-                                        Console.WriteLine($"Failed to download the update: {ex}");
+                                        Console.WriteLine($"Failed to download update: {ex}");
                                         Console.Write("Press any key to continue");
                                         Console.ReadKey(true);
                                         break;

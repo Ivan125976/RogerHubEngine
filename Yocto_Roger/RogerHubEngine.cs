@@ -85,7 +85,7 @@ namespace Yocto_Roger
                         if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
                         {
                             Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
-                            Send("Resize the window until i say \"Done\"", MessageType.note);
+                            Send("Resize the window until I say \"Done\"", MessageType.note);
                             while (!CheckMinWindowSize(minSize))
                             {
                                 bool check = CheckMinWindowSize(minSize);
@@ -98,16 +98,16 @@ namespace Yocto_Roger
                 }
 
 
-                try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}{revision}"; } catch { Send("Couldn't change the title", MessageType.warning); }
+                try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}"; } catch { Send("Couldn't change the title", MessageType.warning); }
 
                 // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
                 try { Console.InputEncoding = Encoding.Unicode; } catch { 
                     Console.InputEncoding = Encoding.UTF8;
-                    Send("RogerHubEngine.InputEncoding> Yout system doesn't support Unicode! I'm setting up UTF-8", MessageType.warning);
+                    Send("RogerHubEngine.InputEncoding> Your system doesn't support Unicode!", MessageType.warning);
                 }
                 try { Console.OutputEncoding = Encoding.Unicode; } catch { 
                     Console.OutputEncoding = Encoding.UTF8;
-                    Send("RogerHubEngine.OutputEncoding> Your system doesn't support Unicode! I'm setting up UTF-8", MessageType.warning);
+                    Send("RogerHubEngine.OutputEncoding> Your system doesn't support Unicode!", MessageType.warning);
                 }
 
                 Parameters param = new();

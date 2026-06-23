@@ -18,11 +18,6 @@
         /// <summary>
         /// Patch version of RogerHubEngine
         /// </summary>
-        public const char patchVersion = '0';
-
-        /// <summary>
-        /// Revision of version RogerHubEngine
-        /// </summary>
-        public const char revision = ' ';
+        public const char patchVersion = '1';
     }
 }

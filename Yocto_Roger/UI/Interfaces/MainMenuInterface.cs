@@ -29,9 +29,9 @@ namespace Yocto_Roger.UI.Interfaces
             {
                 Console.Clear();
 #if RELEASE
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion}{revision}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #elif DEBUG
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion}{revision} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #endif
                 Send("This project is still in the development stage.", MessageType.warning);
                 Console.Write("""
@@ -72,7 +72,7 @@ namespace Yocto_Roger.UI.Interfaces
 
                         case 6:
                             ASCIIDraw.Logo(false);
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}{revision}\n" +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}\n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;
