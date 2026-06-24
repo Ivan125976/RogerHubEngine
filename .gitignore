@@ -1,0 +1,7 @@
+RogerHubEngine/bin
+RogerHubEngine/obj
+**/logs
+*.know
+*.txt
+*.roger2
+RogerHubEngine/.vs
