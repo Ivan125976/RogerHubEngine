@@ -10,6 +10,16 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <ErrorReport>prompt</ErrorReport>
     <Company>Emotion</Company>
+    <Product>RogerHub Engine 3</Product>
+    <Description>Start RogerHubEngine 3!
+</Description>
+    <Copyright>Emotion Corp. 2025-2026 - MIT License</Copyright>
+    <PackageProjectUrl>emotioncorp.site</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Ivan125976/RogerHubEngine</RepositoryUrl>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
