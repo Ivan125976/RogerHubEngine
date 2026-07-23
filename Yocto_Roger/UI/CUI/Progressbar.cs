@@ -33,17 +33,5 @@
             Console.Write("]");
             Console.SetCursorPosition(cursorX, cursorY);
         }
-
-        /// <summary>
-        /// Clears the progress bar
-        /// </summary>
-        public void Remove()
-        {
-            int cursorX = Console.CursorLeft;
-            int cursorY = Console.CursorTop;
-            Console.SetCursorPosition(_x,_y);
-            Console.Write(new string(' ', _parts + 2));
-            Console.SetCursorPosition(cursorX, cursorY);
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Yocto_Roger.RogerCore.Initialization.Weights;
+﻿using Yocto_Roger.RogerCore.Initialization;
 using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore.Training
@@ -72,7 +72,7 @@ Copyright 2025-2026 Emotion Corp.
                 RMSmiddleBiases = new double[middleBiases.GetLength(0), middleBiases.GetLength(1)];
                 RMSoutputBiases = new double[outputBiases.Length];
 
-                CreateWeights.CreateMiddleWeights(RMSmiddleWeights, _param.middleNeuronsCount);
+                InitWeights.CreateMiddleWeights(RMSmiddleWeights, _param.middleNeuronsCount);
             }
 
             int[] input = new int[inputNeurons.Length];

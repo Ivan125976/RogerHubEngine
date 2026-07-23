@@ -1,4 +1,6 @@
-﻿namespace Yocto_Roger.UI.CUI
+﻿using System.Runtime.CompilerServices;
+
+namespace Yocto_Roger.UI.CUI
 /* 
 Yocto Roger ;)
 *****************
@@ -82,11 +84,24 @@ Copyright 2025-2026 Emotion Corp.
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey(true);
                     break;
-
-                default:
-                    Send("UI.Send>Incorrect mode! Check the UI.Send method call", MessageType.error);
-                    break;
             }
+        }
+
+        /// <summary>
+        /// For important, engine errors
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="filePath">Path to file with error</param>
+        /// <param name="methodName">Method with error</param>
+        /// <param name="lineNumber">Line with error</param>
+        public static void InternalError(string message, [CallerMemberName] string methodName = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("[INTERNAL ERROR]");
+            Console.WriteLine($"{filePath}.{methodName}:{lineNumber}> {message}");
+            Console.ResetColor();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey(true);
         }
     }
 }
