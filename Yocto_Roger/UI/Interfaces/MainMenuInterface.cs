@@ -29,9 +29,9 @@ namespace Yocto_Roger.UI.Interfaces
             {
                 Console.Clear();
 #if RELEASE
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specailName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #elif DEBUG
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #endif
                 Send("This project is still in the development stage.", MessageType.warning);
                 Console.Write("""
