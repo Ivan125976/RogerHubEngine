@@ -105,7 +105,7 @@ Copyright 2025-2026 Emotion Corp.
                     string[] splitingSecond;
                     double[] output = null!;
                     int length = 0!;
-
+                    
                     try
                     {
                         allLines = File.ReadAllLines(_param.knowledgeFile);
