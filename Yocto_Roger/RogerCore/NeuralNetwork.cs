@@ -1,7 +1,7 @@
 ﻿using MemoryPack;
 using System.Globalization;
 using Yocto_Roger.IO;
-using Yocto_Roger.RogerCore.Initialization.Weights;
+using Yocto_Roger.RogerCore.Initialization;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
@@ -128,7 +128,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (input!.Length != _param.inputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
+                        Send("The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.inputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -144,7 +144,7 @@ Copyright 2025-2026 Emotion Corp.
                     else if (output!.Length != _param.outputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
+                        Send("The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.outputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -196,7 +196,7 @@ Copyright 2025-2026 Emotion Corp.
                     Send("done");
                     Console.Write("Initialization weights...");
                     InitWeights.Init(inputWeights);
-                    CreateWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
+                    InitWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
                     InitWeights.Init(middleWeights);
                     InitWeights.Init(outputWeights);
                     Send("done");

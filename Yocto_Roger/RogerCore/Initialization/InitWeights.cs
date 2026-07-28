@@ -3,7 +3,7 @@ using Yocto_Roger.UI.CUI;
 
 using static Yocto_Roger.UI.CUI.CUI;
 
-namespace Yocto_Roger.RogerCore.Initialization.Weights
+namespace Yocto_Roger.RogerCore.Initialization
 {
     /* 
 Yocto Roger ;)
@@ -20,6 +20,17 @@ Copyright 2025-2026 Emotion Corp.
 
     public class InitWeights()
     {
+        /// <summary>
+        /// Creates an array of middle weights.
+        /// </summary>
+        /// <param name="weights">Array of middle weights</param>
+        /// <param name="size">Size of array</param>
+        public static void CreateMiddleWeights(double[][,] weights, int size)
+        {
+            for (int i = 0; i < weights.Length; i++)
+                weights[i] = new double[size, size];
+        }
+
         /// <summary>
         /// Xavier Uniform method for two-dimensional weight arrays
         /// </summary>
