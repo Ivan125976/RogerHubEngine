@@ -29,7 +29,7 @@ namespace Yocto_Roger.UI.Interfaces
             {
                 Console.Clear();
 #if RELEASE
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specailName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #elif DEBUG
                 DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 #endif

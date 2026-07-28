@@ -13,17 +13,17 @@
         /// <summary>
         /// Minor version of RogerHubEngine
         /// </summary>
-        public const char minorVersion = '3';
+        public const char minorVersion = '2';
 
         /// <summary>
         /// Patch version of RogerHubEngine
         /// </summary>
-        public const char patchVersion = '0';
+        public const char patchVersion = '2';
 
         /// <summary>
         /// Name of build
         /// </summary>
-        public const Roadmap specialName = Roadmap.DEV;
+        public const Roadmap specialName = Roadmap.R;
     }
 
     /// <summary>
@@ -34,31 +34,36 @@
         /// <summary>
         /// First stage: highly unstable development. It might not be working.
         /// </summary>
-        DEV,
+        D,
 
         /// <summary>
         /// Second stage: highly unstable implementation
         /// </summary>
-        DEV2,
+        D2,
 
         /// <summary>
         /// Third stage: initial stabilization and optimization of new functionality.
         /// </summary>
-        BETA,
+        BT,
 
         /// <summary>
         /// Fourth stage: subsystem improvements and rapid changes
         /// </summary>
-        CHARLIE,
+        CRL,
 
         /// <summary>
         /// Fifth stage: final adjustments and refinement of the neural network's connection with the subsystems.
         /// </summary>
-        DELTA,
+        DLT,
 
         /// <summary>
         /// possible builds based on stable versions with new functionality, without optimization
         /// </summary>
-        EXPERIMENT
+        EXP,
+
+        /// <summary>
+        /// Release
+        /// </summary>
+        R
     }
 }

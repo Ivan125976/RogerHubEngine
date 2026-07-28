@@ -3,7 +3,6 @@ using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
-using MemoryPack;
 
 #if DEBUG
 using Newtonsoft.Json;
@@ -32,6 +31,7 @@ namespace Yocto_Roger.UI.Interfaces
         public void StartInterface()
         {
             Console.CursorVisible = true;
+
             while (true)
             {
                 Console.Clear();
@@ -43,21 +43,18 @@ namespace Yocto_Roger.UI.Interfaces
                 string? userInputString = Console.ReadLine();
                 if (!string.IsNullOrEmpty(userInputString))
                 {
-                    if (RogerMath.CleanInput(userInputString, out string cleanedUserInputString))
+                    if (userInputString == "exit")
+                        _mainMenuInterface.StartInterface();
+                    else if (userInputString == "save")
                     {
-                        string[] userInputChecked = cleanedUserInputString.Split(',');
-                        if (userInputString == "exit")
-                            _mainMenuInterface.StartInterface();
-                        else if (userInputString == "save")
-                        {
-                            Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
-                            string input = Console.ReadLine() ?? string.Empty;
+                        Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
+                        string input = Console.ReadLine() ?? string.Empty;
 
-                            try
+                        try
+                        {
+                            if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
                             {
-                                if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
-                                {
-                                    MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
+                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
 #if DEBUG
                                     string data = JsonConvert.SerializeObject(
                                         MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(path)),
@@ -67,29 +64,32 @@ namespace Yocto_Roger.UI.Interfaces
                                     Console.WriteLine("Enter any button to continue");
                                     Console.ReadLine();
 #endif
-                                }
+                            }
 
-                                else if (input == string.Empty)
-                                {
-                                    MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
+                            else if (input == string.Empty)
+                            {
+                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
 #if DEBUG
                                     NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.bin")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
                                     Console.WriteLine("Enter any button to continue");
                                     Console.ReadLine();
 #endif
-                                }
-                                else
-                                    Send("Incorrect input (-_0)", MessageType.error);
                             }
-                            catch (Exception e)
-                            {
-                                Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
-                                Console.WriteLine($"Error: {e}", ConsoleColor.Red);
-                                Thread.Sleep(5000);
-                            }
+                            else
+                                Send("Incorrect input (-_0)", MessageType.error);
                         }
-                        else if (userInputChecked.Length == _param.inputNeuronsCount)
+                        catch (Exception e)
+                        {
+                            Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
+                            Console.WriteLine($"Error: {e}", ConsoleColor.Red);
+                            Thread.Sleep(5000);
+                        }
+                    }
+                    else if (RogerMath.CleanInput(userInputString, out string cleanedUserInputString))
+                    {
+                        string[] userInputChecked = cleanedUserInputString.Split(',');
+                        if (userInputChecked.Length == _param.inputNeuronsCount)
                         {
 
                             int[] userInput = new int[_param.inputNeuronsCount];
@@ -109,9 +109,7 @@ namespace Yocto_Roger.UI.Interfaces
                     }
                 }
                 else
-                {
                     Send("Incorrect input (-_0)", MessageType.error);
-                }
             }
         }
     }
