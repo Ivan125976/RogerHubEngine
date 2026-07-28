@@ -1,7 +1,7 @@
 ﻿using MemoryPack;
 using System.Globalization;
 using Yocto_Roger.IO;
-using Yocto_Roger.RogerCore.Initialization.Weights;
+using Yocto_Roger.RogerCore.Initialization;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
@@ -93,7 +93,7 @@ Copyright 2025-2026 Emotion Corp.
                 case 0:
                     if (!File.Exists(_param.knowledgeFile))
                     {
-                        Send("I can't find the training file!", MessageType.error);
+                        Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
                         break;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
@@ -105,7 +105,7 @@ Copyright 2025-2026 Emotion Corp.
                     string[] splitingSecond;
                     double[] output = null!;
                     int length = 0!;
-
+                    
                     try
                     {
                         allLines = File.ReadAllLines(_param.knowledgeFile);
@@ -128,7 +128,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (input!.Length != _param.inputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.InputNeurons>The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
+                        Send("The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.inputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -144,7 +144,7 @@ Copyright 2025-2026 Emotion Corp.
                     else if (output!.Length != _param.outputNeuronsCount)
                     {
                         Console.WriteLine();
-                        Send("NeuralNetwork.StartAI.OutputNeurons>The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
+                        Send("The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
                         Console.WriteLine("Do you want to change this parameter <Parameters.outputNeuronsCount> and restart NeuralNetwork? (y/n)");
                         ConsoleKeyInfo answer = Console.ReadKey();
                         switch (answer.KeyChar)
@@ -196,7 +196,7 @@ Copyright 2025-2026 Emotion Corp.
                     Send("done");
                     Console.Write("Initialization weights...");
                     InitWeights.Init(inputWeights);
-                    CreateWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
+                    InitWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
                     InitWeights.Init(middleWeights);
                     InitWeights.Init(outputWeights);
                     Send("done");
@@ -219,7 +219,7 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    Console.Write("Write an absolute path to your .bin file\nSTRING> ");
+                    Console.Write("Write an absolute path to your .roger2 file\nSTRING> ");
                     string? userInput = Console.ReadLine();
                     if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
                     {

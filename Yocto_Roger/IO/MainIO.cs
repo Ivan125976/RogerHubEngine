@@ -36,7 +36,7 @@ Internal I/O lib
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
         /// </summary>
-        public void SaveRogerToJson(string? fileName = "roger")
+        public void SaveRogerToJson(string? fileName = "roger2")
         {
 
             Roger roger = new()
@@ -236,7 +236,7 @@ Internal I/O lib
         {
             byte[] binData = MemoryPackSerializer.Serialize(nN);
 
-            string path = MakeFileSplitOnIndexIfExists("bin", Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"));
+            string path = MakeFileSplitOnIndexIfExists("roger2", Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"));
 
             File.WriteAllBytes(path, binData);
         }
