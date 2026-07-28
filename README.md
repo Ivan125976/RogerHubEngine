@@ -17,6 +17,7 @@ This is a cute little neural network for your robot or your Unity game.
 >Yocto
 + **Roger v2.1** - Same as 2.0 but with the addition of IO and DropOut subsystems
 + **Roger v2.2** - Major rework of v2.1, added RMS and many other features
++ **Roger v2.3** - A minor update, neural network improvements, and the addition of RRNNs.
 
 ### :1st_place_medal: What can your neural network do? (v2.2)
 - MLP neural network
