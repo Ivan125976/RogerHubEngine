@@ -35,7 +35,7 @@ namespace Yocto_Roger.UI.Interfaces
             while (true)
             {
                 Console.Clear();
-                Send("Enter \"save\"  to fix the state of neural network in the file, for load at this point later. Or \"exit\" to exit to main menu", MessageType.warning);
+                Send("Enter \"save\"  to fix the state of the neural network in the file, for load at this point later. Or \"exit\" to exit to the main menu", MessageType.warning);
                 Console.WriteLine($"Roger have {_param.inputNeuronsCount} input neurons, and {_param.outputNeuronsCount} output neurons." +
                     $"Write input format: <datain1>,<datain2>,<datain3>...");
                 DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));

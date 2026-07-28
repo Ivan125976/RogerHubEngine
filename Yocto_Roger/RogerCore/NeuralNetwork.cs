@@ -93,7 +93,7 @@ Copyright 2025-2026 Emotion Corp.
                 case 0:
                     if (!File.Exists(_param.knowledgeFile))
                     {
-                        Send("I can't find the training file!", MessageType.error);
+                        Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
                         break;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
@@ -219,7 +219,7 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    Console.Write("Write an absolute path to your .bin file\nSTRING> ");
+                    Console.Write("Write an absolute path to your .roger2 file\nSTRING> ");
                     string? userInput = Console.ReadLine();
                     if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
                     {
