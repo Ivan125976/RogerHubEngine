@@ -1,0 +1,7 @@
+Error: System.IO.FileNotFoundException: Could not find file 'C:\Users\Jacky\Desktop\RogerHubEngine\Yocto_Roger\bin\Debug\net9.0\NeuralNetworkState.bin'.
+File name: 'C:\Users\Jacky\Desktop\RogerHubEngine\Yocto_Roger\bin\Debug\net9.0\NeuralNetworkState.bin'
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+   at System.IO.File.ReadAllBytes(String path)
+   at Yocto_Roger.UI.Interfaces.NeuralNetworkInterface.StartInterface() in C:\Users\Jacky\Desktop\RogerHubEngine\Yocto_Roger\UI\Interfaces\NeuralNetworkInterface.cs:line 75

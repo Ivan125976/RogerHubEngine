@@ -3,6 +3,8 @@ using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
+using MemoryPack;
+
 
 #if DEBUG
 using Newtonsoft.Json;
@@ -56,6 +58,7 @@ namespace Yocto_Roger.UI.Interfaces
                             {
                                 MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
 #if DEBUG
+                                Thread.Sleep(1000);
                                     string data = JsonConvert.SerializeObject(
                                         MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(path)),
                                         Formatting.Indented);
@@ -70,7 +73,7 @@ namespace Yocto_Roger.UI.Interfaces
                             {
                                 MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
 #if DEBUG
-                                    NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.bin")))!;
+                                    NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
                                     Console.WriteLine("Enter any button to continue");
                                     Console.ReadLine();

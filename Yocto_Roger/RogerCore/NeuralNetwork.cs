@@ -242,7 +242,7 @@ Copyright 2025-2026 Emotion Corp.
                     else
                     {
                         Send("Incorrect input (-_0)", MessageType.error);
-                        Send("Maybe file which you entered, doesn't exists, please check it and retry");
+                        Send("Maybe file that you entered, doesn't exists, please check it and retry");
                     }
                     break;
 
