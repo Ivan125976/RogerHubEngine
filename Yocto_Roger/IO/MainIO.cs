@@ -208,9 +208,9 @@ Internal I/O lib
         public void InitNeuralNetwork(NeuralNetworkState? nN)
         {
             // If null - Values by default
-            _param.inputNeuronsCount = nN?.InputNeuronsCount ?? 14;
-            _param.middleNeuronsCount = nN?.MiddleNeuronsCount ?? 16;
-            _param.outputNeuronsCount = nN?.OutputNeuronsCount ?? 8;
+            _nN.inputNeurons = nN?.InputNeurons;
+            _nN.middleNeurons = nN?.MiddleNeurons;
+            _nN.outputNeurons = nN?.OutputNeurons;
 
             _nN.inputWeights = nN?.InputWeights!;
             _nN.middleWeights = nN?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
@@ -250,19 +250,19 @@ Internal I/O lib
             {
 
                 // If it's null, then it automatedly set to default value
-                InputNeuronsCount = _param.inputNeuronsCount,
-                MiddleNeuronsCount = _param.middleNeuronsCount,
-                OutputNeuronsCount = _param.outputNeuronsCount,
+                InputNeurons = _nN?.inputNeurons,
+                MiddleNeurons = _nN?.middleNeurons,
+                OutputNeurons = _nN?.outputNeurons,
 
-                InputWeights = _nN.inputWeights ?? null,
-                MiddleWeights = _nN.middleWeights ?? null,
-                OutputWeights = _nN.outputWeights ?? null,
+                InputWeights = _nN?.inputWeights ?? null,
+                MiddleWeights = _nN?.middleWeights ?? null,
+                OutputWeights = _nN?.outputWeights ?? null,
 
                 // And here too
                 Layers = _param.layers,
 
-                Obias = _nN.Obias ?? null,
-                Mbias = _nN.Mbias ?? null
+                Obias = _nN?.Obias ?? null,
+                Mbias = _nN?.Mbias ?? null
             };
 
             return nN;

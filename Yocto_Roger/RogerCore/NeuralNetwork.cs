@@ -398,6 +398,8 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="writeArray"></param>
         public static void WriteToNN(int[] neurons, int[] writeArray)
         {
+            neurons ??= [0, 0, 0, 0, 0, 0]; // If it's null, make it zero values, 'case it's null only when user enter's six zero values and idk why, neurons array is null
+
             if (neurons.Length == writeArray.Length)
                 for (int i = 0; i < neurons.Length; i++)
                     neurons[i] = writeArray[i];
