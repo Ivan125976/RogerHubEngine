@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
-
-namespace Yocto_Roger.IO
+﻿namespace Yocto_Roger.IO
 /* 
 Yocto Roger ;)
 *****************
@@ -24,12 +21,11 @@ Internal extension I/O lib
         /// <param name="roger"></param>
         public void InitRogersData(MainIO.Roger? roger)
         {
-
             _param.passes = roger?.Passes ?? 500;
             _param.learningRate = roger?.LearingRate ?? 0.02f;
             _param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
 
-            _param.knowledgeFile = roger?.KnowledgeFile ?? String.Empty;
+            _param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
 
             _param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
             _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
@@ -37,6 +33,7 @@ Internal extension I/O lib
 
             _param.layers = roger?.Layers ?? 3;
 
+            _param.rms_enabled = roger?.Rms_enabled ?? false;
             _param.rms_decay = roger?.Rms_decay ?? 0.95f;
         }
     }

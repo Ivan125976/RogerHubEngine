@@ -26,7 +26,7 @@ Internal I/O lib
                 WriteIndented = true
             };
 
-        private Parameters _param = param;
+        private readonly Parameters _param = param;
         /// <summary>
         /// object of NeuralNetwork class
         /// </summary>
@@ -73,26 +73,17 @@ Internal I/O lib
         /// <returns>Roger class object. If happened any error, for example something with null, so it's returning an empty object of class Roger</returns>
         public Roger? LoadRoger()
         {
-
-            if (!File.Exists(_param.roger2))
+            try
             {
-                Send($"Roger file [{_param.roger2}] not found", MessageType.error);
-                return null;
-            }
-            else // I made an else clause so that if the file does not exist, the code will not be executed further.
-            {
-                try
-                {
-                    if (LoadRogerFromJson() is Roger roger)
-                        return roger;
-                    else
-                        return null;
-                }
-                catch (JsonException e)
-                {
-                    Send($"Failed to parse the json data: \n{e}", MessageType.error);
+                if (LoadRogerFromJson() is Roger roger)
+                    return roger;
+                else
                     return null;
-                }
+            }
+            catch (JsonException e)
+            {
+                Send($"Failed to parse the json data: \n{e}", MessageType.error);
+                return null;
             }
         }
 
@@ -151,7 +142,7 @@ Internal I/O lib
             /// <summary>
             /// Rms_Decay. I don't know what it is, Ivan knows, asking him
             /// </summary>
-            public float Rms_decay { get; set; } = 0.95f;
+            public float Rms_decay { get; set; }
 
             /// <summary>
             /// is RMS enabled

@@ -49,19 +49,26 @@ namespace Yocto_Roger.UI.Interfaces
                         string? fileName = Console.ReadLine();
                         _io.SaveRogerToJson(fileName);
 
-                        Console.WriteLine($"Your .params file saved in this directory> {fileName}.params\n If file was not created or was created not correctly, write the problem in issues on our GitHub please ;)" +
-                            "\n Press any key to continue");
+                        Send($" Your .params file saved in this directory> {fileName}.params\n Press any key to continue");
                         Console.ReadKey();
                         break;
 
                     case "1":
-                        Console.Write("Write an absolute path to the .params file please...");
+                        Console.Write("Write a name of your .params file please...");
 
-                        if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && Path.Exists(input))
+                        if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && (File.Exists(input) || File.Exists(input + ".params")))
                         {
-                            param.roger2 = input;
 
-                            _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
+                            if(File.Exists(input))
+                            {
+                                param.roger2 = input;
+                                _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
+                            }
+                            else if (File.Exists(input + ".params"))
+                            {
+                                param.roger2 = input + ".params";
+                                _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
+                            }
                         }
                         else
                             Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors", MessageType.error);
