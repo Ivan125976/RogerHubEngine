@@ -48,6 +48,7 @@ This is a cute little neural network for your robot or your Unity game.
 >[!WARNING]
 > - This project is still in active development today.
 > - *Beta, Charlie, and Delta versions may contain serious bugs.
+> - Even in stable versions, we do not guarantee the absence of errors.
 ---
 
 The best regards, Emotion :)
