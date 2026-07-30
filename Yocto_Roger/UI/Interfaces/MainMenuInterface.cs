@@ -9,10 +9,9 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface(SettingsInterface settings, NeuralNetwork roger, UpdateManagerInterface updateManager) : IUserInterface
+    public class MainMenuInterface(SettingsInterface settings, NeuralNetwork roger) : IUserInterface
     {
         private readonly SettingsInterface _settingsInterface = settings;
-        private readonly UpdateManagerInterface _updateManagerInterface = updateManager;
 
         /// <summary>
         /// object of NeuralNetwork class
@@ -40,9 +39,8 @@ namespace Yocto_Roger.UI.Interfaces
                     2. Load your roger (neural network) from the file
                     3. Options for training mode...
                     4. RRNNs settings...
-                    5. Update manager...
-                    6. About...
-                    7. Exit from RogerHub 
+                    5. About...
+                    6. Exit from RogerHub 
                     >>> 
                     """);
                 if (int.TryParse(Console.ReadLine(), out int value))
@@ -67,17 +65,13 @@ namespace Yocto_Roger.UI.Interfaces
                             break;
 
                         case 5:
-                           _updateManagerInterface.StartInterface();
-                            break;
-
-                        case 6:
                             ASCIIDraw.Logo(false);
                             Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}\n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;
 
-                        case 7:
+                        case 6:
                             Environment.Exit(0);
                             break;
 

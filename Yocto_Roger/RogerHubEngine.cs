@@ -112,12 +112,11 @@ namespace Yocto_Roger
 
                 Parameters param = new();
                 NeuralNetworkState nNState = new();
-                UpdateManagerInterface updateManager = new();
                 MainIO io = new(param, null!, nNState);
                 Auxiliary auxiliaryIO = new(param);
                 SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
                 Training training = new(param, null!);
-                MainMenuInterface mainMenuInterface = new(settingsInterface, null!, updateManager);
+                MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
                 NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
                 NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
 
