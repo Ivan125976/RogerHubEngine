@@ -24,10 +24,10 @@ Copyright 2025-2026 Emotion Corp.
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
 
-    public class NeuralNetwork(Parameters param, MainIO io, Training.Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(Parameters param, IO.IO io, Training.Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
     {
         private readonly Parameters _param = param;
-        private readonly MainIO _io = io;
+        private readonly IO.IO _io = io;
         private readonly Training.Training _training = training;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
         private readonly MainMenuInterface _mainMenu = mainMenu;
@@ -219,24 +219,28 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    Console.Write("Write an absolute path to your .roger2 file\nSTRING> ");
+                    Console.Write("Write a name of your .roger2 file\nSTRING> ");
                     string? userInput = Console.ReadLine();
-                    if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput) && Path.Exists(userInput))
+                    if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput))
                     {
                         Console.WriteLine("Loading your Roger... please wait :D");
                         try
                         {
-                            _io.InitNeuralNetwork(MainIO.LoadNeuralNetworkStateFromBin(inputChecked));
-                            rogerIsCreated = true;
+                            if (File.Exists(inputChecked))
+                            {
+                                _io.InitNeuralNetwork(IO.IO.LoadNeuralNetworkStateFromBin(inputChecked));
+                                rogerIsCreated = true;
+                            }
+                            else if (File.Exists(inputChecked + ".roger2"))
+                            {
+                                _io.InitNeuralNetwork(IO.IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"));
+                                rogerIsCreated = true;
+                            }
                         }
                         catch (MemoryPackSerializationException e)
                         {
-                            Send("I can't to serialize the data, here's my error: \n", MessageType.error);
-                            Console.WriteLine(e.Message, ConsoleColor.Red);
-                            Send("This could mean that the developers screwed up somewhere. If you have a time, then please write an issue about this error on our Github (0v0). Here's url:\n" +
-                                "https://github.com/Ivan125976/RogerHubEngine/issues/new", MessageType.note);
-                            Console.Write("Press any key to continue");
-                            Console.ReadKey(true);
+                            Send("Error in loading your roger! X( : \n", MessageType.error);
+                            Send(e.Message, MessageType.error);
                         }
                     }
                     else
@@ -245,9 +249,6 @@ Copyright 2025-2026 Emotion Corp.
                         Send("Maybe file that you entered, doesn't exists, please check it and retry");
                     }
                     break;
-
-                case 3:
-                    return;
             }
 
             if (rogerIsCreated)

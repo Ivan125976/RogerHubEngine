@@ -18,7 +18,7 @@ Internal I/O lib
     /// <summary>
     /// Main IO class, where contains all main function for work with salve/load
     /// </summary>
-    public class MainIO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState)
+    public class IO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState)
     {
         private static readonly JsonSerializerOptions options =
             new()
@@ -212,7 +212,6 @@ Internal I/O lib
 
             _nN.Mbias = nN?.Mbias;
             _nN.Obias = nN?.Obias;
-
         }
         /// <summary>
         /// Saving neural network state to json file.
@@ -227,7 +226,7 @@ Internal I/O lib
         {
             byte[] binData = MemoryPackSerializer.Serialize(nN);
 
-            string path = MakeFileSplitOnIndexIfExists("roger2", Path.Combine(pathToDirectoryToSave, "NeuralNetworkState"));
+            string path = MakeFileSplitOnIndexIfExists("roger2", Path.Combine(pathToDirectoryToSave, "RogerFile"));
 
             File.WriteAllBytes(path, binData);
         }
@@ -241,9 +240,9 @@ Internal I/O lib
             {
 
                 // If it's null, then it automatedly set to default value
-                InputNeurons = _nN?.inputNeurons,
-                MiddleNeurons = _nN?.middleNeurons,
-                OutputNeurons = _nN?.outputNeurons,
+                InputNeurons = _nN?.inputNeurons!,
+                MiddleNeurons = _nN?.middleNeurons!,
+                OutputNeurons = _nN?.outputNeurons!,
 
                 InputWeights = _nN?.inputWeights ?? null,
                 MiddleWeights = _nN?.middleWeights ?? null,
@@ -269,6 +268,28 @@ Internal I/O lib
             NeuralNetworkState? nNState = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(absolute_path));
 
             return nNState;
+        }
+
+        /// <summary>
+        /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
+        /// </summary>
+        /// <param name="roger"></param>
+        public void InitRogersData(IO.Roger? roger)
+        {
+            _param.passes = roger?.Passes ?? 500;
+            _param.learningRate = roger?.LearingRate ?? 0.02f;
+            _param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
+
+            _param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
+
+            _param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
+            _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+            _param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
+
+            _param.layers = roger?.Layers ?? 3;
+
+            _param.rms_enabled = roger?.Rms_enabled ?? false;
+            _param.rms_decay = roger?.Rms_decay ?? 0.95f;
         }
     }
 }

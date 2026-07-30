@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.Training;
 using Yocto_Roger.UI.CUI;
@@ -101,23 +100,26 @@ namespace Yocto_Roger
                 try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}"; } catch { Send("Couldn't change the title", MessageType.warning); }
 
                 // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
-                try { Console.InputEncoding = Encoding.Unicode; } catch { 
+                try { Console.InputEncoding = Encoding.Unicode; }
+                catch
+                {
                     Console.InputEncoding = Encoding.UTF8;
                     Send("RogerHubEngine.InputEncoding> Your system doesn't support Unicode! I'll set UTF-8", MessageType.warning);
                 }
-                try { Console.OutputEncoding = Encoding.Unicode; } catch { 
+                try { Console.OutputEncoding = Encoding.Unicode; }
+                catch
+                {
                     Console.OutputEncoding = Encoding.UTF8;
                     Send("RogerHubEngine.OutputEncoding> Your system doesn't support Unicode! I'll set UTF-8", MessageType.warning);
                 }
 
                 Parameters param = new();
                 NeuralNetworkState nNState = new();
-                MainIO io = new(param, null!, nNState);
-                Auxiliary auxiliaryIO = new(param);
-                SettingsInterface settingsInterface = new(param, io, auxiliaryIO);
-                Training training = new(param, null!);
+                IO.IO io = new(param, null!, nNState);
+                SettingsInterface settingsInterface = new(param, io);
                 MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
                 NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
+                Training training = new(param, null!);
                 NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
 
                 io._nN = nN;

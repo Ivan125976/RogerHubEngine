@@ -1,5 +1,4 @@
-﻿using Yocto_Roger.IO;
-using Yocto_Roger.UI.CUI;
+﻿using Yocto_Roger.UI.CUI;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces
@@ -8,10 +7,9 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// Settings interface
     /// </summary>
-    public class SettingsInterface(Parameters param, MainIO io, Auxiliary auxiliaryIO) : IUserInterface
+    public class SettingsInterface(Parameters param, IO.IO io) : IUserInterface
     {
-        private readonly MainIO _io = io;
-        private readonly Auxiliary _auxiliaryIO = auxiliaryIO;
+        private readonly IO.IO _io = io;
 
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
@@ -59,15 +57,15 @@ namespace Yocto_Roger.UI.Interfaces
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && (File.Exists(input) || File.Exists(input + ".params")))
                         {
 
-                            if(File.Exists(input))
+                            if (File.Exists(input))
                             {
                                 param.roger2 = input;
-                                _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
+                                _io.InitRogersData(roger: _io.LoadRoger());
                             }
                             else if (File.Exists(input + ".params"))
                             {
                                 param.roger2 = input + ".params";
-                                _auxiliaryIO.InitRogersData(roger: _io.LoadRoger());
+                                _io.InitRogersData(roger: _io.LoadRoger());
                             }
                         }
                         else

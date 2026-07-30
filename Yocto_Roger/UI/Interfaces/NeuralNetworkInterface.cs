@@ -16,10 +16,10 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(Parameters param, MainIO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
+    public class NeuralNetworkInterface(Parameters param, IO.IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
     {
         private readonly Parameters _param = param;
-        private readonly MainIO _io = io;
+        private readonly IO.IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
 
         /// <summary>
@@ -49,14 +49,14 @@ namespace Yocto_Roger.UI.Interfaces
                         _mainMenuInterface.StartInterface();
                     else if (userInputString == "save")
                     {
-                        Console.Write("Please, enter the path to the directory, where we going to save the file (to this directory, simple press the enter): ");
+                        Console.Write("Please, enter the file name of neural network state: ");
                         string input = Console.ReadLine() ?? string.Empty;
 
                         try
                         {
                             if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
                             {
-                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
+                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
 #if DEBUG
                                 Thread.Sleep(1000);
                                     string data = JsonConvert.SerializeObject(
@@ -71,7 +71,7 @@ namespace Yocto_Roger.UI.Interfaces
 
                             else if (input == string.Empty)
                             {
-                                MainIO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
+                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
 #if DEBUG
                                     NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
