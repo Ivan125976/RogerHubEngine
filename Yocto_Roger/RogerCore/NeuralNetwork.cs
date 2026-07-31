@@ -219,7 +219,7 @@ Copyright 2025-2026 Emotion Corp.
                     break;
 
                 case 1:
-                    Console.Write("Write a name of your .roger2 file\nSTRING> ");
+                    Console.Write("Enter an absolute path to your .roger2 file\nSTRING> ");
                     string? userInput = Console.ReadLine();
                     if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput))
                     {
@@ -239,7 +239,7 @@ Copyright 2025-2026 Emotion Corp.
                         }
                         catch (MemoryPackSerializationException e)
                         {
-                            Send("Error in loading your roger! X( : \n", MessageType.error);
+                            Send("Error loading your roger! X( : \n", MessageType.error);
                             Send(e.Message, MessageType.error);
                         }
                     }
@@ -399,8 +399,6 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="writeArray"></param>
         public static void WriteToNN(int[] neurons, int[] writeArray)
         {
-            neurons ??= [0, 0, 0, 0, 0, 0]; // If it's null, make it zero values, 'case it's null only when user enter's six zero values and idk why, neurons array is null
-
             if (neurons.Length == writeArray.Length)
                 for (int i = 0; i < neurons.Length; i++)
                     neurons[i] = writeArray[i];

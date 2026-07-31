@@ -38,7 +38,7 @@ namespace Yocto_Roger.UI.Interfaces
             {
                 Console.Clear();
                 Send("Enter \"save\"  to fix the state of the neural network in the file, for load at this point later. Or \"exit\" to exit to the main menu", MessageType.warning);
-                Console.WriteLine($"Roger have {_param.inputNeuronsCount} input neurons, and {_param.outputNeuronsCount} output neurons." +
+                Console.WriteLine($"Roger have {_neuralNetwork.inputNeurons.Length} input neurons, and {_neuralNetwork.outputNeurons.Length} output neurons." +
                     $"Write input format: <datain1>,<datain2>,<datain3>...");
                 DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 Console.Write("\nInput>>>");
@@ -49,7 +49,7 @@ namespace Yocto_Roger.UI.Interfaces
                         _mainMenuInterface.StartInterface();
                     else if (userInputString == "save")
                     {
-                        Console.Write("Please, enter the file name of neural network state: ");
+                        Console.Write("Please, enter the path to directory, to save neural network state file (For this directory, just press the enter): ");
                         string input = Console.ReadLine() ?? string.Empty;
 
                         try

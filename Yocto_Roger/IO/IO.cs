@@ -20,12 +20,10 @@ Internal I/O lib
     /// </summary>
     public class IO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState)
     {
-        private static readonly JsonSerializerOptions options =
-            new()
-            {
-                WriteIndented = true
-            };
-
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
         private readonly Parameters _param = param;
         /// <summary>
         /// object of NeuralNetwork class
@@ -212,6 +210,7 @@ Internal I/O lib
 
             _nN.Mbias = nN?.Mbias;
             _nN.Obias = nN?.Obias;
+
         }
         /// <summary>
         /// Saving neural network state to json file.
