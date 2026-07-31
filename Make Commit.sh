@@ -16,7 +16,7 @@ read -r -p "$(echo -e "${BOLD_YELLOW}Enter the commit message: ${RESET}")" commi
 echo #new line
 
 echo -e "Commit message: $commitMessage"
-read -n 1 -r -p "$(echo -e "${BOLD_YELLOW}Is it correct? (y/n): ${RESET}")" isCorerct
+read -n 1 -r -p "$(echo -e "${BOLD_YELLOW}Is it correct? (y/n): ${RESET}")" isCorrect
 
 if [ "$isCorrect" = "n" ] || [ "$isCorrect" = "N" ]; then
     read -r -p "$(echo -e "${BOLD_YELLOW}Enter new commit message: ${RESET}")" commitMessage
