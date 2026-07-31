@@ -2,6 +2,8 @@
 
 #I wrote this script for myself, for my own work environment; it may not work correctly for someone else.
 
+set -e # Stop this script when error
+
 BOLD_GREEN='\e[1;32m'
 BOLD_YELLOW='\e[1;33m'
 RESET='\e[0m'
