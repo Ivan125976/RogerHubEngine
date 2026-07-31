@@ -4,6 +4,8 @@ using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
 using MemoryPack;
+using System.Security.Cryptography.X509Certificates;
+
 
 
 #if DEBUG
@@ -49,14 +51,15 @@ namespace Yocto_Roger.UI.Interfaces
                         _mainMenuInterface.StartInterface();
                     else if (userInputString == "save")
                     {
-                        Console.Write("Please, enter the path to directory, to save neural network state file (For this directory, just press the enter): ");
-                        string input = Console.ReadLine() ?? string.Empty;
+                        Console.Write("Please, enter the name of the file WITHOUT extenshion (it will be saved in directory roger running from): ");
 
                         try
                         {
-                            if (input is string path && !string.IsNullOrEmpty(path) && Directory.Exists(path))
+                            string input = Console.ReadLine() ?? string.Empty;
+
+                            if (input is string fileName && !string.IsNullOrEmpty(fileName))
                             {
-                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), path);
+                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), fileName);
 #if DEBUG
                                 Thread.Sleep(1000);
                                     string data = JsonConvert.SerializeObject(
@@ -71,7 +74,7 @@ namespace Yocto_Roger.UI.Interfaces
 
                             else if (input == string.Empty)
                             {
-                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), Directory.GetCurrentDirectory());
+                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork());
 #if DEBUG
                                     NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");

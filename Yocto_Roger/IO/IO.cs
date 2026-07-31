@@ -167,7 +167,7 @@ Internal I/O lib
         /// <exception cref="DirectoryNotFoundException">When directory, which you entered, doesn't exist</exception>
         /// <exception cref="UnauthorizedAccessException">This exception occurs when there are insufficient rights to create files in a particular directory. For example: The program does not have administrator rights, but the path specified is C:\Windows\System32, which requires administrator rights to write to this directory. </exception>
         /// <exception cref="IOException"></exception>
-        public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "roger")
+        public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "RogerFile")
         {
             int index = 0;
 
@@ -213,19 +213,20 @@ Internal I/O lib
 
         }
         /// <summary>
-        /// Saving neural network state to json file.
+        /// Saving neural network state to binary file. This function savin' files only in the current directory!!!
         /// </summary>
         /// <param name="nN"></param>
-        /// <param name="pathToDirectoryToSave"></param>
+        /// <param name="fileName">Not a path, 'cause the</param>
         /// <exception cref="UnauthorizedAccessException"></exception>
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="MemoryPackSerializationException"></exception>
-        public static void SaveNeuralNetworkStateToBin(NeuralNetworkState nN, string pathToDirectoryToSave)
+        public static void SaveNeuralNetworkStateToBin(NeuralNetworkState nN, string fileName = "RogerFile")
         {
+
             byte[] binData = MemoryPackSerializer.Serialize(nN);
 
-            string path = MakeFileSplitOnIndexIfExists("roger2", Path.Combine(pathToDirectoryToSave, "RogerFile"));
+            string path = MakeFileSplitOnIndexIfExists("roger2", Path.Combine(Directory.GetCurrentDirectory(), fileName ?? "RogerFile"));
 
             File.WriteAllBytes(path, binData);
         }
