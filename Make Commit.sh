@@ -7,7 +7,7 @@ BOLD_YELLOW='\e[1;33m'
 RESET='\e[0m'
 
 
-read -r -p "Press Enter to start"
+read -n 1 -p "Press Enter to start"
 
 echo -e "${BOLD_GREEN}Adding this directory${RESET}"
 git add .
