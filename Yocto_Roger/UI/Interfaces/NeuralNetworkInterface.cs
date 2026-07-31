@@ -40,7 +40,7 @@ namespace Yocto_Roger.UI.Interfaces
             {
                 Console.Clear();
                 Send("Enter \"save\"  to fix the state of the neural network in the file, for load at this point later. Or \"exit\" to exit to the main menu", MessageType.warning);
-                Console.WriteLine($"Roger have {_neuralNetwork.inputNeurons.Length} input neurons, and {_neuralNetwork.outputNeurons.Length} output neurons." +
+                Console.WriteLine($"Roger have {_neuralNetwork?.inputNeurons?.Length} input neurons, and {_neuralNetwork?.outputNeurons?.Length} output neurons." +
                     $"Write input format: <datain1>,<datain2>,<datain3>...");
                 DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 Console.Write("\nInput>>>");
@@ -101,11 +101,11 @@ namespace Yocto_Roger.UI.Interfaces
                             int[] userInput = new int[_param.inputNeuronsCount];
                             for (int i = 0; i < userInput.Length; i++)
                                 userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
-                            _neuralNetwork.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
+                            _neuralNetwork?.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
                                 _neuralNetwork.middleWeights!, _neuralNetwork.Mbias!, _neuralNetwork.outputNeurons!, _neuralNetwork.Obias!, _neuralNetwork.outputWeights!);
                             Console.Write("Output>>>");
-                            for (int i = 0; i < _neuralNetwork.outputNeurons!.Length; i++)
-                                Console.Write(_neuralNetwork.outputNeurons[i] + " ");
+                            for (int i = 0; i < _neuralNetwork?.outputNeurons!.Length; i++)
+                                Console.Write(_neuralNetwork.outputNeurons?[i] + " ");
                             Console.WriteLine("Press any key to continue");
                             Console.ReadKey();
                             Console.Clear();
