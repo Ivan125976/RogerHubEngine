@@ -18,7 +18,7 @@ Internal I/O lib
     /// <summary>
     /// Main IO class, where contains all main function for work with salve/load
     /// </summary>
-    public class IO(Parameters param, NeuralNetwork nN, NeuralNetworkState nNState)
+    public class IO(Parameters param, NeuralNetwork nN)
     {
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -29,7 +29,6 @@ Internal I/O lib
         /// object of NeuralNetwork class
         /// </summary>
         public NeuralNetwork _nN = nN;
-        private readonly NeuralNetworkState _nNState = nNState;
 
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
@@ -39,7 +38,7 @@ Internal I/O lib
 
             Roger roger = new()
             {
-                AIversion = $"{majorVersion}.{minorVersion}.{patchVersion}",
+                AIversion = $"{majorVersion}.{minorVersion}",
                 Passes = _param.passes,
 
                 KnowledgeFile = _param.knowledgeFile,
@@ -47,9 +46,7 @@ Internal I/O lib
                 LearingRate = _param.learningRate,
                 DropOutPercent = _param.DropOutPercent,
 
-                InputNeuronsCount = _param.inputNeuronsCount,
                 MiddleNeuronsCount = _param.middleNeuronsCount,
-                OutputNeuronsCount = _param.outputNeuronsCount,
 
                 Layers = _param.layers,
 
@@ -274,22 +271,25 @@ Internal I/O lib
         /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
         /// </summary>
         /// <param name="roger"></param>
-        public void InitRogersData(IO.Roger? roger)
+        public void InitRogersData(Roger roger)
         {
-            _param.passes = roger?.Passes ?? 500;
-            _param.learningRate = roger?.LearingRate ?? 0.02f;
-            _param.DropOutPercent = roger?.DropOutPercent ?? 3.0f;
+            if (roger.AIversion == "2.2")
+            {
+                _param.passes = roger?.Passes ?? 10000;
+                _param.learningRate = roger?.LearingRate ?? 0.01f;
+                _param.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
 
-            _param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
+                _param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
 
-            _param.inputNeuronsCount = roger?.InputNeuronsCount ?? 14;
-            _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
-            _param.outputNeuronsCount = roger?.OutputNeuronsCount ?? 8;
+                _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
 
-            _param.layers = roger?.Layers ?? 3;
+                _param.layers = roger?.Layers ?? 4;
 
-            _param.rms_enabled = roger?.Rms_enabled ?? false;
-            _param.rms_decay = roger?.Rms_decay ?? 0.95f;
+                _param.rms_enabled = roger?.Rms_enabled ?? false;
+                _param.rms_decay = roger?.Rms_decay ?? 0.95f;
+            }
+            else
+                Send($"Your settings file is intended for a different version! ({roger?.AIversion})", MessageType.error);
         }
     }
 }

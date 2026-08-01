@@ -14,10 +14,8 @@ Internal AIMath lib
     /// <summary>
     /// Internal Math lib for Roger
     /// </summary>
-    public partial class RogerMath(Parameters param)
+    public partial class RogerMath()
     {
-        private readonly Parameters _param = param;
-
         /// <summary>
         /// System Random
         /// </summary>

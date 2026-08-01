@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Yocto_Roger.RogerCore;
-using Yocto_Roger.RogerCore.Training;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
 using static Yocto_Roger.Configuration.EngineVersion;
@@ -114,11 +113,10 @@ namespace Yocto_Roger
                 }
 
                 Parameters param = new();
-                NeuralNetworkState nNState = new();
-                IO.IO io = new(param, null!, nNState);
+                IO.IO io = new(param, null!);
                 SettingsInterface settingsInterface = new(param, io);
                 MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
-                NeuralNetworkInterface neuralNetworkInterface = new(param, io, mainMenuInterface, null!);
+                NeuralNetworkInterface neuralNetworkInterface = new(io, mainMenuInterface, null!);
                 Training training = new(param, null!);
                 NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
 

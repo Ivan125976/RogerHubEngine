@@ -1,12 +1,7 @@
 ﻿using System.Globalization;
-using Yocto_Roger.IO;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
-using MemoryPack;
-using System.Security.Cryptography.X509Certificates;
-
-
 
 #if DEBUG
 using Newtonsoft.Json;
@@ -18,9 +13,8 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(Parameters param, IO.IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
+    public class NeuralNetworkInterface(IO.IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
     {
-        private readonly Parameters _param = param;
         private readonly IO.IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
 
@@ -39,7 +33,7 @@ namespace Yocto_Roger.UI.Interfaces
             while (true)
             {
                 Console.Clear();
-                Send("Enter \"save\"  to fix the state of the neural network in the file, for load at this point later. Or \"exit\" to exit to the main menu", MessageType.warning);
+                Send("Enter \"save\" to fix the state of the neural network in the file, for load at this point later. Or \"exit\" to exit to the main menu", MessageType.note);
                 Console.WriteLine($"Roger have {_neuralNetwork?.inputNeurons?.Length} input neurons, and {_neuralNetwork?.outputNeurons?.Length} output neurons." +
                     $"Write input format: <datain1>,<datain2>,<datain3>...");
                 DrawLine(ConsoleColor.DarkGreen, "Welcome to Yocto Roger v2.2! Manual interface", DateTime.Now.Date.ToString("dd/MM/yyyy"));
@@ -51,7 +45,7 @@ namespace Yocto_Roger.UI.Interfaces
                         _mainMenuInterface.StartInterface();
                     else if (userInputString == "save")
                     {
-                        Console.Write("Please, enter the name of the file WITHOUT extenshion (it will be saved in directory roger running from): ");
+                        Console.Write("Please, enter the name of the file without extenshion: ");
 
                         try
                         {
@@ -95,16 +89,15 @@ namespace Yocto_Roger.UI.Interfaces
                     else if (RogerMath.CleanInput(userInputString, out string cleanedUserInputString))
                     {
                         string[] userInputChecked = cleanedUserInputString.Split(',');
-                        if (userInputChecked.Length == _param.inputNeuronsCount)
+                        if (userInputChecked.Length == _neuralNetwork?.inputNeurons?.Length)
                         {
-
-                            int[] userInput = new int[_param.inputNeuronsCount];
+                            int[] userInput = new int[_neuralNetwork.inputNeurons.Length];
                             for (int i = 0; i < userInput.Length; i++)
                                 userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
                             _neuralNetwork?.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
                                 _neuralNetwork.middleWeights!, _neuralNetwork.Mbias!, _neuralNetwork.outputNeurons!, _neuralNetwork.Obias!, _neuralNetwork.outputWeights!);
                             Console.Write("Output>>>");
-                            for (int i = 0; i < _neuralNetwork?.outputNeurons!.Length; i++)
+                            for (int i = 0; i < _neuralNetwork?.outputNeurons?.Length; i++)
                                 Console.Write(_neuralNetwork.outputNeurons?[i] + " ");
                             Console.WriteLine("Press any key to continue");
                             Console.ReadKey();

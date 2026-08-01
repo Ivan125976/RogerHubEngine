@@ -24,11 +24,11 @@ Copyright 2025-2026 Emotion Corp.
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
 
-    public class NeuralNetwork(Parameters param, IO.IO io, Training.Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(Parameters param, IO.IO io, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
     {
         private readonly Parameters _param = param;
         private readonly IO.IO _io = io;
-        private readonly Training.Training _training = training;
+        private readonly Training _training = training;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
         private readonly MainMenuInterface _mainMenu = mainMenu;
         /// <summary>
@@ -98,13 +98,11 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     Console.Write("SetUp education array and reading knowledge...");
 
-                    // In the future, these variables can't be null, because if they don't receive a value, the while(true) method is called, which eliminates the use of null values.
-                    string[] allLines = null!;
-                    string[] parsedString;
-                    int[] input = null!;
-                    string[] splitingSecond;
-                    double[] output = null!;
-                    int length = 0!;
+                    string[] parsedString, splitingSecond;
+                    string[]? allLines = null!;
+                    double[]? output = null;
+                    int[] input;
+                    int length = 0;
                     
                     try
                     {
@@ -117,46 +115,15 @@ Copyright 2025-2026 Emotion Corp.
                         for (int j = 0; j < splitingSecond.Length; j++)
                             output[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                         length = input.Length + output.Length;
+
+                        _param.inputNeuronsCount = input.Length;
+                        _param.outputNeuronsCount = output.Length;
                     }
                     catch (Exception)
                     {
                         Send("Your training file is corrupted or is not in our format.", MessageType.error);
                         _mainMenu.StartInterface();
-                    }
-
-
-                    if (input!.Length != _param.inputNeuronsCount)
-                    {
-                        Console.WriteLine();
-                        Send("The training file doesn't match your neural network! (need value " + input.Length + " for Count of Input neurons)", MessageType.error);
-                        Console.WriteLine("Do you want to change this parameter <Parameters.inputNeuronsCount> and restart NeuralNetwork? (y/n)");
-                        ConsoleKeyInfo answer = Console.ReadKey();
-                        switch (answer.KeyChar)
-                        {
-                            case 'y' or 'Y':
-                                _param.inputNeuronsCount = input.Length;
-                                Console.Clear();
-                                StartAI(0);
-                                break;
-                        }
-                        break;
-                    }
-                    else if (output!.Length != _param.outputNeuronsCount)
-                    {
-                        Console.WriteLine();
-                        Send("The training file doesn't match your neural network! (need value " + output.Length + " for Count of Output neurons)", MessageType.error);
-                        Console.WriteLine("Do you want to change this parameter <Parameters.outputNeuronsCount> and restart NeuralNetwork? (y/n)");
-                        ConsoleKeyInfo answer = Console.ReadKey();
-                        switch (answer.KeyChar)
-                        {
-                            case 'y' or 'Y':
-                                _param.outputNeuronsCount = output.Length;
-                                Console.Clear();
-                                StartAI(0);
-                                break;
-                        }
-                        break;
-                    }
+                    }        
 
                     Console.CursorVisible = false;
                     Send("Everything is ready to create Roger!");
@@ -171,9 +138,9 @@ Copyright 2025-2026 Emotion Corp.
                         for (int j = 0; j < input.Length; j++)
                             educationArray[i, j] = input[j];
                         for (int j = 0; j < splitingSecond.Length; j++)
-                            output[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
+                            output![j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                         for (int j = 0; j < splitingSecond.Length; j++)
-                            educationArray[i, j + input.Length] = output[j];
+                            educationArray[i, j + input.Length] = output![j];
                     }
 
                     for (int i = 0; i < educationArray.GetLength(0); i++)

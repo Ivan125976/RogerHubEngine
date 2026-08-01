@@ -1,7 +1,7 @@
 ﻿using Yocto_Roger.RogerCore.Initialization;
 using Yocto_Roger.UI.CUI;
 
-namespace Yocto_Roger.RogerCore.Training
+namespace Yocto_Roger.RogerCore
 {
     /* 
 Yocto Roger ;)

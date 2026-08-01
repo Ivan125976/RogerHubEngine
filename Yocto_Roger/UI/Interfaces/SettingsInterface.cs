@@ -16,8 +16,8 @@ namespace Yocto_Roger.UI.Interfaces
         /// </summary>
         public void StartInterface()
         {
-            int i = 0;
-            while (i == 0)
+            bool exit = false;
+            while (!exit)
             {
                 Console.Clear();
                 Console.Write($"""
@@ -26,17 +26,15 @@ namespace Yocto_Roger.UI.Interfaces
                                         0. Save your roger settings in the file 
                                         1. Load your roger setting from the file
 
-                                        2. Count of input neurons...{param.inputNeuronsCount}
-                                        3. Count of middle neurons (all middle layers)...{param.middleNeuronsCount}
-                                        4. Count of output neurons...{param.outputNeuronsCount}
-                                        5. Count of Layers...{param.layers}
-                                        6. Knowledge file...{param.knowledgeFile}
-                                        7. DropOut sys percent...{param.DropOutPercent}%
-                                        8. Learning Rate...{param.learningRate}
-                                        9. Passes...{param.passes}
-                                        10. RMS Enabled...{param.rms_enabled}
-                                        11. RMS Decay...{param.rms_decay}
-                                        12. Exit
+                                        2. Count of middle neurons (all middle layers)...{param.middleNeuronsCount}
+                                        3. Count of Layers...{param.layers}
+                                        4. Knowledge file...{param.knowledgeFile}
+                                        5. DropOut sys percent...{param.DropOutPercent}%
+                                        6. Learning Rate...{param.learningRate}
+                                        7. Passes...{param.passes}
+                                        8. RMS Enabled...{param.rms_enabled}
+                                        9. RMS Decay...{param.rms_decay}
+                                        10. Exit
                                         >>> 
                                         """);
                 string? choice = Console.ReadLine();
@@ -60,12 +58,12 @@ namespace Yocto_Roger.UI.Interfaces
                             if (File.Exists(input))
                             {
                                 param.roger2 = input;
-                                _io.InitRogersData(roger: _io.LoadRoger());
+                                _io.InitRogersData(_io.LoadRoger());
                             }
                             else if (File.Exists(input + ".params"))
                             {
                                 param.roger2 = input + ".params";
-                                _io.InitRogersData(roger: _io.LoadRoger());
+                                _io.InitRogersData(_io.LoadRoger());
                             }
                         }
                         else
@@ -73,19 +71,6 @@ namespace Yocto_Roger.UI.Interfaces
                         break;
 
                     case "2":
-                        Console.Clear();
-                        Console.WriteLine("*INPUT NEURONS PARAMETER*");
-                        Console.Write("INT32> Enter new count of input neurons (> 0)...");
-                        if (int.TryParse(Console.ReadLine(), out int userInputChecked1))
-                        {
-                            if (userInputChecked1 > 0)
-                                param.inputNeuronsCount = userInputChecked1;
-                            else
-                                Send("Value out of range.", MessageType.error);
-                        }
-                        break;
-
-                    case "3":
                         Console.Clear();
                         Console.WriteLine("*MIDDLE NEURONS PARAMETER*");
                         Console.Write("INT32> Enter new count of middle neurons (> 0)...");
@@ -98,20 +83,7 @@ namespace Yocto_Roger.UI.Interfaces
                         }
                         break;
 
-                    case "4":
-                        Console.Clear();
-                        Console.WriteLine("*OUTPUT NEURONS PARAMETER*");
-                        Console.Write("INT32> Enter new count of output neurons (> 0)...");
-                        if (int.TryParse(Console.ReadLine(), out int userInputChecked3))
-                        {
-                            if (userInputChecked3 > 0)
-                                param.outputNeuronsCount = userInputChecked3;
-                            else
-                                Send("Value out of range.", MessageType.error);
-                        }
-                        break;
-
-                    case "5":
+                    case "3":
                         Console.Clear();
                         Console.WriteLine("*LAYERS PARAMETER*");
                         Console.Write("INT32> Enter new count of layers (> 2)...");
@@ -124,7 +96,7 @@ namespace Yocto_Roger.UI.Interfaces
                         }
                         break;
 
-                    case "6":
+                    case "4":
                         Console.Clear();
                         Console.WriteLine("*KNOWLEDGE PARAMETER*");
                         Console.Write("STRING> Enter new knowledge file...");
@@ -135,7 +107,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("I couldn't find such a file :(", MessageType.error);
                         break;
 
-                    case "7":
+                    case "5":
                         Console.Clear();
                         Console.WriteLine("*DROPOUT PERCENT PARAMETER*");
                         Console.Write("FLOAT> Enter new DropOut percent (0–70)... ");
@@ -150,7 +122,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("Invalid input.", MessageType.error);
                         break;
 
-                    case "8":
+                    case "6":
                         Console.Clear();
                         Console.WriteLine("*LEARNING RATE PARAMETER*");
                         Console.Write("FLOAT> Enter new learning rate (0,0 – 1,0)... ");
@@ -165,7 +137,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("Invalid input.", MessageType.error);
                         break;
 
-                    case "9":
+                    case "7":
                         Console.Clear();
                         Console.WriteLine("*PASSES PARAMETER*");
                         Console.Write("INT32> Enter count of passes (> 0)... ");
@@ -180,7 +152,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("Invalid input.", MessageType.error);
                         break;
 
-                    case "10":
+                    case "8":
                         Console.Clear();
                         Console.WriteLine("*RMS PROP OPTIMIZATION*");
                         Send("This optimization speeds up training, but consumes twice as much memory allocated to the neural network during training", MessageType.warning);
@@ -191,7 +163,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("Invalid input.", MessageType.error);
                         break;
 
-                    case "11":
+                    case "9":
                         Console.Clear();
                         if (param.rms_enabled)
                         {
@@ -214,8 +186,8 @@ namespace Yocto_Roger.UI.Interfaces
                             break;
                         }
 
-                    case "12":
-                        i++;
+                    case "10":
+                        exit = true;
                         break;
                 }
             }
