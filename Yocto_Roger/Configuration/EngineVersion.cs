@@ -18,7 +18,7 @@
         /// <summary>
         /// Patch version of RogerHubEngine
         /// </summary>
-        public const char patchVersion = '2';
+        public const char patchVersion = '3';
 
         /// <summary>
         /// Name of build
