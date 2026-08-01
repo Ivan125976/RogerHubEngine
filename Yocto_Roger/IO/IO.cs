@@ -20,7 +20,7 @@ Internal I/O lib
     /// </summary>
     public class IO(Parameters param, NeuralNetwork nN)
     {
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true
         };
@@ -271,9 +271,9 @@ Internal I/O lib
         /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
         /// </summary>
         /// <param name="roger"></param>
-        public void InitRogersData(Roger roger)
+        public void InitRogersData(Roger? roger)
         {
-            if (roger.AIversion == "2.2")
+            if (roger?.AIversion == "2.2")
             {
                 _param.passes = roger?.Passes ?? 10000;
                 _param.learningRate = roger?.LearingRate ?? 0.01f;
