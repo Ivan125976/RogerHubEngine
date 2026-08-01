@@ -11,15 +11,15 @@ namespace Yocto_Roger.RogerCore
         /// <summary>
         /// Input neurons count
         /// </summary>
-        public int[] InputNeurons { get; set; }
+        public int[]? InputNeurons { get; set; }
         /// <summary>
         /// middle neurons count
         /// </summary>
-        public double[,] MiddleNeurons { get; set; }
+        public double[,]? MiddleNeurons { get; set; }
         /// <summary>
         /// output neurons count
         /// </summary>
-        public double[] OutputNeurons { get; set; }
+        public double[]? OutputNeurons { get; set; }
         /// <summary>
         /// input weights
         /// </summary>
