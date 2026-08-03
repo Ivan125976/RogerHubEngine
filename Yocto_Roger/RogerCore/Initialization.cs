@@ -41,7 +41,7 @@ Copyright 2025-2026 Emotion Corp.
             double limit = (double)Math.Sqrt(6 / (weights.GetLength(0) * 1.0 + weights.GetLength(1) * 1.0));
 #if DEBUG
             Console.Write($"weights[,] = \n");
-            Send($"Xaiver Uniform Initialization; limit = {limit}", MessageType.warning);
+            Send($"Xaiver Uniform Initialization; limit = {limit}", MessageType.note);
 #endif
             for (int i = 0; i < weights.GetLength(0); i++)
             {
@@ -75,7 +75,7 @@ Copyright 2025-2026 Emotion Corp.
                     double limit = (double)Math.Sqrt(6 / (weights[i].GetLength(0) * 1.0 + weights[i].GetLength(1) * 1.0));
 #if DEBUG
                     Console.Write($"weights[][,] = \n");
-                    Send($"Xaiver Uniform Initialization; limit = {limit}", MessageType.warning);
+                    Send($"Xaiver Uniform Initialization; limit = {limit}", MessageType.note);
 #endif
                     for (int j = 0; j < weights[i].GetLength(0); j++)
                     {

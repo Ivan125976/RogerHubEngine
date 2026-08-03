@@ -93,6 +93,16 @@ Copyright 2025-2026 Emotion Corp.
                         Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
                         return;
                     }
+
+                    if (_param.rms_enabled && _param.learningRate > 0.005 && _param.layers < 6)
+                    { 
+                        Send("I'm afraid the learning rate is too high for RMS", MessageType.warning);
+                        Console.WriteLine("Do you want to continue? (Y/N)");
+                        ConsoleKeyInfo key = Console.ReadKey(true);
+                        if (key.KeyChar == 'N' || key.KeyChar == 'n')
+                            _mainMenu.StartInterface();
+                    }
+
                     Console.Write("SetUp education array and reading knowledge...");
 
                     string[] parsedString, splitingSecond, allLines;
@@ -177,7 +187,6 @@ Copyright 2025-2026 Emotion Corp.
 
                     Console.Write("StartAI finish");
                     rogerIsCreated = true;
-                    Send("done");
                     break;
 
                 case 1:

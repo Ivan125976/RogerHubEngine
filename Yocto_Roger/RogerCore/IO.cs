@@ -112,17 +112,9 @@ Internal I/O lib
             public float DropOutPercent { get; set; }
 
             /// <summary>
-            /// Input neurons count
-            /// </summary>
-            public int InputNeuronsCount { get; set; }
-            /// <summary>
             /// Middle neurons count
             /// </summary>
             public int MiddleNeuronsCount { get; set; }
-            /// <summary>
-            /// Output neurons count
-            /// </summary>
-            public int OutputNeuronsCount { get; set; }
 
             /// <summary>
             /// Layers

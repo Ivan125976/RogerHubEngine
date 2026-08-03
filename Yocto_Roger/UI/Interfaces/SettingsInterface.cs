@@ -166,6 +166,7 @@ namespace Yocto_Roger.UI.Interfaces
                         Console.Clear();
                         Console.WriteLine("*RMS PROP OPTIMIZATION*");
                         Send("This optimization speeds up training, but consumes twice as much memory allocated to the neural network during training", MessageType.warning);
+                        Send("It is not recommended to enable this for networks with fewer than 6 layers.", MessageType.warning);
                         Console.Write("BOOL> Enter the switch value (True/False)... ");
                         if (bool.TryParse(Console.ReadLine(), out bool RMS))
                             param.rms_enabled = RMS;
