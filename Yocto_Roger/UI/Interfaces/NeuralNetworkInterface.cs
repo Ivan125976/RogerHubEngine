@@ -2,6 +2,7 @@
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
+using MemoryPack;
 
 #if DEBUG
 using Newtonsoft.Json;
@@ -13,9 +14,9 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(IO.IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
+    public class NeuralNetworkInterface(IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
     {
-        private readonly IO.IO _io = io;
+        private readonly IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
 
         /// <summary>
@@ -53,11 +54,11 @@ namespace Yocto_Roger.UI.Interfaces
 
                             if (input is string fileName && !string.IsNullOrEmpty(fileName))
                             {
-                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), fileName);
+                                IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork(), fileName);
 #if DEBUG
                                 Thread.Sleep(1000);
                                     string data = JsonConvert.SerializeObject(
-                                        MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(path)),
+                                        MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(fileName)),
                                         Formatting.Indented);
 
                                     Console.WriteLine($"Saved data is: {data}");
@@ -68,7 +69,7 @@ namespace Yocto_Roger.UI.Interfaces
 
                             else if (input == string.Empty)
                             {
-                                IO.IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork());
+                                IO.SaveNeuralNetworkStateToBin(_io.FixTheStateOfNeuralNetwork());
 #if DEBUG
                                     NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
                                     Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");

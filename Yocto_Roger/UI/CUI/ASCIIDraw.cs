@@ -1,4 +1,4 @@
-﻿using static Yocto_Roger.Configuration.EngineVersion;
+﻿using static Yocto_Roger.EngineVersion;
 
 namespace Yocto_Roger.UI.CUI
 {

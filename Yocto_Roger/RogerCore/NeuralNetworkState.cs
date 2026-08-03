@@ -9,15 +9,15 @@ namespace Yocto_Roger.RogerCore
     public partial class NeuralNetworkState
     {
         /// <summary>
-        /// Input neurons count
+        /// Input neurons
         /// </summary>
         public int[]? InputNeurons { get; set; }
         /// <summary>
-        /// middle neurons count
+        /// middle neurons
         /// </summary>
         public double[,]? MiddleNeurons { get; set; }
         /// <summary>
-        /// output neurons count
+        /// output neurons
         /// </summary>
         public double[]? OutputNeurons { get; set; }
         /// <summary>
@@ -44,10 +44,5 @@ namespace Yocto_Roger.RogerCore
         /// obias
         /// </summary>
         public double[]? Obias { get; set; }
-
-        /// <summary>
-        /// Flag is RMS enabled
-        /// </summary>
-        public bool Rms_Enabled { get; set; } = false;
     }
 }

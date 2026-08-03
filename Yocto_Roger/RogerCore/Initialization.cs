@@ -3,7 +3,7 @@ using Yocto_Roger.UI.CUI;
 
 using static Yocto_Roger.UI.CUI.CUI;
 
-namespace Yocto_Roger.RogerCore.Initialization
+namespace Yocto_Roger.RogerCore
 {
     /* 
 Yocto Roger ;)
@@ -18,7 +18,7 @@ Copyright 2025-2026 Emotion Corp.
     /// Class for initializing arrays of weights
     /// </summary>
 
-    public class InitWeights()
+    public class Initialization()
     {
         /// <summary>
         /// Creates an array of middle weights.

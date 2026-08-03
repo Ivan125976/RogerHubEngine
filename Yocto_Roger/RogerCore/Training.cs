@@ -1,15 +1,15 @@
-﻿using Yocto_Roger.RogerCore.Initialization;
-using Yocto_Roger.UI.CUI;
+﻿using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore
 {
     /* 
-Yocto Roger ;)
-*****************
-*Emotion Corp ;)*
-*****************
-Copyright 2025-2026 Emotion Corp.
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
     Education With Teacher Algorithm v1.2
+    Written by Axolotl512
 
     EducationWithTeacher, DropOut, multilayer, biases, RMS
 */
@@ -72,7 +72,7 @@ Copyright 2025-2026 Emotion Corp.
                 RMSmiddleBiases = new double[middleBiases.GetLength(0), middleBiases.GetLength(1)];
                 RMSoutputBiases = new double[outputBiases.Length];
 
-                InitWeights.CreateMiddleWeights(RMSmiddleWeights, _param.middleNeuronsCount);
+                Initialization.CreateMiddleWeights(RMSmiddleWeights, _param.middleNeuronsCount);
             }
 
             int[] input = new int[inputNeurons.Length];

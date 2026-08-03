@@ -2,7 +2,7 @@
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
-using static Yocto_Roger.Configuration.EngineVersion;
+using static Yocto_Roger.EngineVersion;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger
@@ -41,41 +41,19 @@ namespace Yocto_Roger
         {
             ConsoleSize minSize = new(40, 120);
 
-            while (true)
+            Console.Clear();
+            ASCIIDraw.Logo(true);
+            Console.WriteLine("Creating a software environment...");
+            if (!CheckMinWindowSize(minSize))
             {
-                Console.Clear();
-                ASCIIDraw.Logo(true);
-                Console.WriteLine("Creating a software environment...");
-                if (!CheckMinWindowSize(minSize))
+                if (OperatingSystem.IsWindows())
                 {
-                    if (OperatingSystem.IsWindows())
+                    try
                     {
-                        try
-                        {
-                            Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
-                        }
-                        catch (PlatformNotSupportedException)
-                        {
-                            Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
-
-                            Thread.Sleep(25); // Delay to allow time for the size to change
-
-                            if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
-                            {
-                                Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
-                                Send("Resize the window until i say \"Done\"", MessageType.note);
-                                while (!CheckMinWindowSize(minSize))
-                                {
-                                    bool check = CheckMinWindowSize(minSize);
-
-                                    if (check) { Send("Done"); }
-                                }
-                            }
-                        }
+                        Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
                     }
-                    else
+                    catch (PlatformNotSupportedException)
                     {
-                        Console.Write("\n");
                         Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
 
                         Thread.Sleep(25); // Delay to allow time for the size to change
@@ -83,7 +61,7 @@ namespace Yocto_Roger
                         if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
                         {
                             Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
-                            Send("Resize the window until I say \"Done\"", MessageType.note);
+                            Send("Resize the window until i say \"Done\"", MessageType.note);
                             while (!CheckMinWindowSize(minSize))
                             {
                                 bool check = CheckMinWindowSize(minSize);
@@ -91,45 +69,61 @@ namespace Yocto_Roger
                                 if (check) { Send("Done"); }
                             }
                         }
-
                     }
                 }
-
-
-                try { Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}"; } catch { Send("Couldn't change the title", MessageType.warning); }
-
-                // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
-                try { Console.InputEncoding = Encoding.Unicode; }
-                catch
+                else
                 {
-                    Console.InputEncoding = Encoding.UTF8;
-                    Send("RogerHubEngine.InputEncoding> Your system doesn't support Unicode! I'll set UTF-8", MessageType.warning);
+                    Console.Write("\n");
+                    Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
+
+                    Thread.Sleep(25); // Delay to allow time for the size to change
+
+                    if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
+                    {
+                        Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
+                        Send("Resize the window until I say \"Done\"", MessageType.note);
+                        while (!CheckMinWindowSize(minSize))
+                        {
+                            bool check = CheckMinWindowSize(minSize);
+
+                            if (check) { Send("Done"); }
+                        }
+                    }
+
                 }
-                try { Console.OutputEncoding = Encoding.Unicode; }
-                catch
-                {
-                    Console.OutputEncoding = Encoding.UTF8;
-                    Send("RogerHubEngine.OutputEncoding> Your system doesn't support Unicode! I'll set UTF-8", MessageType.warning);
-                }
-
-                Parameters param = new();
-                IO.IO io = new(param, null!);
-                SettingsInterface settingsInterface = new(param, io);
-                MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
-                NeuralNetworkInterface neuralNetworkInterface = new(io, mainMenuInterface, null!);
-                Training training = new(param, null!);
-                NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
-
-                io._nN = nN;
-                training.roger = nN;
-                mainMenuInterface._roger = nN;
-                neuralNetworkInterface._neuralNetwork = nN;
-
-                DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
-                Thread.Sleep(3000);
-
-                mainMenuInterface.StartInterface();
             }
+
+
+            Console.Title = $"RogerHubEngine v{majorVersion}.{minorVersion}.{patchVersion}";
+
+            // Some terminals (mostly on GNU/Linux) don't support Unicode, and throwing exception, but supporting UTF-8
+            try
+            {
+                Console.InputEncoding = Encoding.Unicode;
+                Console.OutputEncoding = Encoding.Unicode;
+            }
+            catch
+            {
+                InternalError("Your system doesn't support Unicode!");
+            }
+
+            Parameters param = new();
+            IO io = new(param, null!);
+            SettingsInterface settingsInterface = new(param, io);
+            MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
+            NeuralNetworkInterface neuralNetworkInterface = new(io, mainMenuInterface, null!);
+            Training training = new(param, null!);
+            NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
+
+            io._nN = nN;
+            training.roger = nN;
+            mainMenuInterface._roger = nN;
+            neuralNetworkInterface._neuralNetwork = nN;
+
+            DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
+            Thread.Sleep(3000);
+
+            mainMenuInterface.StartInterface();
         }
 
         /// <summary>

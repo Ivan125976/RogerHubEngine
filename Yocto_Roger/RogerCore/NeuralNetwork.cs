@@ -1,11 +1,8 @@
 ﻿using MemoryPack;
 using System.Globalization;
-using Yocto_Roger.IO;
-using Yocto_Roger.RogerCore.Initialization;
 using Yocto_Roger.RogerCore.UtilityTools;
 using Yocto_Roger.UI.CUI;
 using Yocto_Roger.UI.Interfaces;
-using static Yocto_Roger.IO.Splitter;
 using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
 using static Yocto_Roger.UI.CUI.CUI;
 
@@ -24,10 +21,10 @@ Copyright 2025-2026 Emotion Corp.
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
 
-    public class NeuralNetwork(Parameters param, IO.IO io, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(Parameters param, IO io, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
     {
         private readonly Parameters _param = param;
-        private readonly IO.IO _io = io;
+        private readonly IO _io = io;
         private readonly Training _training = training;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
         private readonly MainMenuInterface _mainMenu = mainMenu;
@@ -98,12 +95,11 @@ Copyright 2025-2026 Emotion Corp.
                     }
                     Console.Write("SetUp education array and reading knowledge...");
 
-                    string[] parsedString, splitingSecond;
-                    string[]? allLines = null!;
-                    double[]? output = null;
+                    string[] parsedString, splitingSecond, allLines;
+                    double[] output;
                     int[] input;
-                    int length = 0;
-                    
+                    int length;
+
                     try
                     {
                         allLines = File.ReadAllLines(_param.knowledgeFile);
@@ -123,7 +119,8 @@ Copyright 2025-2026 Emotion Corp.
                     {
                         Send("Your training file is corrupted or is not in our format.", MessageType.error);
                         _mainMenu.StartInterface();
-                    }        
+                        return;
+                    }
 
                     Console.CursorVisible = false;
                     Send("Everything is ready to create Roger!");
@@ -151,7 +148,7 @@ Copyright 2025-2026 Emotion Corp.
                     }
 
                     Send("done");
-                    Console.Write("Initialization RogerHubEngine...");
+                    Console.Write("Initializing memory for Roger...");
                     inputNeurons = new int[_param.inputNeuronsCount];
                     middleNeurons = new double[_param.layers - 2, _param.middleNeuronsCount];
                     outputNeurons = new double[_param.outputNeuronsCount];
@@ -162,10 +159,10 @@ Copyright 2025-2026 Emotion Corp.
                     Obias = new double[_param.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization weights...");
-                    InitWeights.Init(inputWeights);
-                    InitWeights.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
-                    InitWeights.Init(middleWeights);
-                    InitWeights.Init(outputWeights);
+                    Initialization.Init(inputWeights);
+                    Initialization.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
+                    Initialization.Init(middleWeights);
+                    Initialization.Init(outputWeights);
                     Send("done");
                     Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");
@@ -178,11 +175,9 @@ Copyright 2025-2026 Emotion Corp.
                     educationStatus.Draw(100);
                     Send("\nEducation Complete");
 
-                    Console.Write("Finishing...");
+                    Console.Write("StartAI finish");
                     rogerIsCreated = true;
                     Send("done");
-                    Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
-                    Thread.Sleep(3000);
                     break;
 
                 case 1:
@@ -195,12 +190,12 @@ Copyright 2025-2026 Emotion Corp.
                         {
                             if (File.Exists(inputChecked))
                             {
-                                _io.InitNeuralNetwork(IO.IO.LoadNeuralNetworkStateFromBin(inputChecked));
+                                _io.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked));
                                 rogerIsCreated = true;
                             }
                             else if (File.Exists(inputChecked + ".roger2"))
                             {
-                                _io.InitNeuralNetwork(IO.IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"));
+                                _io.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"));
                                 rogerIsCreated = true;
                             }
                         }
@@ -215,9 +210,12 @@ Copyright 2025-2026 Emotion Corp.
                         Send("Incorrect input (-_0)", MessageType.error);
                         Send("Maybe file that you entered, doesn't exists, please check it and retry");
                     }
+                    Console.Write("StartAI finish");
                     break;
             }
 
+            Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
+            Thread.Sleep(3000);
             if (rogerIsCreated)
                 _neuralNetworkInterface.StartInterface();
         }
@@ -260,7 +258,14 @@ Copyright 2025-2026 Emotion Corp.
                         if (RogerMath.rand.NextDouble() < _param.DropOutPercent / 100.0)
                             masks[i, j] = 0;
                         else
-                            masks[i, j] = 1.0f / keepProb;
+                            try
+                            {
+                                masks[i, j] = 1.0f / keepProb;
+                            }
+                            catch
+                            {
+                                InternalError("Division by zero. The dropout rate cannot be 100.");
+                            }
 #if DEBUG
                         Console.Write(masks[i, j] + " ");
 #endif
@@ -428,6 +433,21 @@ Copyright 2025-2026 Emotion Corp.
             }
 
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
+        }
+
+        /// <summary>
+        /// Splitting a string into parts using a symbol
+        /// </summary>
+        /// <param name="obj">The string to be splitted</param>
+        /// <param name="symbol">The character by which the string will be splitted</param>
+        /// <returns></returns>
+        public static int[] StringParse(string obj, char symbol)
+        {
+            string[] strings = obj.Split(symbol);
+            int[] parsedArray = new int[strings.Length];
+            for (int i = 0; i < parsedArray.Length; i++)
+                parsedArray[i] = Convert.ToInt32(strings[i]);
+            return parsedArray;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Yocto_Roger.RogerCore;
 using Yocto_Roger.UI.CUI;
-using static Yocto_Roger.Configuration.EngineVersion;
+using static Yocto_Roger.EngineVersion;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces

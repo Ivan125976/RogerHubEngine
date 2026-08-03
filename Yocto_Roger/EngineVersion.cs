@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.Configuration
+﻿namespace Yocto_Roger
 {
     /// <summary>
     /// Contains immutable variables

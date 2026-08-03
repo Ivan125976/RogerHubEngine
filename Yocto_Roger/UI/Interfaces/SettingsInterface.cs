@@ -1,4 +1,5 @@
-﻿using Yocto_Roger.UI.CUI;
+﻿using Yocto_Roger.RogerCore;
+using Yocto_Roger.UI.CUI;
 using static Yocto_Roger.UI.CUI.CUI;
 
 namespace Yocto_Roger.UI.Interfaces
@@ -7,9 +8,9 @@ namespace Yocto_Roger.UI.Interfaces
     /// <summary>
     /// Settings interface
     /// </summary>
-    public class SettingsInterface(Parameters param, IO.IO io) : IUserInterface
+    public class SettingsInterface(Parameters param, IO io) : IUserInterface
     {
-        private readonly IO.IO _io = io;
+        private readonly IO _io = io;
 
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
@@ -43,10 +44,21 @@ namespace Yocto_Roger.UI.Interfaces
                     case "0":
                         Console.WriteLine("Enter the name of the new file...");
                         string? fileName = Console.ReadLine();
-                        _io.SaveRogerToJson(fileName);
 
-                        Send($" Your .params file saved in this directory> {fileName}.params\n Press any key to continue");
-                        Console.ReadKey();
+                        if (fileName != null)
+                        {
+                            if (fileName.EndsWith(".params"))
+                            {
+                                fileName = fileName.Remove(fileName.Length - 7, fileName.Length);
+                                _io.SaveRogerToJson(fileName);
+                            }
+                            else
+                                _io.SaveRogerToJson(fileName);
+
+                            Send($" Your file saved> {fileName}.params\n Press any key to continue");
+                            Console.ReadKey(true);
+                        }
+
                         break;
 
                     case "1":
@@ -58,12 +70,12 @@ namespace Yocto_Roger.UI.Interfaces
                             if (File.Exists(input))
                             {
                                 param.roger2 = input;
-                                _io.InitRogersData(_io.LoadRoger());
+                                _io.InitRogersData(roger: _io.LoadRoger());
                             }
                             else if (File.Exists(input + ".params"))
                             {
                                 param.roger2 = input + ".params";
-                                _io.InitRogersData(_io.LoadRoger());
+                                _io.InitRogersData(roger: _io.LoadRoger());
                             }
                         }
                         else
@@ -103,6 +115,10 @@ namespace Yocto_Roger.UI.Interfaces
                         string? file = Console.ReadLine();
                         if (File.Exists(file))
                             param.knowledgeFile = file;
+                        else if (File.Exists(file + ".know"))
+                            param.knowledgeFile = file + ".know";
+                        else if (File.Exists(file + ".txt"))
+                            param.knowledgeFile = file + ".txt";
                         else
                             Send("I couldn't find such a file :(", MessageType.error);
                         break;
