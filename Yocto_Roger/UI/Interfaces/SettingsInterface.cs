@@ -47,13 +47,7 @@ namespace Yocto_Roger.UI.Interfaces
 
                         if (fileName != null)
                         {
-                            if (fileName.EndsWith(".params"))
-                            {
-                                fileName = fileName.Remove(fileName.Length - 7, fileName.Length);
-                                _io.SaveRogerToJson(fileName);
-                            }
-                            else
-                                _io.SaveRogerToJson(fileName);
+                            _io.SaveRogerToJson(fileName);
 
                             Send($" Your file saved> {fileName}.params\n Press any key to continue");
                             Console.ReadKey(true);
