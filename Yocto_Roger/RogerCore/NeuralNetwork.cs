@@ -91,7 +91,7 @@ Copyright 2025-2026 Emotion Corp.
                     if (!File.Exists(_param.knowledgeFile))
                     {
                         Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
-                        break;
+                        return;
                     }
                     Console.Write("SetUp education array and reading knowledge...");
 
