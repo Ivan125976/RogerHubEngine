@@ -13,12 +13,12 @@
         /// <summary>
         /// Minor version of RogerHubEngine
         /// </summary>
-        public const char minorVersion = '2';
+        public const char minorVersion = '3';
 
         /// <summary>
         /// Patch version of RogerHubEngine
         /// </summary>
-        public const char patchVersion = '3';
+        public const char patchVersion = '0';
 
         /// <summary>
         /// Name of build

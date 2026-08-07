@@ -48,10 +48,6 @@ Internal I/O lib
                 MiddleNeuronsCount = _param.middleNeuronsCount,
 
                 Layers = _param.layers,
-
-                Rms_decay = _param.rms_decay,
-
-                Rms_enabled = _param.rms_enabled
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -94,7 +90,7 @@ Internal I/O lib
             public string? AIversion { get; set; }
 
             /// <summary>
-            /// Knowledge.know file
+            /// Knowledge file
             /// </summary>
             public string? KnowledgeFile { get; set; }
             /// <summary>
@@ -134,6 +130,11 @@ Internal I/O lib
             /// is RMS enabled
             /// </summary>
             public bool Rms_enabled { get; set; }
+
+            /// <summary>
+            /// Type of initialization weights
+            /// </summary>
+            public InitType InitType { get; set; }
         }
 
         /// <summary>
@@ -198,6 +199,7 @@ Internal I/O lib
 
             _nN.Mbias = nN?.Mbias;
             _nN.Obias = nN?.Obias;
+
 
         }
         /// <summary>
@@ -264,7 +266,7 @@ Internal I/O lib
         /// <param name="roger"></param>
         public void InitRogersData(Roger? roger)
         {
-            if (roger?.AIversion == "2.2")
+            if (roger?.AIversion == "2.3")
             {
                 _param.passes = roger?.Passes ?? 10000;
                 _param.learningRate = roger?.LearingRate ?? 0.01f;
@@ -278,6 +280,8 @@ Internal I/O lib
 
                 _param.rms_enabled = roger?.Rms_enabled ?? false;
                 _param.rms_decay = roger?.Rms_decay ?? 0.95f;
+
+                _param.initType = roger?.InitType ?? InitType.xavier_uniform;
             }
             else
                 Send($"Your settings file is intended for a different version! ({roger?.AIversion})", MessageType.error);

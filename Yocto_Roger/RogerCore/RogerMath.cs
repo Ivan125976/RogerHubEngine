@@ -58,5 +58,21 @@ Internal AIMath lib
         private static partial Regex CleanNumberPattern();
         [GeneratedRegex(@",{2,}")]
         private static partial Regex DublicatePattern();
+
+        /// <summary>
+        /// Generates a random value with a Gaussian (normal) distribution.
+        /// </summary>
+        /// <param name="shift">Shift</param>
+        /// <param name="stdDev">Standart Deviation</param>
+        public static double NextGaussian(double shift, double stdDev)
+        {
+            double u1 = 1.0 - rand.NextDouble();
+            double u2 = 1.0 - rand.NextDouble();
+
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                                   Math.Sin(2.0 * Math.PI * u2);
+
+            return shift + stdDev * randStdNormal;
+        }
     }
 }

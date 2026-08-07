@@ -107,7 +107,18 @@ namespace Yocto_Roger
                 InternalError("Your system doesn't support Unicode!");
             }
 
-            MainMenuInterface mainMenuInterface = Initialization.Init();
+            Parameters param = new();
+            IO io = new(param, null!);
+            SettingsInterface settingsInterface = new(param, io);
+            MainMenuInterface mainMenuInterface = new(settingsInterface, null!);
+            NeuralNetworkInterface neuralNetworkInterface = new(io, mainMenuInterface, null!);
+            Training training = new(param, null!);
+            NeuralNetwork nN = new(param, io, training, neuralNetworkInterface, mainMenuInterface);
+
+            io._nN = nN;
+            training.roger = nN;
+            mainMenuInterface._roger = nN;
+            neuralNetworkInterface._neuralNetwork = nN;
 
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
             Thread.Sleep(3000);

@@ -169,10 +169,10 @@ Copyright 2025-2026 Emotion Corp.
                     Obias = new double[_param.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization weights...");
-                    Initialization.Init(inputWeights);
+                    Initialization.Init(inputWeights, _param.initType);
                     Initialization.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
-                    Initialization.Init(middleWeights);
-                    Initialization.Init(outputWeights);
+                    Initialization.Init(middleWeights, _param.initType);
+                    Initialization.Init(outputWeights, _param.initType);
                     Send("done");
                     Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");

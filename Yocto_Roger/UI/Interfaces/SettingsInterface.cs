@@ -33,9 +33,10 @@ namespace Yocto_Roger.UI.Interfaces
                                         5. DropOut sys percent...{param.DropOutPercent}%
                                         6. Learning Rate...{param.learningRate}
                                         7. Passes...{param.passes}
-                                        8. RMS Enabled...{param.rms_enabled}
-                                        9. RMS Decay...{param.rms_decay}
-                                        10. Exit
+                                        8. Type of initialization...{param.initType}
+                                        9. RMS Enabled...{param.rms_enabled}
+                                        10. RMS Decay...{param.rms_decay}
+                                        11. Exit
                                         >>> 
                                         """);
                 string? choice = Console.ReadLine();
@@ -164,6 +165,35 @@ namespace Yocto_Roger.UI.Interfaces
 
                     case "8":
                         Console.Clear();
+                        Console.WriteLine("*INITIALIZATION TYPE*");
+
+                        Console.WriteLine("""
+                            
+                            1. Xavier Uniform
+                            2. Xavier Normal
+
+                            """);
+
+                        Console.Write("INT32> Enter number of new initialization method...");
+                        if (int.TryParse(Console.ReadLine(), out int newInitMethod))
+                        {
+                            switch(newInitMethod)
+                            {
+                                case 1:
+                                    param.initType = InitType.xavier_uniform;
+                                    break;
+
+                                case 2:
+                                    param.initType = InitType.xavier_normal;
+                                    break;
+                            }
+                        }
+                        else
+                            Send("Invalid input.", MessageType.error);
+                        break;
+
+                    case "9":
+                        Console.Clear();
                         Console.WriteLine("*RMS PROP OPTIMIZATION*");
                         Send("This optimization speeds up training, but consumes twice as much memory allocated to the neural network during training", MessageType.warning);
                         Send("It is not recommended to enable this for networks with fewer than 6 layers.", MessageType.warning);
@@ -174,7 +204,7 @@ namespace Yocto_Roger.UI.Interfaces
                             Send("Invalid input.", MessageType.error);
                         break;
 
-                    case "9":
+                    case "10":
                         Console.Clear();
                         if (param.rms_enabled)
                         {
@@ -197,7 +227,7 @@ namespace Yocto_Roger.UI.Interfaces
                             break;
                         }
 
-                    case "10":
+                    case "11":
                         exit = true;
                         break;
                 }

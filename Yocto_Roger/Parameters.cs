@@ -1,4 +1,6 @@
-﻿namespace Yocto_Roger
+﻿using Yocto_Roger.RogerCore;
+
+namespace Yocto_Roger
 {
     /* 
 Yocto Roger ;)
@@ -68,5 +70,10 @@ RogerHub configuration
         /// RMS Optimization Switch
         /// </summary>
         public bool rms_enabled = false;
+
+        /// <summary>
+        /// Type of Initialization
+        /// </summary>
+        public InitType initType = InitType.xavier_uniform;
     }
 }
