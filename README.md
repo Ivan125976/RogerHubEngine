@@ -1,6 +1,6 @@
 # RogerHubEngine
 
-> ## **_The world_** of neural networks for your robot
+> ## The **_world_** of neural networks for your robot
 
 Copyright (c) 2025-2026 Emotion
 
