@@ -5,19 +5,19 @@
 Copyright (c) 2025-2026 Emotion
 
 ### :star: What is this? 
-This is a cute little neural network for your robot or your Unity game.
+This is a cute little neural network engine for your robot or your Unity game.
 - The engine for our neural networks is written entirely in C#.
 - The higher the engine version, the more functions, weight and resources it takes up.
 - There are stable versions, and there are Beta, Charlie, and Delta versions where you can try out new features*
 
 ### :rocket: What engine versions are there?
 >Quecto
-+ **Roger v1.4** - This is an experimental version, I don't even recommend downloading it.
-+ **Roger v2.0** - The smallest engine. MLP neural network.
++ **RogerHubEngine v1.4** - This is an experimental version, I don't even recommend downloading it.
++ **RogerHubEngine v2.0** - The smallest engine. MLP neural network.
 >Yocto
-+ **Roger v2.1** - Same as 2.0 but with the addition of IO and DropOut subsystems
-+ **Roger v2.2** - Major rework of v2.1, added RMS and many other features
-+ **Roger v2.3** - A minor update, neural network improvements, and the addition of RRNNs.
++ **RogerHubEngine v2.1** - Same as 2.0 but with the addition of IO and DropOut subsystems
++ **RogerHubEngine v2.2** - Major rework of v2.1, added RMS and many other features
++ **RogerHubEngine v2.3** - A minor update, neural network improvements, and the addition of RRNNs.
 
 ### :1st_place_medal: What can your neural network do? (v2.2)
 - MLP neural network
