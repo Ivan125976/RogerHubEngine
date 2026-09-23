@@ -4,11 +4,6 @@
 
 Copyright (c) 2025-2026 Emotion
 
----
->[!WARNING]
->The project hasn't been abandoned; commits aren't coming out because we're rewriting the engine from scratch.
----
-
 ### :star: What is this? 
 This is a cute little neural network engine for your robot or your Unity game.
 - The engine for our neural networks is written entirely in C#.
