@@ -1,8 +1,8 @@
 ﻿using MemoryPack;
 using System.Text.Json;
-using Yocto_Roger.UI.CUI;
-using static Yocto_Roger.EngineVersion;
-using static Yocto_Roger.UI.CUI.CUI;
+using Yocto_Roger.Client;
+using static Yocto_Roger.Client.EngineVersion;
+using static Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore
 {

@@ -1,7 +1,7 @@
-﻿using Yocto_Roger.RogerCore;
-using Yocto_Roger.UI.Interfaces;
+﻿using Yocto_Roger.Client.Interfaces;
+using Yocto_Roger.RogerCore;
 
-namespace Yocto_Roger
+namespace Yocto_Roger.Client
 {
     internal class Initialization
     {

@@ -1,8 +1,8 @@
-﻿using Yocto_Roger.RogerCore;
-using Yocto_Roger.UI.CUI;
-using static Yocto_Roger.UI.CUI.CUI;
+﻿using Yocto_Roger.Client;
+using Yocto_Roger.RogerCore;
+using static Yocto_Roger.UI.CUI;
 
-namespace Yocto_Roger.UI.Interfaces
+namespace Yocto_Roger.Client.Interfaces
 {
 
     /// <summary>

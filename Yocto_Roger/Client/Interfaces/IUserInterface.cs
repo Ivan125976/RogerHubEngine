@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.UI.Interfaces
+﻿namespace Yocto_Roger.Client.Interfaces
 {
     internal interface IUserInterface
     {

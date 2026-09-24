@@ -1,10 +1,10 @@
 ﻿using MemoryPack;
 using System.Globalization;
+using Yocto_Roger.Client;
+using Yocto_Roger.Client.Interfaces;
 using Yocto_Roger.RogerCore.UtilityTools;
-using Yocto_Roger.UI.CUI;
-using Yocto_Roger.UI.Interfaces;
 using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
-using static Yocto_Roger.UI.CUI.CUI;
+using static Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore
 {

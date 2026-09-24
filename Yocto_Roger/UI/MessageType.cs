@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.UI.CUI
+﻿namespace Yocto_Roger.UI
 {
     /// <summary>
     /// Message type

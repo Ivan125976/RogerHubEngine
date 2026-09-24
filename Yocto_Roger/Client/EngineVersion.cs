@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger
+﻿namespace Yocto_Roger.Client
 {
     /// <summary>
     /// Contains immutable variables

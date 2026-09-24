@@ -1,7 +1,6 @@
 ﻿using Yocto_Roger.RogerCore.UtilityTools;
-using Yocto_Roger.UI.CUI;
 
-using static Yocto_Roger.UI.CUI.CUI;
+using static Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore
 {

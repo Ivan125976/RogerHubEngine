@@ -1,4 +1,5 @@
-﻿using Yocto_Roger.UI.CUI;
+﻿using Yocto_Roger.Client;
+using Yocto_Roger.UI.CUI;
 
 namespace Yocto_Roger.RogerCore
 {

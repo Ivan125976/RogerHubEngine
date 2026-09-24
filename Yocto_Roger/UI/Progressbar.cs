@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.UI.CUI
+﻿namespace Yocto_Roger.UI
 {
     /// <summary>
     /// Draws a beautiful progress bar and can erase it automatically.

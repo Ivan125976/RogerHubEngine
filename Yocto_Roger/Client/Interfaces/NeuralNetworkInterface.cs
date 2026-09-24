@@ -1,15 +1,17 @@
 ﻿using System.Globalization;
 using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
-using Yocto_Roger.UI.CUI;
 using MemoryPack;
+
+
+
 
 #if DEBUG
 using Newtonsoft.Json;
 #endif
-using static Yocto_Roger.UI.CUI.CUI;
+using static Yocto_Roger.UI.CUI;
 
-namespace Yocto_Roger.UI.Interfaces
+namespace Yocto_Roger.Client.Interfaces
 {
     /// <summary>
     /// NeuralNetwork manual interface

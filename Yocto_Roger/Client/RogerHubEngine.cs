@@ -1,11 +1,12 @@
 ﻿using System.Text;
+using System.Drawing;
 using Yocto_Roger.RogerCore;
-using Yocto_Roger.UI.CUI;
-using Yocto_Roger.UI.Interfaces;
-using static Yocto_Roger.EngineVersion;
-using static Yocto_Roger.UI.CUI.CUI;
+using static Yocto_Roger.Client.EngineVersion;
+using static Yocto_Roger.UI.CUI;
+using Yocto_Roger.Client.Interfaces;
+using Yocto_Roger.UI;
 
-namespace Yocto_Roger
+namespace Yocto_Roger.Client
 {
 
     /* 
@@ -13,21 +14,6 @@ namespace Yocto_Roger
      We are idiots++.
      © Emotion Corp.
     */
-
-    /// <summary>
-    /// Keeps minimal size of the console
-    /// </summary>
-    public struct ConsoleSize(ushort height, ushort width) // By default, in Windows, the console size is 25 in height and 80 in width.
-    {
-        /// <summary>
-        /// Height
-        /// </summary>
-        public ushort Height = height;
-        /// <summary>
-        /// Width
-        /// </summary>
-        public ushort Width = width;
-    }
 
     /// <summary>
     /// Main class
@@ -39,32 +25,32 @@ namespace Yocto_Roger
         /// </summary>
         static public void Main()
         {
-            ConsoleSize minSize = new(40, 120);
+            Size ConsoleSize = new(40, 120);
 
             Console.Clear();
             ASCIIDraw.Logo(true);
             Console.WriteLine("Creating a software environment...");
-            if (!CheckMinWindowSize(minSize))
+            if (!CheckMinWindowSize(ConsoleSize))
             {
                 if (OperatingSystem.IsWindows())
                 {
                     try
                     {
-                        Console.SetWindowSize(width: minSize.Width, height: minSize.Height);
+                        Console.SetWindowSize(width: ConsoleSize.Width, height: ConsoleSize.Height);
                     }
-                    catch (PlatformNotSupportedException)
+                    catch
                     {
-                        Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
+                        Console.Write($"\x1b[8;{ConsoleSize.Width};{ConsoleSize.Height}t");
 
                         Thread.Sleep(25); // Delay to allow time for the size to change
 
-                        if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
+                        if (!CheckMinWindowSize(ConsoleSize)) // If escape-code didn't work
                         {
-                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
+                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {ConsoleSize.Width} \nHeight: {ConsoleSize.Height}", MessageType.error);
                             Send("Resize the window until i say \"Done\"", MessageType.note);
-                            while (!CheckMinWindowSize(minSize))
+                            while (!CheckMinWindowSize(ConsoleSize))
                             {
-                                bool check = CheckMinWindowSize(minSize);
+                                bool check = CheckMinWindowSize(ConsoleSize);
 
                                 if (check) { Send("Done"); }
                             }
@@ -74,17 +60,17 @@ namespace Yocto_Roger
                 else
                 {
                     Console.Write("\n");
-                    Console.Write($"\x1b[8;{minSize.Height};{minSize.Width}t");
+                    Console.Write($"\x1b[8;{ConsoleSize.Height};{ConsoleSize.Width}t");
 
                     Thread.Sleep(25); // Delay to allow time for the size to change
 
-                    if (!CheckMinWindowSize(minSize)) // If escape-code didn't work
+                    if (!CheckMinWindowSize(ConsoleSize)) // If escape-code didn't work
                     {
-                        Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {minSize.Width} \nHeight: {minSize.Height}", MessageType.error);
+                        Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {ConsoleSize.Width} \nHeight: {ConsoleSize.Height}", MessageType.error);
                         Send("Resize the window until I say \"Done\"", MessageType.note);
-                        while (!CheckMinWindowSize(minSize))
+                        while (!CheckMinWindowSize(ConsoleSize))
                         {
-                            bool check = CheckMinWindowSize(minSize);
+                            bool check = CheckMinWindowSize(ConsoleSize);
 
                             if (check) { Send("Done"); }
                         }
@@ -120,6 +106,6 @@ namespace Yocto_Roger
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool CheckMinWindowSize(ConsoleSize size) => (Console.WindowWidth > size.Width && Console.WindowHeight > size.Height);
+        public static bool CheckMinWindowSize(Size size) => Console.WindowWidth > size.Width && Console.WindowHeight > size.Height;
     }
 }
