@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.UI
+﻿namespace Yocto_Roger.Engine.UI
 {
     /// <summary>
     /// Draws a beautiful progress bar and can erase it automatically.
@@ -16,7 +16,7 @@
         private readonly int _y = y;
 
         /// <summary>
-        /// Redraws the progressbar
+        /// Draws the progressbar
         /// </summary>
         /// <param name="percent">Fill percentage</param>
         public void Draw(int percent)

@@ -1,10 +1,12 @@
 ﻿using MemoryPack;
 using System.Text.Json;
 using Yocto_Roger.Client;
+using Yocto_Roger.Engine.UI;
+using Yocto_Roger.RogerCore;
 using static Yocto_Roger.Client.EngineVersion;
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
 
-namespace Yocto_Roger.RogerCore
+namespace Yocto_Roger.Engine.RogerCore
 {
     /* 
 Yocto Roger ;)
@@ -17,41 +19,35 @@ Internal I/O lib
     /// <summary>
     /// Main IO class, where contains all main function for work with salve/load
     /// </summary>
-    public class IO(Parameters param, NeuralNetwork nN)
+    public class IO : IDisposable
     {
-        private readonly JsonSerializerOptions options = new()
+        private static readonly JsonSerializerOptions options = new()
         {
             WriteIndented = true
         };
-        private readonly Parameters _param = param;
-        /// <summary>
-        /// object of NeuralNetwork class
-        /// </summary>
-        public NeuralNetwork _nN = nN;
 
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
         /// </summary>
-        public void SaveRogerToJson(string? fileName = "roger2")
+        public static void SaveRogerToJson(string? fileName, Parameters param)
         {
-
             Roger roger = new()
             {
                 AIversion = $"{majorVersion}.{minorVersion}",
-                Passes = _param.passes,
+                Passes = param.passes,
 
-                KnowledgeFile = _param.knowledgeFile,
+                KnowledgeFile = param.knowledgeFile,
 
-                LearingRate = _param.learningRate,
-                DropOutPercent = _param.DropOutPercent,
+                LearingRate = param.learningRate,
+                DropOutPercent = param.DropOutPercent,
 
-                MiddleNeuronsCount = _param.middleNeuronsCount,
+                MiddleNeuronsCount = param.middleNeuronsCount,
 
-                Layers = _param.layers,
+                Layers = param.layers,
 
-                Rms_decay = _param.rms_decay,
+                Rms_decay = param.rms_decay,
 
-                Rms_enabled = _param.rms_enabled
+                Rms_enabled = param.rms_enabled
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -65,11 +61,11 @@ Internal I/O lib
         /// This method calls function SEND, with error, which outputs text to the console. Be careful, with this method when you will using it in your project. replace SEND call, on exception throwing
         /// </summary>
         /// <returns>Roger class object. If happened any error, for example something with null, so it's returning an empty object of class Roger</returns>
-        public Roger? LoadRoger()
+        public static Roger? LoadRoger(Parameters param)
         {
             try
             {
-                if (LoadRogerFromJson() is Roger roger)
+                if (LoadRogerFromJson(param) is Roger roger)
                     return roger;
                 else
                     return null;
@@ -141,9 +137,9 @@ Internal I/O lib
         /// </summary>
         /// <exception cref="ArgumentNullException">This Exception throwing, when file which it parsing (params.roger2), is null or empty, meaning it's doesn't exists</exception>
         /// <exception cref="JsonException">This exception is thrown when the text cannot be serialized into json format, meaning that the file being parsed contains strange text that is not actually suitable for serialization into json.</exception>
-        private Roger? LoadRogerFromJson()
+        private static Roger? LoadRogerFromJson(Parameters param)
         {
-            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(_param.roger2));
+            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(param.roger2));
             return roger ?? null;
         }
 
@@ -176,28 +172,27 @@ Internal I/O lib
             return filenameWithIndex;
         }
 
-        /********************NEURAL NETWORK SECTION********************/
-
         /// <summary>
         /// Transforming the values from class NeuralNetworkState to needed types, and initializing it where it needs
         /// </summary>
         /// <param name="nN"></param>
-        public void InitNeuralNetwork(NeuralNetworkState? nN)
+        /// <param name="param"></param>
+        public static void InitNeuralNetwork(NeuralNetwork Roger, Parameters param)
         {
             // If null - Values by default
-            _nN.inputNeurons = nN?.InputNeurons;
-            _nN.middleNeurons = nN?.MiddleNeurons;
-            _nN.outputNeurons = nN?.OutputNeurons;
+            nN.inputNeurons = nN?.InputNeurons;
+            nN.middleNeurons = nN?.MiddleNeurons;
+            nN.outputNeurons = nN?.OutputNeurons;
 
-            _nN.inputWeights = nN?.InputWeights!;
-            _nN.middleWeights = nN?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
-            _nN.outputWeights = nN?.OutputWeights!;
+            nN.inputWeights = nN?.InputWeights!;
+            nN.middleWeights = nN?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
+            nN.outputWeights = nN?.OutputWeights!;
 
             // If null - values by default
-            _param.layers = nN?.Layers ?? 3;
+            param.layers = nN?.Layers ?? 3;
 
-            _nN.Mbias = nN?.Mbias;
-            _nN.Obias = nN?.Obias;
+            nN.Mbias = nN?.Mbias;
+            nN.Obias = nN?.Obias;
 
         }
         /// <summary>
@@ -222,7 +217,7 @@ Internal I/O lib
         /// Fixing the neural network state
         /// </summary>
         /// <returns></returns>
-        public NeuralNetworkState FixTheStateOfNeuralNetwork()
+        public static NeuralNetworkState FixTheStateOfNeuralNetwork()
         {
             NeuralNetworkState nN = new()
             {
@@ -259,28 +254,48 @@ Internal I/O lib
         }
 
         /// <summary>
-        /// Преобразует в нужные типы и инициализирует данные (строки) из переданного объекта в соответствующие переменные. Если передан null, он инициализирует значения по умолчанию
+        /// Converts data (strings) from the passed object into the appropriate types and initializes the corresponding variables. If null is passed, it initializes default values.
         /// </summary>
         /// <param name="roger"></param>
-        public void InitRogersData(Roger? roger)
+        public static void InitRogersData(Roger? roger, Parameters param)
         {
-            if (roger?.AIversion == "2.2")
+            if (roger?.AIversion == $"{majorVersion}.{minorVersion}")
             {
-                _param.passes = roger?.Passes ?? 10000;
-                _param.learningRate = roger?.LearingRate ?? 0.01f;
-                _param.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
+                param.passes = roger?.Passes ?? 10000;
+                param.learningRate = roger?.LearingRate ?? 0.01f;
+                param.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
 
-                _param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
+                param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
 
-                _param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+                param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
 
-                _param.layers = roger?.Layers ?? 4;
+                param.layers = roger?.Layers ?? 4;
 
-                _param.rms_enabled = roger?.Rms_enabled ?? false;
-                _param.rms_decay = roger?.Rms_decay ?? 0.95f;
+                param.rms_enabled = roger?.Rms_enabled ?? false;
+                param.rms_decay = roger?.Rms_decay ?? 0.95f;
             }
             else
                 Send($"Your settings file is intended for a different version! ({roger?.AIversion})", MessageType.error);
+            //TODO: Функцию конвертирования
+        }
+
+        /// <summary>
+        /// Checks whether the user-provided file has the correct extension.
+        /// </summary>
+        /// <param name="input">User input</param>
+        /// <param name="extension">The extension the file should have</param>
+        /// <returns>File name with extension, or null if the file does not exist.</returns>
+        public static string? FileExtensionCheck(string input, string extension)
+        {
+            if (File.Exists(input)) return input;
+            else if (File.Exists(input + extension)) return input + extension;
+            else return null;
+        }
+
+        public void Dispose()
+        {
+            //TODO: Сделать Dispose метод
+            //GC.SuppressFinalize(this);
         }
     }
 }

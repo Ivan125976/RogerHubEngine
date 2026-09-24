@@ -1,7 +1,7 @@
-﻿using Yocto_Roger.RogerCore;
-using Yocto_Roger.UI;
+﻿using Yocto_Roger.Engine.RogerCore;
+using Yocto_Roger.Engine.UI;
 using static Yocto_Roger.Client.EngineVersion;
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
 
 namespace Yocto_Roger.Client.Interfaces
 {
@@ -9,15 +9,8 @@ namespace Yocto_Roger.Client.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface(SettingsInterface settings, NeuralNetwork roger) : IUserInterface
+    public class MainMenuInterface
     {
-        private readonly SettingsInterface _settingsInterface = settings;
-
-        /// <summary>
-        /// object of NeuralNetwork class
-        /// </summary>
-        public NeuralNetwork _roger = roger;
-
         /// <summary>
         /// Calling up the main menu
         /// </summary>
@@ -27,12 +20,11 @@ namespace Yocto_Roger.Client.Interfaces
             while (true)
             {
                 Console.Clear();
-#if RELEASE
+
                 DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
-#elif DEBUG
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName} >DEBUG BUILD<", DateTime.Now.Date.ToString("dd/MM/yyyy"));
-#endif
                 Send("This project is still in the development stage.", MessageType.warning);
+                if (specialName != Roadmap.R)
+                    Send("This build may contain errors, as it is not a release!")
                 Console.Write("""
                     
                     1. Start Roger in training mode

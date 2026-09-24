@@ -2,9 +2,9 @@
 using System.Drawing;
 using Yocto_Roger.RogerCore;
 using static Yocto_Roger.Client.EngineVersion;
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
 using Yocto_Roger.Client.Interfaces;
-using Yocto_Roger.UI;
+using Yocto_Roger.Engine.UI;
 
 namespace Yocto_Roger.Client
 {
@@ -25,7 +25,7 @@ namespace Yocto_Roger.Client
         /// </summary>
         static public void Main()
         {
-            Size ConsoleSize = new(40, 120);
+            Size ConsoleSize = new(80, 120);
 
             Console.Clear();
             ASCIIDraw.Logo(true);
@@ -33,30 +33,7 @@ namespace Yocto_Roger.Client
             if (!CheckMinWindowSize(ConsoleSize))
             {
                 if (OperatingSystem.IsWindows())
-                {
-                    try
-                    {
-                        Console.SetWindowSize(width: ConsoleSize.Width, height: ConsoleSize.Height);
-                    }
-                    catch
-                    {
-                        Console.Write($"\x1b[8;{ConsoleSize.Width};{ConsoleSize.Height}t");
-
-                        Thread.Sleep(25); // Delay to allow time for the size to change
-
-                        if (!CheckMinWindowSize(ConsoleSize)) // If escape-code didn't work
-                        {
-                            Send($"Unable to resize the console. You'll have to do it yourself :( \nneed: \nWidth: {ConsoleSize.Width} \nHeight: {ConsoleSize.Height}", MessageType.error);
-                            Send("Resize the window until i say \"Done\"", MessageType.note);
-                            while (!CheckMinWindowSize(ConsoleSize))
-                            {
-                                bool check = CheckMinWindowSize(ConsoleSize);
-
-                                if (check) { Send("Done"); }
-                            }
-                        }
-                    }
-                }
+                    Console.SetWindowSize(ConsoleSize.Width, ConsoleSize.Height);
                 else
                 {
                     Console.Write("\n");
@@ -92,8 +69,6 @@ namespace Yocto_Roger.Client
             {
                 InternalError("Your system doesn't support Unicode!");
             }
-
-            MainMenuInterface mainMenuInterface = Initialization.Init();
 
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
             Thread.Sleep(3000);

@@ -4,9 +4,10 @@ using Yocto_Roger.Client;
 using Yocto_Roger.Client.Interfaces;
 using Yocto_Roger.RogerCore.UtilityTools;
 using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
+using Yocto_Roger.Engine.UI;
 
-namespace Yocto_Roger.RogerCore
+namespace Yocto_Roger.Engine.RogerCore
 {
     /* 
 Yocto Roger ;)
@@ -264,7 +265,7 @@ Copyright 2025-2026 Emotion Corp.
                 {
                     for (int j = 0; j < masks.GetLength(1); j++)
                     {
-                        if (RogerMath.rand.NextDouble() < _param.DropOutPercent / 100.0)
+                        if (rand.NextDouble() < _param.DropOutPercent / 100.0)
                             masks[i, j] = 0;
                         else
                             try

@@ -1,8 +1,8 @@
 ﻿using Yocto_Roger.RogerCore.UtilityTools;
 
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
 
-namespace Yocto_Roger.RogerCore
+namespace Yocto_Roger.Engine.RogerCore
 {
     /* 
 Yocto Roger ;)

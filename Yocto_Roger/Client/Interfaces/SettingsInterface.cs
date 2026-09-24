@@ -1,6 +1,7 @@
 ﻿using Yocto_Roger.Client;
-using Yocto_Roger.RogerCore;
-using static Yocto_Roger.UI.CUI;
+using Yocto_Roger.Engine.RogerCore;
+using Yocto_Roger.Engine.UI;
+using static Yocto_Roger.Engine.UI.CUI;
 
 namespace Yocto_Roger.Client.Interfaces
 {
@@ -8,14 +9,12 @@ namespace Yocto_Roger.Client.Interfaces
     /// <summary>
     /// Settings interface
     /// </summary>
-    public class SettingsInterface(Parameters param, IO io) : IUserInterface
+    public class SettingsInterface
     {
-        private readonly IO _io = io;
-
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
-        public void StartInterface()
+        public void StartInterface(Parameters param)
         {
             bool exit = false;
             while (!exit)
@@ -47,7 +46,7 @@ namespace Yocto_Roger.Client.Interfaces
 
                         if (fileName != null)
                         {
-                            _io.SaveRogerToJson(fileName);
+                            IO.SaveRogerToJson(fileName, param);
 
                             Send($" Your file saved> {fileName}.params\n Press any key to continue");
                             Console.ReadKey(true);
@@ -61,16 +60,7 @@ namespace Yocto_Roger.Client.Interfaces
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && (File.Exists(input) || File.Exists(input + ".params")))
                         {
 
-                            if (File.Exists(input))
-                            {
-                                param.roger2 = input;
-                                _io.InitRogersData(roger: _io.LoadRoger());
-                            }
-                            else if (File.Exists(input + ".params"))
-                            {
-                                param.roger2 = input + ".params";
-                                _io.InitRogersData(roger: _io.LoadRoger());
-                            }
+                           
                         }
                         else
                             Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors", MessageType.error);

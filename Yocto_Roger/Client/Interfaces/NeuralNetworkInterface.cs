@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Yocto_Roger.RogerCore;
 using Yocto_Roger.RogerCore.UtilityTools;
 using MemoryPack;
 
@@ -9,14 +8,16 @@ using MemoryPack;
 #if DEBUG
 using Newtonsoft.Json;
 #endif
-using static Yocto_Roger.UI.CUI;
+using static Yocto_Roger.Engine.UI.CUI;
+using Yocto_Roger.Engine.UI;
+using Yocto_Roger.Engine.RogerCore;
 
 namespace Yocto_Roger.Client.Interfaces
 {
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork) : IUserInterface
+    public class NeuralNetworkInterface(IO io, MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork)
     {
         private readonly IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;

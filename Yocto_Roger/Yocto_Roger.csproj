@@ -5,7 +5,7 @@
     <RootNamespace>Yocto_Roger</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>Yocto_Roger.RogerHubEngine</StartupObject>
+    <StartupObject></StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

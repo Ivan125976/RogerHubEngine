@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Yocto_Roger.UI
+namespace Yocto_Roger.Engine.UI
 /* 
 Yocto Roger ;)
 *****************
