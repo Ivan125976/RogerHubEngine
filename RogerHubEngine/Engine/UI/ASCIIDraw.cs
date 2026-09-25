@@ -1,6 +1,6 @@
-﻿using static Yocto_Roger.Client.EngineVersion;
+﻿using static RogerHubEngine.Client.EngineVersion;
 
-namespace Yocto_Roger.Engine.UI
+namespace RogerHubEngine.Engine.UI
 {
     internal class ASCIIDraw
     {

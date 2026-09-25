@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.Client
+﻿namespace RogerHubEngine.Client
 {
     /* 
 Yocto Roger ;)

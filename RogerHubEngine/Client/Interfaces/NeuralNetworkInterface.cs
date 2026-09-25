@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Yocto_Roger.RogerCore.UtilityTools;
+using RogerHubEngine.RogerCore.UtilityTools;
 using MemoryPack;
 
 
@@ -8,11 +8,11 @@ using MemoryPack;
 #if DEBUG
 using Newtonsoft.Json;
 #endif
-using static Yocto_Roger.Engine.UI.CUI;
-using Yocto_Roger.Engine.UI;
-using Yocto_Roger.Engine.RogerCore;
+using static RogerHubEngine.Engine.UI.CUI;
+using RogerHubEngine.Engine.UI;
+using RogerHubEngine.Engine.RogerCore;
 
-namespace Yocto_Roger.Client.Interfaces
+namespace RogerHubEngine.Client.Interfaces
 {
     /// <summary>
     /// NeuralNetwork manual interface

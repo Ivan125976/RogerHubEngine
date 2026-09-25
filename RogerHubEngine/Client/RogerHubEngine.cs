@@ -1,12 +1,12 @@
 ﻿using System.Text;
 using System.Drawing;
-using Yocto_Roger.RogerCore;
-using static Yocto_Roger.Client.EngineVersion;
-using static Yocto_Roger.Engine.UI.CUI;
-using Yocto_Roger.Client.Interfaces;
-using Yocto_Roger.Engine.UI;
+using RogerHubEngine.RogerCore;
+using static RogerHubEngine.Client.EngineVersion;
+using static RogerHubEngine.Engine.UI.CUI;
+using RogerHubEngine.Client.Interfaces;
+using RogerHubEngine.Engine.UI;
 
-namespace Yocto_Roger.Client
+namespace RogerHubEngine.Client
 {
 
     /* 

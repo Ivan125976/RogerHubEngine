@@ -1,9 +1,8 @@
-﻿using Yocto_Roger.Engine.RogerCore;
-using Yocto_Roger.Engine.UI;
-using static Yocto_Roger.Client.EngineVersion;
-using static Yocto_Roger.Engine.UI.CUI;
+﻿using RogerHubEngine.Engine.UI;
+using static RogerHubEngine.Client.EngineVersion;
+using static RogerHubEngine.Engine.UI.CUI;
 
-namespace Yocto_Roger.Client.Interfaces
+namespace RogerHubEngine.Client.Interfaces
 {
 
     /// <summary>
@@ -22,9 +21,11 @@ namespace Yocto_Roger.Client.Interfaces
                 Console.Clear();
 
                 DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+
                 Send("This project is still in the development stage.", MessageType.warning);
                 if (specialName != Roadmap.R)
-                    Send("This build may contain errors, as it is not a release!")
+                    Send("This build may contain errors, as it is not a release!");
+
                 Console.Write("""
                     
                     1. Start Roger in training mode

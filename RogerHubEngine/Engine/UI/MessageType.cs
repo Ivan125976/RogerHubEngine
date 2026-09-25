@@ -1,4 +1,4 @@
-﻿namespace Yocto_Roger.Engine.UI
+﻿namespace RogerHubEngine.Engine.UI
 {
     /// <summary>
     /// Message type

@@ -1,6 +1,5 @@
 .vs
 .git
-Yocto_Roger/obj
-Yocto_Roger/bin
-Yocto_Roger/Releases
-RogerHubEngine
+RogerHubEngine/obj
+RogerHubEngine/bin
+RogerHubEngine/Releases

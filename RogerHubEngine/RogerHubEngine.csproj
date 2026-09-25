@@ -2,10 +2,9 @@
 	
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Yocto_Roger</RootNamespace>
+    <RootNamespace>RogerHubEngine</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject></StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

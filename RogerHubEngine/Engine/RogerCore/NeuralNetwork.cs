@@ -1,13 +1,13 @@
 ﻿using MemoryPack;
 using System.Globalization;
-using Yocto_Roger.Client;
-using Yocto_Roger.Client.Interfaces;
-using Yocto_Roger.RogerCore.UtilityTools;
-using static Yocto_Roger.RogerCore.UtilityTools.RogerMath;
-using static Yocto_Roger.Engine.UI.CUI;
-using Yocto_Roger.Engine.UI;
+using RogerHubEngine.Client;
+using RogerHubEngine.Client.Interfaces;
+using RogerHubEngine.RogerCore.UtilityTools;
+using static RogerHubEngine.RogerCore.UtilityTools.RogerMath;
+using static RogerHubEngine.Engine.UI.CUI;
+using RogerHubEngine.Engine.UI;
 
-namespace Yocto_Roger.Engine.RogerCore
+namespace RogerHubEngine.Engine.RogerCore
 {
     /* 
 Yocto Roger ;)

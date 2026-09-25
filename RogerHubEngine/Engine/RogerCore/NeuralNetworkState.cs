@@ -1,6 +1,6 @@
 ﻿using MemoryPack;
 
-namespace Yocto_Roger.RogerCore
+namespace RogerHubEngine.RogerCore
 {
     /// <summary>
     /// Keeping values in string's

@@ -1,9 +1,8 @@
-﻿using Yocto_Roger.Client;
-using Yocto_Roger.Engine.RogerCore;
-using Yocto_Roger.Engine.UI;
-using static Yocto_Roger.Engine.UI.CUI;
+﻿using RogerHubEngine.Engine.RogerCore;
+using RogerHubEngine.Engine.UI;
+using static RogerHubEngine.Engine.UI.CUI;
 
-namespace Yocto_Roger.Client.Interfaces
+namespace RogerHubEngine.Client.Interfaces
 {
 
     /// <summary>
@@ -14,7 +13,7 @@ namespace Yocto_Roger.Client.Interfaces
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
-        public void StartInterface(Parameters param)
+        public static void StartInterface(Parameters param)
         {
             bool exit = false;
             while (!exit)
@@ -60,7 +59,7 @@ namespace Yocto_Roger.Client.Interfaces
                         if (Console.ReadLine() is string input && !string.IsNullOrEmpty(input) && (File.Exists(input) || File.Exists(input + ".params")))
                         {
 
-                           
+
                         }
                         else
                             Send("Maybe file which you typed, doesn't exists or you typed not string, please recheck this 2 factors", MessageType.error);

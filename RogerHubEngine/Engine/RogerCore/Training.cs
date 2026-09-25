@@ -1,7 +1,7 @@
-﻿using Yocto_Roger.Client;
-using Yocto_Roger.Engine.UI;
+﻿using RogerHubEngine.Client;
+using RogerHubEngine.Engine.UI;
 
-namespace Yocto_Roger.Engine.RogerCore
+namespace RogerHubEngine.Engine.RogerCore
 {
     /* 
     RogerHubEgnine
