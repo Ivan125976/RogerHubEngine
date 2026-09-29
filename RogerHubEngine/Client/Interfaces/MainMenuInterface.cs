@@ -1,4 +1,7 @@
-﻿using RogerHubEngine.Engine.UI;
+﻿using RogerHubEngine.Engine.RogerCore;
+using RogerHubEngine.Engine.UI;
+
+
 using static RogerHubEngine.Client.EngineVersion;
 using static RogerHubEngine.Engine.UI.CUI;
 
@@ -8,8 +11,9 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface
+    public class MainMenuInterface(NeuralNetwork roger, Parameters param)
     {
+        public NeuralNetwork _roger = roger; //Need for initializing, do not delete this please
         /// <summary>
         /// Calling up the main menu
         /// </summary>
@@ -50,7 +54,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 3:
-                            _settingsInterface.StartInterface();
+                            SettingsInterface.StartInterface(param);
                             break;
 
                         case 4:

@@ -175,24 +175,25 @@ Internal I/O lib
         /// <summary>
         /// Transforming the values from class NeuralNetworkState to needed types, and initializing it where it needs
         /// </summary>
-        /// <param name="nN"></param>
-        /// <param name="param"></param>
-        public static void InitNeuralNetwork(NeuralNetwork Roger, Parameters param)
+        /// <param name="roger">Your object that you need to initialize</param>
+        /// <param name="mainClassLink">Your class in which roger will be initialized</param>
+        /// <param name="paramClassLink">Link to main Parameters class in which Layers from roger object will be initialized</param>
+        public static void InitNeuralNetwork(NeuralNetworkState roger, NeuralNetworkState mainClassLink, Parameters paramClassLink)
         {
             // If null - Values by default
-            nN.inputNeurons = nN?.InputNeurons;
-            nN.middleNeurons = nN?.MiddleNeurons;
-            nN.outputNeurons = nN?.OutputNeurons;
+            mainClassLink.InputNeurons = roger?.InputNeurons;
+            mainClassLink.MiddleNeurons = roger?.MiddleNeurons;
+            mainClassLink.OutputNeurons = roger?.OutputNeurons;
 
-            nN.inputWeights = nN?.InputWeights!;
-            nN.middleWeights = nN?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
-            nN.outputWeights = nN?.OutputWeights!;
+            mainClassLink.InputWeights = roger?.InputWeights!;
+            mainClassLink.MiddleWeights = roger?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
+            mainClassLink.OutputWeights = roger?.OutputWeights!;
 
             // If null - values by default
-            param.layers = nN?.Layers ?? 3;
+            paramClassLink.layers = roger?.Layers ?? 3;
 
-            nN.Mbias = nN?.Mbias;
-            nN.Obias = nN?.Obias;
+            mainClassLink.Mbias = roger?.Mbias;
+            mainClassLink.Obias = roger?.Obias;
 
         }
         /// <summary>
@@ -216,26 +217,31 @@ Internal I/O lib
         /// <summary>
         /// Fixing the neural network state
         /// </summary>
+        /// <param name="linkToMainClass">link to the main class from which parameters will be obtained.</param>
+        /// <param name="linkToParameters">link to the main class from which parameters will be obtained</param>
         /// <returns></returns>
-        public static NeuralNetworkState FixTheStateOfNeuralNetwork()
+        public static NeuralNetworkState FixTheStateOfNeuralNetwork(NeuralNetwork linkToMainClass, Parameters linkToParametersClass)
         {
+            // just fo comfort
+            var ltmc = linkToMainClass;
+            var ltp = linkToParametersClass;
             NeuralNetworkState nN = new()
             {
 
                 // If it's null, then it automatedly set to default value
-                InputNeurons = _nN?.inputNeurons!,
-                MiddleNeurons = _nN?.middleNeurons!,
-                OutputNeurons = _nN?.outputNeurons!,
+                InputNeurons = ltmc?.inputNeurons!,
+                MiddleNeurons = ltmc?.middleNeurons!,
+                OutputNeurons = ltmc?.outputNeurons!,
 
-                InputWeights = _nN?.inputWeights ?? null,
-                MiddleWeights = _nN?.middleWeights ?? null,
-                OutputWeights = _nN?.outputWeights ?? null,
+                InputWeights = ltmc?.inputWeights ?? null,
+                MiddleWeights = ltmc?.middleWeights ?? null,
+                OutputWeights = ltmc?.outputWeights ?? null,
 
                 // And here too
-                Layers = _param.layers,
+                Layers = ltp.layers,
 
-                Obias = _nN?.Obias ?? null,
-                Mbias = _nN?.Mbias ?? null
+                Obias = ltmc?.Obias ?? null,
+                Mbias = ltmc?.Mbias ?? null
             };
 
             return nN;

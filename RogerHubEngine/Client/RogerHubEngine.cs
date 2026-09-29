@@ -5,7 +5,7 @@ using static RogerHubEngine.Client.EngineVersion;
 using static RogerHubEngine.Engine.UI.CUI;
 using RogerHubEngine.Client.Interfaces;
 using RogerHubEngine.Engine.UI;
-
+using RogerHubEngine.Engine.RogerCore;
 namespace RogerHubEngine.Client
 {
 
@@ -18,13 +18,15 @@ namespace RogerHubEngine.Client
     /// <summary>
     /// Main class
     /// </summary>
-    public class RogerHubEngine
+    public class RogerHubEngine()
     {
+        //public readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
         /// <summary>
         /// A class that creates the environment and starts RogerHubEngine
         /// </summary>
         static public void Main()
         {
+
             Size ConsoleSize = new(80, 120);
 
             Console.Clear();
@@ -73,7 +75,7 @@ namespace RogerHubEngine.Client
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
             Thread.Sleep(3000);
 
-            mainMenuInterface.StartInterface();
+            (Initialization.InitClasses()).StartInterface(); // Initializing all the classes and running main menu
         }
 
         /// <summary>

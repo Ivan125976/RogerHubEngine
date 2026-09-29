@@ -6,6 +6,7 @@ using RogerHubEngine.RogerCore.UtilityTools;
 using static RogerHubEngine.RogerCore.UtilityTools.RogerMath;
 using static RogerHubEngine.Engine.UI.CUI;
 using RogerHubEngine.Engine.UI;
+using RogerHubEngine.RogerCore;
 
 namespace RogerHubEngine.Engine.RogerCore
 {
@@ -22,10 +23,11 @@ Copyright 2025-2026 Emotion Corp.
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
 
-    public class NeuralNetwork(Parameters param, IO io, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(NeuralNetworkState netState,Parameters param, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
     {
+        private readonly NeuralNetworkState _neuralNetworkState = netState;
         private readonly Parameters _param = param;
-        private readonly IO _io = io;
+        //private readonly IO _io = io;
         private readonly Training _training = training;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
         private readonly MainMenuInterface _mainMenu = mainMenu;
@@ -200,12 +202,12 @@ Copyright 2025-2026 Emotion Corp.
                         {
                             if (File.Exists(inputChecked))
                             {
-                                _io.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked));
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), _neuralNetworkState, _param);
                                 rogerIsCreated = true;
                             }
                             else if (File.Exists(inputChecked + ".roger2"))
                             {
-                                _io.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"));
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), _neuralNetworkState, _param);
                                 rogerIsCreated = true;
                             }
                         }

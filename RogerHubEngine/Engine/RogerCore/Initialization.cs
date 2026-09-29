@@ -1,5 +1,8 @@
-﻿using RogerHubEngine.RogerCore.UtilityTools;
-
+﻿using RogerHubEngine.Client;
+using RogerHubEngine.Client.Interfaces;
+using RogerHubEngine.Engine.UI;
+using RogerHubEngine.RogerCore;
+using RogerHubEngine.RogerCore.UtilityTools;
 using static RogerHubEngine.Engine.UI.CUI;
 
 namespace RogerHubEngine.Engine.RogerCore
@@ -97,6 +100,34 @@ Copyright 2025-2026 Emotion Corp.
                 Send("The weights have been successfully adjusted!");
 #endif
             }
+        }
+
+        /// <summary>
+        /// Initializing all the classes. 
+        /// </summary>
+        /// <returns> Object that has a starting main menu function</returns>
+        public static MainMenuInterface InitClasses() 
+            /*
+             * Warning!!!
+             * 
+             * This is a temporary solution, this looks like shit, so i will rewrite initialization soon, please sorry for this
+             */
+        {
+            Parameters param = new();
+            //IO io = new();
+            SettingsInterface settingsInterface = new();
+            MainMenuInterface mainMenuInterface = new(null!, param);
+            NeuralNetworkInterface neuralNetworkInterface = new(mainMenuInterface, null!, param);
+            NeuralNetworkState neuralNetworkState = new();
+            Training training = new(param, null!);
+            NeuralNetwork nN = new(neuralNetworkState, param, training, neuralNetworkInterface, mainMenuInterface);
+
+            //io._nN = nN;
+            training.roger = nN;
+            mainMenuInterface._roger = nN; 
+            neuralNetworkInterface._neuralNetwork = nN;
+
+            return mainMenuInterface;
         }
     }
 }
