@@ -113,14 +113,12 @@ Copyright 2025-2026 Emotion Corp.
              * This is a temporary solution, this looks like shit, so i will rewrite initialization soon, please sorry for this
              */
         {
-            Parameters param = new();
-            //IO io = new();
             SettingsInterface settingsInterface = new();
-            MainMenuInterface mainMenuInterface = new(null!, param);
-            NeuralNetworkInterface neuralNetworkInterface = new(mainMenuInterface, null!, param);
+            MainMenuInterface mainMenuInterface = new(null!);
+            NeuralNetworkInterface neuralNetworkInterface = new(mainMenuInterface, null!);
             NeuralNetworkState neuralNetworkState = new();
-            Training training = new(param, null!);
-            NeuralNetwork nN = new(neuralNetworkState, param, training, neuralNetworkInterface, mainMenuInterface);
+            Training training = new(null!);
+            NeuralNetwork nN = new(neuralNetworkState, training, neuralNetworkInterface, mainMenuInterface);
 
             //io._nN = nN;
             training.roger = nN;

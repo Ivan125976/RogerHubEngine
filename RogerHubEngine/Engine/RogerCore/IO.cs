@@ -29,25 +29,25 @@ Internal I/O lib
         /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
         /// </summary>
-        public static void SaveRogerToJson(string? fileName, Parameters param)
+        public static void SaveRogerToJson(string? fileName)
         {
             Roger roger = new()
             {
                 AIversion = $"{majorVersion}.{minorVersion}",
-                Passes = param.passes,
+                Passes = Parameters.passes,
 
-                KnowledgeFile = param.knowledgeFile,
+                KnowledgeFile = Parameters.knowledgeFile,
 
-                LearingRate = param.learningRate,
-                DropOutPercent = param.DropOutPercent,
+                LearingRate = Parameters.learningRate,
+                DropOutPercent = Parameters.DropOutPercent,
 
-                MiddleNeuronsCount = param.middleNeuronsCount,
+                MiddleNeuronsCount = Parameters.middleNeuronsCount,
 
-                Layers = param.layers,
+                Layers = Parameters.layers,
 
-                Rms_decay = param.rms_decay,
+                Rms_decay = Parameters.rms_decay,
 
-                Rms_enabled = param.rms_enabled
+                Rms_enabled = Parameters.rms_enabled
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -61,11 +61,11 @@ Internal I/O lib
         /// This method calls function SEND, with error, which outputs text to the console. Be careful, with this method when you will using it in your project. replace SEND call, on exception throwing
         /// </summary>
         /// <returns>Roger class object. If happened any error, for example something with null, so it's returning an empty object of class Roger</returns>
-        public static Roger? LoadRoger(Parameters param)
+        public static Roger? LoadRoger()
         {
             try
             {
-                if (LoadRogerFromJson(param) is Roger roger)
+                if (LoadRogerFromJson() is Roger roger)
                     return roger;
                 else
                     return null;
@@ -137,9 +137,9 @@ Internal I/O lib
         /// </summary>
         /// <exception cref="ArgumentNullException">This Exception throwing, when file which it parsing (params.roger2), is null or empty, meaning it's doesn't exists</exception>
         /// <exception cref="JsonException">This exception is thrown when the text cannot be serialized into json format, meaning that the file being parsed contains strange text that is not actually suitable for serialization into json.</exception>
-        private static Roger? LoadRogerFromJson(Parameters param)
+        private static Roger? LoadRogerFromJson()
         {
-            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(param.roger2));
+            Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(Parameters.roger2));
             return roger ?? null;
         }
 
@@ -178,7 +178,7 @@ Internal I/O lib
         /// <param name="roger">Your object that you need to initialize</param>
         /// <param name="mainClassLink">Your class in which roger will be initialized</param>
         /// <param name="paramClassLink">Link to main Parameters class in which Layers from roger object will be initialized</param>
-        public static void InitNeuralNetwork(NeuralNetworkState roger, NeuralNetworkState mainClassLink, Parameters paramClassLink)
+        public static void InitNeuralNetwork(NeuralNetworkState roger, NeuralNetworkState mainClassLink)
         {
             // If null - Values by default
             mainClassLink.InputNeurons = roger?.InputNeurons;
@@ -190,7 +190,7 @@ Internal I/O lib
             mainClassLink.OutputWeights = roger?.OutputWeights!;
 
             // If null - values by default
-            paramClassLink.layers = roger?.Layers ?? 3;
+            Parameters.layers = roger?.Layers ?? 3;
 
             mainClassLink.Mbias = roger?.Mbias;
             mainClassLink.Obias = roger?.Obias;
@@ -220,11 +220,10 @@ Internal I/O lib
         /// <param name="linkToMainClass">link to the main class from which parameters will be obtained.</param>
         /// <param name="linkToParameters">link to the main class from which parameters will be obtained</param>
         /// <returns></returns>
-        public static NeuralNetworkState FixTheStateOfNeuralNetwork(NeuralNetwork linkToMainClass, Parameters linkToParametersClass)
+        public static NeuralNetworkState FixTheStateOfNeuralNetwork(NeuralNetwork linkToMainClass)
         {
             // just fo comfort
             var ltmc = linkToMainClass;
-            var ltp = linkToParametersClass;
             NeuralNetworkState nN = new()
             {
 
@@ -238,7 +237,7 @@ Internal I/O lib
                 OutputWeights = ltmc?.outputWeights ?? null,
 
                 // And here too
-                Layers = ltp.layers,
+                Layers = Parameters.layers,
 
                 Obias = ltmc?.Obias ?? null,
                 Mbias = ltmc?.Mbias ?? null
@@ -263,22 +262,22 @@ Internal I/O lib
         /// Converts data (strings) from the passed object into the appropriate types and initializes the corresponding variables. If null is passed, it initializes default values.
         /// </summary>
         /// <param name="roger"></param>
-        public static void InitRogersData(Roger? roger, Parameters param)
+        public static void InitRogersData(Roger? roger)
         {
             if (roger?.AIversion == $"{majorVersion}.{minorVersion}")
             {
-                param.passes = roger?.Passes ?? 10000;
-                param.learningRate = roger?.LearingRate ?? 0.01f;
-                param.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
+                Parameters.passes = roger?.Passes ?? 10000;
+                Parameters.learningRate = roger?.LearingRate ?? 0.01f;
+                Parameters.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
 
-                param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
+                Parameters.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
 
-                param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+                Parameters.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
 
-                param.layers = roger?.Layers ?? 4;
+                Parameters.layers = roger?.Layers ?? 4;
 
-                param.rms_enabled = roger?.Rms_enabled ?? false;
-                param.rms_decay = roger?.Rms_decay ?? 0.95f;
+                Parameters.rms_enabled = roger?.Rms_enabled ?? false;
+                Parameters.rms_decay = roger?.Rms_decay ?? 0.95f;
             }
             else
                 Send($"Your settings file is intended for a different version! ({roger?.AIversion})", MessageType.error);

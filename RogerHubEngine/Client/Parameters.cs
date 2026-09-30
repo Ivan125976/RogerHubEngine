@@ -12,61 +12,61 @@ RogerHub configuration
     /// <summary>
     /// contains all RogerHubEngine parameters
     /// </summary>
-    public class Parameters
+    public static class Parameters
     {
         /// <summary>
         /// Number of passes during training on training data
         /// </summary>
-        public int passes = 10000;
+        public static int passes = 10000;
 
         /// <summary>
         /// The coefficient of change of weights and biases of the neural network.
         /// </summary>
-        public float learningRate = 0.01f;
+        public static float learningRate = 0.01f;
 
         /// <summary>
         /// The percentage of response of the built-in DropOut subsystem during neural network training
         /// </summary>
-        public float DropOutPercent = 8.0f;
+        public static float DropOutPercent = 8.0f;
 
         /// <summary>
         /// The path to the neural network's knowledge base on which it will need to be trained
         /// </summary>
-        public string knowledgeFile = string.Empty;
+        public static string knowledgeFile = string.Empty;
 
         /// <summary>
         /// The path to the finished neural network, sealed in a file
         /// </summary>
-        public string roger2 = string.Empty;
+        public static string roger2 = string.Empty;
 
         /// <summary>
         /// Number of input neurons
         /// </summary>
-        public int inputNeuronsCount = 8;
+        public static int inputNeuronsCount = 8;
 
         /// <summary>
         /// Number of middle neurons
         /// </summary>
-        public int middleNeuronsCount = 12;
+        public static int middleNeuronsCount = 12;
 
         /// <summary>
         /// Number of output neurons
         /// </summary>
-        public int outputNeuronsCount = 8;
+        public static int outputNeuronsCount = 8;
 
         /// <summary>
         /// Number of layers in a neural network
         /// </summary>
-        public int layers = 4;
+        public static int layers = 4;
 
         /// <summary>
         /// Cache Management in RMS Optimization
         /// </summary>
-        public float rms_decay = 0.95f;
+        public static float rms_decay = 0.95f;
 
         /// <summary>
         /// RMS Optimization Switch
         /// </summary>
-        public bool rms_enabled = false;
+        public static bool rms_enabled = false;
     }
 }

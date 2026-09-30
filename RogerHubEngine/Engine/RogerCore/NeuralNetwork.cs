@@ -23,10 +23,9 @@ Copyright 2025-2026 Emotion Corp.
     /// Yocto Roger Neural Network. Hello! :D
     /// </summary>
 
-    public class NeuralNetwork(NeuralNetworkState netState,Parameters param, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(NeuralNetworkState netState, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
     {
         private readonly NeuralNetworkState _neuralNetworkState = netState;
-        private readonly Parameters _param = param;
         //private readonly IO _io = io;
         private readonly Training _training = training;
         private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
@@ -91,13 +90,13 @@ Copyright 2025-2026 Emotion Corp.
             switch (mode)
             {
                 case 0:
-                    if (!File.Exists(_param.knowledgeFile))
+                    if (!File.Exists(Parameters.knowledgeFile))
                     {
                         Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
                         return;
                     }
 
-                    if (_param.rms_enabled && _param.learningRate > 0.005 && _param.layers < 6)
+                    if (Parameters.rms_enabled && Parameters.learningRate > 0.005 && Parameters.layers < 6)
                     { 
                         Send("I'm afraid the learning rate is too high for RMS", MessageType.warning);
                         Console.WriteLine("Do you want to continue? (Y/N)");
@@ -115,7 +114,7 @@ Copyright 2025-2026 Emotion Corp.
 
                     try
                     {
-                        allLines = File.ReadAllLines(_param.knowledgeFile);
+                        allLines = File.ReadAllLines(Parameters.knowledgeFile);
 
                         parsedString = allLines[0].Split(' ');
                         input = StringParse(parsedString[0], ';');
@@ -125,8 +124,8 @@ Copyright 2025-2026 Emotion Corp.
                             output[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
                         length = input.Length + output.Length;
 
-                        _param.inputNeuronsCount = input.Length;
-                        _param.outputNeuronsCount = output.Length;
+                        Parameters.inputNeuronsCount = input.Length;
+                        Parameters.outputNeuronsCount = output.Length;
                     }
                     catch (Exception)
                     {
@@ -162,18 +161,18 @@ Copyright 2025-2026 Emotion Corp.
 
                     Send("done");
                     Console.Write("Initializing memory for Roger...");
-                    inputNeurons = new int[_param.inputNeuronsCount];
-                    middleNeurons = new double[_param.layers - 2, _param.middleNeuronsCount];
-                    outputNeurons = new double[_param.outputNeuronsCount];
-                    inputWeights = new double[_param.inputNeuronsCount, _param.middleNeuronsCount];
-                    middleWeights = new double[_param.layers - 3][,];
-                    outputWeights = new double[_param.middleNeuronsCount, _param.outputNeuronsCount];
-                    Mbias = new double[_param.layers - 2, _param.middleNeuronsCount];
-                    Obias = new double[_param.outputNeuronsCount];
+                    inputNeurons = new int[Parameters.inputNeuronsCount];
+                    middleNeurons = new double[Parameters.layers - 2, Parameters.middleNeuronsCount];
+                    outputNeurons = new double[Parameters.outputNeuronsCount];
+                    inputWeights = new double[Parameters.inputNeuronsCount, Parameters.middleNeuronsCount];
+                    middleWeights = new double[Parameters.layers - 3][,];
+                    outputWeights = new double[Parameters.middleNeuronsCount, Parameters.outputNeuronsCount];
+                    Mbias = new double[Parameters.layers - 2, Parameters.middleNeuronsCount];
+                    Obias = new double[Parameters.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization weights...");
                     Initialization.Init(inputWeights);
-                    Initialization.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
+                    Initialization.CreateMiddleWeights(middleWeights, Parameters.middleNeuronsCount);
                     Initialization.Init(middleWeights);
                     Initialization.Init(outputWeights);
                     Send("done");
@@ -202,12 +201,12 @@ Copyright 2025-2026 Emotion Corp.
                         {
                             if (File.Exists(inputChecked))
                             {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), _neuralNetworkState, _param);
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), _neuralNetworkState);
                                 rogerIsCreated = true;
                             }
                             else if (File.Exists(inputChecked + ".roger2"))
                             {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), _neuralNetworkState, _param);
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), _neuralNetworkState);
                                 rogerIsCreated = true;
                             }
                         }
@@ -241,10 +240,10 @@ Copyright 2025-2026 Emotion Corp.
 #if DEBUG
             Console.WriteLine("DropOut Matrix = ");
 #endif
-            float[,] masks = new float[_param.layers - 2, _param.middleNeuronsCount];
-            float keepProb = 1.00f - _param.DropOutPercent * 0.01f;
+            float[,] masks = new float[Parameters.layers - 2, Parameters.middleNeuronsCount];
+            float keepProb = 1.00f - Parameters.DropOutPercent * 0.01f;
 
-            if (_param.DropOutPercent == 0)
+            if (Parameters.DropOutPercent == 0)
             {
                 for (int i = 0; i < masks.GetLength(0); i++)
                 {
@@ -267,7 +266,7 @@ Copyright 2025-2026 Emotion Corp.
                 {
                     for (int j = 0; j < masks.GetLength(1); j++)
                     {
-                        if (rand.NextDouble() < _param.DropOutPercent / 100.0)
+                        if (rand.NextDouble() < Parameters.DropOutPercent / 100.0)
                             masks[i, j] = 0;
                         else
                             try
@@ -409,7 +408,7 @@ Copyright 2025-2026 Emotion Corp.
 
             SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
 
-            for (int l = 0; l < _param.layers - 3; l++)
+            for (int l = 0; l < Parameters.layers - 3; l++)
                 SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
 
             SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
@@ -437,7 +436,7 @@ Copyright 2025-2026 Emotion Corp.
             for (int i = 0; i < middleNeurons.GetLength(1); i++)
                 middleNeurons[0, i] *= dropOutMatrix[0, i];
 
-            for (int l = 0; l < _param.layers - 3; l++)
+            for (int l = 0; l < Parameters.layers - 3; l++)
             {
                 SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
                 for (int j = 0; j < middleNeurons.GetLength(1); j++)
