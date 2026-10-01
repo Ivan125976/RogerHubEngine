@@ -58,7 +58,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 4:
-                            Send("This version of the engine does not yet support the RRNNs protocol :(", MessageType.error);
+                            Send("RRNNs isn't ready! :)", MessageType.error);
                             break;
 
                         case 5:
