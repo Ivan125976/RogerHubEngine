@@ -13,7 +13,7 @@ namespace RogerHubEngine.Client.Interfaces
         /// <summary>
         /// Calling up the menu for setting values ​​and saving the file
         /// </summary>
-        public static void StartInterface()
+        public static void StartInterface(Parameters param)
         {
             bool exit = false;
             while (!exit)
@@ -25,14 +25,14 @@ namespace RogerHubEngine.Client.Interfaces
                                         0. Save your roger settings in the file 
                                         1. Load your roger setting from the file
 
-                                        2. Count of middle neurons (all middle layers)...{Parameters.middleNeuronsCount}
-                                        3. Count of Layers...{Parameters.layers}
-                                        4. Knowledge file...{Parameters.knowledgeFile}
-                                        5. DropOut sys percent...{Parameters.DropOutPercent}%
-                                        6. Learning Rate...{Parameters.learningRate}
-                                        7. Passes...{Parameters.passes}
-                                        8. RMS Enabled...{Parameters.rms_enabled}
-                                        9. RMS Decay...{Parameters.rms_decay}
+                                        2. Count of middle neurons (all middle layers)...{param.middleNeuronsCount}
+                                        3. Count of Layers...{param.layers}
+                                        4. Knowledge file...{param.knowledgeFile}
+                                        5. DropOut sys percent...{param.DropOutPercent}%
+                                        6. Learning Rate...{param.learningRate}
+                                        7. Passes...{param.passes}
+                                        8. RMS Enabled...{param.rms_enabled}
+                                        9. RMS Decay...{param.rms_decay}
                                         10. Exit
                                         >>> 
                                         """);
@@ -45,7 +45,7 @@ namespace RogerHubEngine.Client.Interfaces
 
                         if (fileName != null)
                         {
-                            IO.SaveRogerToJson(fileName);
+                            IO.SaveRogerToJson(fileName, param);
 
                             Send($" Your file saved> {fileName}.params\n Press any key to continue");
                             Console.ReadKey(true);
@@ -72,7 +72,7 @@ namespace RogerHubEngine.Client.Interfaces
                         if (int.TryParse(Console.ReadLine(), out int userInputChecked2))
                         {
                             if (userInputChecked2 > 0)
-                                Parameters.middleNeuronsCount = userInputChecked2;
+                                param.middleNeuronsCount = userInputChecked2;
                             else
                                 Send("Value out of range.", MessageType.error);
                         }
@@ -85,7 +85,7 @@ namespace RogerHubEngine.Client.Interfaces
                         if (int.TryParse(Console.ReadLine(), out int layersCount))
                         {
                             if (layersCount > 2)
-                                Parameters.layers = layersCount;
+                                param.layers = layersCount;
                             else
                                 Send("Value out of range.", MessageType.error);
                         }
@@ -97,11 +97,11 @@ namespace RogerHubEngine.Client.Interfaces
                         Console.Write("STRING> Enter new knowledge file...");
                         string? file = Console.ReadLine();
                         if (File.Exists(file))
-                            Parameters.knowledgeFile = file;
+                            param.knowledgeFile = file;
                         else if (File.Exists(file + ".know"))
-                            Parameters.knowledgeFile = file + ".know";
+                            param.knowledgeFile = file + ".know";
                         else if (File.Exists(file + ".txt"))
-                            Parameters.knowledgeFile = file + ".txt";
+                            param.knowledgeFile = file + ".txt";
                         else
                             Send("I couldn't find such a file :(", MessageType.error);
                         break;
@@ -113,7 +113,7 @@ namespace RogerHubEngine.Client.Interfaces
                         if (int.TryParse(Console.ReadLine(), out int newDrop))
                         {
                             if (newDrop >= 0 && newDrop <= 70)
-                                Parameters.DropOutPercent = newDrop;
+                                param.DropOutPercent = newDrop;
                             else
                                 Send("Value out of range.", MessageType.error);
                         }
@@ -128,7 +128,7 @@ namespace RogerHubEngine.Client.Interfaces
                         if (float.TryParse(Console.ReadLine(), out float LR))
                         {
                             if (LR > 0 && LR <= 1.0)
-                                Parameters.learningRate = LR;
+                                param.learningRate = LR;
                             else
                                 Send("Learning rate out of range.", MessageType.error);
                         }
@@ -143,7 +143,7 @@ namespace RogerHubEngine.Client.Interfaces
                         if (int.TryParse(Console.ReadLine(), out int newPasses))
                         {
                             if (newPasses > 0)
-                                Parameters.passes = newPasses;
+                                param.passes = newPasses;
                             else
                                 Send("Passes must be greater than zero.", MessageType.error);
                         }
@@ -158,21 +158,21 @@ namespace RogerHubEngine.Client.Interfaces
                         Send("It is not recommended to enable this for networks with fewer than 6 layers.", MessageType.warning);
                         Console.Write("BOOL> Enter the switch value (True/False)... ");
                         if (bool.TryParse(Console.ReadLine(), out bool RMS))
-                            Parameters.rms_enabled = RMS;
+                            param.rms_enabled = RMS;
                         else
                             Send("Invalid input.", MessageType.error);
                         break;
 
                     case "9":
                         Console.Clear();
-                        if (Parameters.rms_enabled)
+                        if (param.rms_enabled)
                         {
                             Console.WriteLine("*RMS PROP DECAY OPTIMIZATION*");
                             Console.Write("DOUBLE> Enter new RMS Decay (0,9 - 0,999)... ");
                             if (float.TryParse(Console.ReadLine(), out float RMSDECAY))
                             {
                                 if (!(RMSDECAY < 0.9f || RMSDECAY > 0.999f))
-                                    Parameters.rms_decay = RMSDECAY;
+                                    param.rms_decay = RMSDECAY;
                                 else
                                     Send("Invalid input.", MessageType.error);
                             }

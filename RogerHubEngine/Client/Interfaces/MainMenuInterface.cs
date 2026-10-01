@@ -11,7 +11,7 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface(NeuralNetwork roger)
+    public class MainMenuInterface(NeuralNetwork roger, Parameters param)
     {
         public NeuralNetwork _roger = roger; //Need for initializing, do not delete this please
         /// <summary>
@@ -54,7 +54,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 3:
-                            SettingsInterface.StartInterface();
+                            SettingsInterface.StartInterface(param);
                             break;
 
                         case 4:

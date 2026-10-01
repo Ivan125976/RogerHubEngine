@@ -16,10 +16,11 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(/*IO io*/ MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork)
+    public class NeuralNetworkInterface(/*IO io*/ MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork, Parameters param)
     {
         //private readonly IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
+        private readonly Parameters _params = param;
 
         /// <summary>
         /// object of NeuralNetwork class
@@ -56,7 +57,7 @@ namespace RogerHubEngine.Client.Interfaces
 
                             if (input is string fileName && !string.IsNullOrEmpty(fileName))
                             {
-                                IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork), fileName);
+                                IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork, _params), fileName);
 #if DEBUG
                                 Thread.Sleep(1000);
                                 string data = JsonConvert.SerializeObject(
@@ -71,7 +72,7 @@ namespace RogerHubEngine.Client.Interfaces
 
                             else if (input == string.Empty)
                             {
-                                IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork));
+                                IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork, _params));
 #if DEBUG
                                 NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
                                 Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
