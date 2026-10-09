@@ -1,15 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace RogerHubEngine.Engine.UI
-/* 
-Yocto Roger ;)
-*****************
-*Emotion Corp ;)*
-*****************
-Copyright 2025-2026 Emotion Corp.
-    RogerHub UI part
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
 */
 
+using System.Runtime.CompilerServices;
+
+namespace RogerHubEngine.Engine.UI
 {
     /// <summary>
     /// Internal library for a beautiful command line
@@ -26,9 +25,11 @@ Copyright 2025-2026 Emotion Corp.
         {
             Console.ForegroundColor = color switch
             {
-                ConsoleColor.Gray or ConsoleColor.White or ConsoleColor.Yellow or ConsoleColor.DarkYellow or ConsoleColor.Cyan or ConsoleColor.Green or ConsoleColor.DarkGreen => ConsoleColor.Black,
+                ConsoleColor.Gray or ConsoleColor.White or ConsoleColor.Yellow or ConsoleColor.DarkYellow or ConsoleColor.Cyan or
+                ConsoleColor.Green or ConsoleColor.DarkGreen => ConsoleColor.Black,
                 _ => ConsoleColor.White,
             };
+
             int cursorX = Console.CursorLeft;
             int cursorY = Console.CursorTop;
 
@@ -37,15 +38,19 @@ Copyright 2025-2026 Emotion Corp.
 
             Console.Write(new string(' ', Console.WindowWidth));
 
-            Console.SetCursorPosition(0, Console.WindowHeight - 1);
-            Console.Write(leftText);
+            if (!string.IsNullOrEmpty(leftText))
+            {
+                Console.SetCursorPosition(0, Console.WindowHeight - 1);
+                Console.Write(leftText);
+            }
 
-            Console.SetCursorPosition(Console.WindowWidth - rightText.Length - 1, Console.WindowHeight - 1);
-            Console.Write(rightText);
+            if (!string.IsNullOrEmpty(rightText))
+            {
+                Console.SetCursorPosition(Console.WindowWidth - rightText.Length - 1, Console.WindowHeight - 1);
+                Console.Write(rightText);
+            }
 
             Console.SetCursorPosition(cursorX, cursorY);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
 
@@ -88,7 +93,7 @@ Copyright 2025-2026 Emotion Corp.
         }
 
         /// <summary>
-        /// For important, engine errors
+        /// For important engine errors
         /// </summary>
         /// <param name="message">Message</param>
         /// <param name="filePath">Path to file with error</param>
@@ -96,8 +101,9 @@ Copyright 2025-2026 Emotion Corp.
         /// <param name="lineNumber">Line with error</param>
         public static void InternalError(string message, [CallerMemberName] string methodName = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("[INTERNAL ERROR]");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{filePath}.{methodName}:{lineNumber}> {message}");
             Console.ResetColor();
             Console.WriteLine("Press any key to continue");

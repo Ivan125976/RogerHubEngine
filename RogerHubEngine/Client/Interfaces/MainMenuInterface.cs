@@ -1,6 +1,12 @@
-﻿using RogerHubEngine.Engine.RogerCore;
-using RogerHubEngine.Engine.UI;
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
+*/
 
+using RogerHubEngine.Engine.UI;
 
 using static RogerHubEngine.Client.EngineVersion;
 using static RogerHubEngine.Engine.UI.CUI;
@@ -11,24 +17,28 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface(NeuralNetwork roger, Parameters param)
+    public class MainMenuInterface()
     {
-        public NeuralNetwork _roger = roger; //Need for initializing, do not delete this please
         /// <summary>
         /// Calling up the main menu
         /// </summary>
-        public void StartInterface()
+        public static void StartInterface()
         {
             int i = 0;
             while (true)
             {
                 Console.Clear();
 
-                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine! v.{majorVersion}.{minorVersion}.{patchVersion} {specialName}", DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine!", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 
                 Send("This project is still in the development stage.", MessageType.warning);
+
                 if (specialName != Roadmap.R)
                     Send("This build may contain errors, as it is not a release!");
+
+#if DEBUG
+                Send("This is a DEBUG build. Good luck with the code, developer ;)");
+#endif
 
                 Console.Write("""
                     
@@ -63,7 +73,7 @@ namespace RogerHubEngine.Client.Interfaces
 
                         case 5:
                             ASCIIDraw.Logo(false);
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{majorVersion}.{minorVersion}.{patchVersion}\n" +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{engineVersion.Major}.{engineVersion.Minor}.{engineVersion.Build}\n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;

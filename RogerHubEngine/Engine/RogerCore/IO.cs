@@ -19,7 +19,7 @@ Internal I/O lib
     /// <summary>
     /// Main IO class, where contains all main function for work with salve/load
     /// </summary>
-    public class IO : IDisposable
+    public class IO
     {
         private static readonly JsonSerializerOptions options = new()
         {
@@ -33,21 +33,8 @@ Internal I/O lib
         {
             Roger roger = new()
             {
-                AIversion = $"{majorVersion}.{minorVersion}",
-                Passes = param.passes,
-
-                KnowledgeFile = param.knowledgeFile,
-
-                LearingRate = param.learningRate,
-                DropOutPercent = param.DropOutPercent,
-
-                MiddleNeuronsCount = param.middleNeuronsCount,
-
-                Layers = param.layers,
-
-                Rms_decay = param.rms_decay,
-
-                Rms_enabled = param.rms_enabled
+                EngineVersion = $"{engineVersion.Major}.{engineVersion.Minor}",
+                AIparams = param
             };
 
             string jsonData = JsonSerializer.Serialize(roger, options);
@@ -82,54 +69,17 @@ Internal I/O lib
         /// The data is stored as strings, so the data from it must be initialized using a special function InitRogersData, written specifically to avoid initializing everything manually.
         /// Please note, both when working with this class and simply when viewing it, that the absence of data is indicated by String.Empty instead of null!!!
         /// </summary>
-        public class Roger
+        public struct Roger
         {
             /// <summary>
-            /// Ai version
+            /// Engine version
             /// </summary>
-            public string? AIversion { get; set; }
+            public required string Version { get; set; }
 
             /// <summary>
-            /// Knowledge.know file
+            /// AI parameters
             /// </summary>
-            public string? KnowledgeFile { get; set; }
-            /// <summary>
-            /// Passes
-            /// </summary>
-            public int Passes { get; set; }
-
-            /// <summary>
-            /// Learning rate
-            /// </summary>
-            public float LearingRate { get; set; }
-            /// <summary>
-            /// Drop out percent
-            /// </summary>
-            public float DropOutPercent { get; set; }
-
-            /// <summary>
-            /// Middle neurons count
-            /// </summary>
-            public int MiddleNeuronsCount { get; set; }
-
-            /// <summary>
-            /// Layers
-            /// </summary>
-            public int Layers { get; set; }
-            /// <summary>
-            /// MLayers
-            /// </summary>
-            public int MLayers { get; set; }
-
-            /// <summary>
-            /// Rms_Decay. I don't know what it is, Ivan knows, asking him
-            /// </summary>
-            public float Rms_decay { get; set; }
-
-            /// <summary>
-            /// is RMS enabled
-            /// </summary>
-            public bool Rms_enabled { get; set; }
+            public required Parameters AIparams { get; set; }
         }
 
         /// <summary>
@@ -141,35 +91,6 @@ Internal I/O lib
         {
             Roger? roger = JsonSerializer.Deserialize<Roger>(File.ReadAllText(param.roger2));
             return roger ?? null;
-        }
-
-        /// <summary>
-        /// Attempts to create a file in the same directory; if such a file already exists, it adds an index of attempts until it reaches the index where there is no file with that name.
-        /// </summary>
-        /// <param name="fileName">Can be path + filename. Example: C:\Users\Noob\Desktop\roger, where roger is filename, without extension. Then file will be created in Desktop</param>
-        /// <param name="extension">File extension (without period)</param>
-        /// <exception cref="DirectoryNotFoundException">When directory, which you entered, doesn't exist</exception>
-        /// <exception cref="UnauthorizedAccessException">This exception occurs when there are insufficient rights to create files in a particular directory. For example: The program does not have administrator rights, but the path specified is C:\Windows\System32, which requires administrator rights to write to this directory. </exception>
-        /// <exception cref="IOException"></exception>
-        public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "RogerFile")
-        {
-            int index = 0;
-
-            string filenameWithIndex;
-            do
-            {
-                if (index == 0)
-                    filenameWithIndex = $"{fileName}.{extension}";
-                else
-                    filenameWithIndex = $"{fileName}{index}.{extension}";
-                index++;
-            }
-            while (File.Exists(filenameWithIndex));
-
-            FileStream fs = File.Create(filenameWithIndex);
-            fs.Close();
-
-            return filenameWithIndex;
         }
 
         /// <summary>
@@ -260,28 +181,29 @@ Internal I/O lib
         }
 
         /// <summary>
-        /// Converts data (strings) from the passed object into the appropriate types and initializes the corresponding variables. If null is passed, it initializes default values.
+        /// Converts data from the passed object into the appropriate types and initializes the corresponding variables.
         /// </summary>
         /// <param name="roger"></param>
-        public static void InitRogersData(Roger? roger, Parameters param)
+        /// <param name="param"></param>
+        public static void LoadSettingsFile(Roger roger, Parameters param)
         {
-            if (roger?.AIversion == $"{majorVersion}.{minorVersion}")
+            if (roger.Version == $"{engineVersion.Major}.{engineVersion.Minor}")
             {
-                param.passes = roger?.Passes ?? 10000;
-                param.learningRate = roger?.LearingRate ?? 0.01f;
-                param.DropOutPercent = roger?.DropOutPercent ?? 8.0f;
+                param.passes = roger.AIparams.passes;
+                param.learningRate = roger.AIparams.learningRate;
+                param.DropOutPercent = roger.AIparams.DropOutPercent;
 
-                param.knowledgeFile = roger?.KnowledgeFile ?? string.Empty;
+                param.knowledgeFile = roger.AIparams.knowledgeFile;
 
-                param.middleNeuronsCount = roger?.MiddleNeuronsCount ?? 16;
+                param.middleNeuronsCount = roger.AIparams.middleNeuronsCount;
 
-                param.layers = roger?.Layers ?? 4;
+                param.layers = roger.AIparams.layers;
 
-                param.rms_enabled = roger?.Rms_enabled ?? false;
-                param.rms_decay = roger?.Rms_decay ?? 0.95f;
+                param.rms_enabled = roger.AIparams.rms_enabled;
+                param.rms_decay = roger.AIparams.rms_decay;
             }
             else
-                Send($"Your settings file is intended for a different version! ({roger?.AIversion})", MessageType.error);
+                Send($"Your settings file is intended for a different version! ({roger.Version})", MessageType.error);
             //TODO: Функцию конвертирования
         }
 
@@ -298,10 +220,18 @@ Internal I/O lib
             else return null;
         }
 
-        public void Dispose()
+
+        /// <summary>
+        /// Splitting a string into parts using a symbol
+        /// </summary>
+        /// <param name="obj">The string to be splitted</param>
+        /// <returns></returns>
+        public static int[] StringToIntArray(string[] obj)
         {
-            //TODO: Сделать Dispose метод
-            //GC.SuppressFinalize(this);
+            int[] parsedArray = new int[obj.Length];
+            for (int i = 0; i < parsedArray.Length; i++)
+                parsedArray[i] = Convert.ToInt32(obj[i]);
+            return parsedArray;
         }
     }
 }

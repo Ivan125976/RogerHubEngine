@@ -1,36 +1,26 @@
-﻿using MemoryPack;
-using System.Globalization;
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
+*/
+
 using RogerHubEngine.Client;
-using RogerHubEngine.Client.Interfaces;
-using RogerHubEngine.RogerCore.UtilityTools;
-using static RogerHubEngine.RogerCore.UtilityTools.RogerMath;
-using static RogerHubEngine.Engine.UI.CUI;
 using RogerHubEngine.Engine.UI;
-using RogerHubEngine.RogerCore;
+using System.Diagnostics.CodeAnalysis;
+using static RogerHubEngine.Engine.UI.CUI;
+using static RogerHubEngine.RogerCore.UtilityTools.RogerMath;
 
 namespace RogerHubEngine.Engine.RogerCore
 {
-    /* 
-Yocto Roger ;)
-*****************
-*Emotion Corp ;)*
-*****************
-Copyright 2025-2026 Emotion Corp.
-    Yocto Roger 
-*/
-
     /// <summary>
-    /// Yocto Roger Neural Network. Hello! :D
+    /// Main Neural Network class
     /// </summary>
 
-    public class NeuralNetwork(NeuralNetworkState netState,Parameters param, Training training, NeuralNetworkInterface neuralNetworkInterface, MainMenuInterface mainMenu)
+    public class NeuralNetwork(Parameters param) : IDisposable
     {
-        private readonly NeuralNetworkState _neuralNetworkState = netState;
         private readonly Parameters _param = param;
-        //private readonly IO _io = io;
-        private readonly Training _training = training;
-        private readonly NeuralNetworkInterface _neuralNetworkInterface = neuralNetworkInterface;
-        private readonly MainMenuInterface _mainMenu = mainMenu;
         /// <summary>
         /// Flag indicating whether Roger has been created
         /// </summary>
@@ -80,157 +70,6 @@ Copyright 2025-2026 Emotion Corp.
         /// Array of output biases
         /// </summary>
         public double[]? Obias;
-
-        /// <summary>
-        /// Method that launches a roger
-        /// </summary>
-        /// <param name="mode">When 1 -> the neural network tries to load, when 0 -> a new neural network is created</param>
-        public void StartAI(int mode)
-        {
-            Console.WriteLine("StartAI in mode " + mode);
-            switch (mode)
-            {
-                case 0:
-                    if (!File.Exists(_param.knowledgeFile))
-                    {
-                        Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
-                        return;
-                    }
-
-                    if (_param.rms_enabled && _param.learningRate > 0.005 && _param.layers < 6)
-                    { 
-                        Send("I'm afraid the learning rate is too high for RMS", MessageType.warning);
-                        Console.WriteLine("Do you want to continue? (Y/N)");
-                        ConsoleKeyInfo key = Console.ReadKey(true);
-                        if (key.KeyChar == 'N' || key.KeyChar == 'n')
-                            _mainMenu.StartInterface();
-                    }
-
-                    Console.Write("SetUp education array and reading knowledge...");
-
-                    string[] parsedString, splitingSecond, allLines;
-                    double[] output;
-                    int[] input;
-                    int length;
-
-                    try
-                    {
-                        allLines = File.ReadAllLines(_param.knowledgeFile);
-
-                        parsedString = allLines[0].Split(' ');
-                        input = StringParse(parsedString[0], ';');
-                        splitingSecond = parsedString[1].Split(';');
-                        output = new double[splitingSecond.Length];
-                        for (int j = 0; j < splitingSecond.Length; j++)
-                            output[j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
-                        length = input.Length + output.Length;
-
-                        _param.inputNeuronsCount = input.Length;
-                        _param.outputNeuronsCount = output.Length;
-                    }
-                    catch (Exception)
-                    {
-                        Send("Your training file is corrupted or is not in our format.", MessageType.error);
-                        _mainMenu.StartInterface();
-                        return;
-                    }
-
-                    Console.CursorVisible = false;
-                    Send("Everything is ready to create Roger!");
-
-                    educationArray = new double[allLines!.Length, length];
-
-                    for (int i = 0; i < allLines.Length; i++)
-                    {
-                        parsedString = allLines[i].Split(' ');
-                        input = StringParse(parsedString[0], ';');
-                        splitingSecond = parsedString[1].Split(';');
-                        for (int j = 0; j < input.Length; j++)
-                            educationArray[i, j] = input[j];
-                        for (int j = 0; j < splitingSecond.Length; j++)
-                            output![j] = Convert.ToDouble(splitingSecond[j], CultureInfo.InvariantCulture);
-                        for (int j = 0; j < splitingSecond.Length; j++)
-                            educationArray[i, j + input.Length] = output![j];
-                    }
-
-                    for (int i = 0; i < educationArray.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < educationArray.GetLength(1); j++)
-                            Console.Write(educationArray[i, j] + " ");
-                        Console.WriteLine();
-                    }
-
-                    Send("done");
-                    Console.Write("Initializing memory for Roger...");
-                    inputNeurons = new int[_param.inputNeuronsCount];
-                    middleNeurons = new double[_param.layers - 2, _param.middleNeuronsCount];
-                    outputNeurons = new double[_param.outputNeuronsCount];
-                    inputWeights = new double[_param.inputNeuronsCount, _param.middleNeuronsCount];
-                    middleWeights = new double[_param.layers - 3][,];
-                    outputWeights = new double[_param.middleNeuronsCount, _param.outputNeuronsCount];
-                    Mbias = new double[_param.layers - 2, _param.middleNeuronsCount];
-                    Obias = new double[_param.outputNeuronsCount];
-                    Send("done");
-                    Console.Write("Initialization weights...");
-                    Initialization.Init(inputWeights);
-                    Initialization.CreateMiddleWeights(middleWeights, _param.middleNeuronsCount);
-                    Initialization.Init(middleWeights);
-                    Initialization.Init(outputWeights);
-                    Send("done");
-                    Send("Initialization complete", MessageType.message);
-                    Console.Write("Education...");
-                    DrawLine(ConsoleColor.DarkRed, "Creating your Roger, please wait :D", DateTime.Now.Date.ToString("dd/MM/yyyy"));
-                    Console.WriteLine();
-                    Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
-
-                    _training.Education(inputNeurons, middleNeurons, outputNeurons, inputWeights, middleWeights, outputWeights, Mbias, Obias, educationArray, educationStatus);
-
-                    educationStatus.Draw(100);
-                    Send("\nEducation Complete");
-
-                    Console.Write("StartAI finish");
-                    rogerIsCreated = true;
-                    break;
-
-                case 1:
-                    Console.Write("Enter an absolute path to your .roger2 file\nSTRING> ");
-                    string? userInput = Console.ReadLine();
-                    if (userInput is string inputChecked && !string.IsNullOrEmpty(userInput))
-                    {
-                        Console.WriteLine("Loading your Roger... please wait :D");
-                        try
-                        {
-                            if (File.Exists(inputChecked))
-                            {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), _neuralNetworkState, _param);
-                                rogerIsCreated = true;
-                            }
-                            else if (File.Exists(inputChecked + ".roger2"))
-                            {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), _neuralNetworkState, _param);
-                                rogerIsCreated = true;
-                            }
-                        }
-                        catch (MemoryPackSerializationException e)
-                        {
-                            Send("Error loading your roger! X( : \n", MessageType.error);
-                            Send(e.Message, MessageType.error);
-                        }
-                    }
-                    else
-                    {
-                        Send("Incorrect input (-_0)", MessageType.error);
-                        Send("Maybe file that you entered, doesn't exists, please check it and retry");
-                    }
-                    Console.Write("StartAI finish");
-                    break;
-            }
-
-            Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
-            Thread.Sleep(3000);
-            if (rogerIsCreated)
-                _neuralNetworkInterface.StartInterface();
-        }
 
         /// <summary>
         /// Generates a DropOut subsystem table
@@ -379,13 +218,12 @@ Copyright 2025-2026 Emotion Corp.
         /// <summary>
         /// Write array to input neurons
         /// </summary>
-        /// <param name="neurons"></param>
-        /// <param name="writeArray"></param>
-        public static void WriteToNN(int[] neurons, int[] writeArray)
+        /// <param name="data">Data.</param>
+        public void WriteToNN(int[] data)
         {
-            if (neurons.Length == writeArray.Length)
-                for (int i = 0; i < neurons.Length; i++)
-                    neurons[i] = writeArray[i];
+            if (inputNeurons != null && inputNeurons.Length == data.Length)
+                for (int i = 0; i < inputNeurons.Length; i++)
+                    inputNeurons[i] = data[i];
             else
                 Send("NeuralNetwork.WriteToNN>The size of the neuron array and the data array do not match, it is impossible to write data", MessageType.error);
         }
@@ -393,73 +231,95 @@ Copyright 2025-2026 Emotion Corp.
         /// <summary>
         /// Forward propogation algorithm
         /// </summary>
-        /// <param name="NNinput">Current input to the neural network</param>
-        /// <param name="inputNeurons">Input neurons array</param>
-        /// <param name="inputWeights">Input weights array</param>
-        /// <param name="middleNeurons">Middle neurons array</param>
-        /// <param name="middleWeights">Middle weights array</param>
-        /// <param name="middleBiases">Middle biases array</param>
-        /// <param name="outputNeurons">Output neurons array</param>
-        /// <param name="outputBiases">Output biases array</param>
-        /// <param name="outputWeights">Output weights array</param>
-        public void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights, double[,] middleBiases,
-            double[] outputNeurons, double[] outputBiases, double[,] outputWeights)
+        /// <param name="NN">Neural network</param>
+        /// <param name="input">User input</param>
+        public static void ForwardPropagation(NeuralNetwork NN, int[] input)
         {
-            WriteToNN(inputNeurons, NNinput);
+            if (!NN.Initialized()) return;
 
-            SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
+            NN.WriteToNN(input);
 
-            for (int l = 0; l < _param.layers - 3; l++)
-                SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
+            SumWeights(NN.inputWeights, NN.inputNeurons, NN.middleNeurons, NN.Mbias);
 
-            SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
+            for (int l = 0; l < NN.middleWeights.GetLength(1) - 1; l++)
+                SumWeights(NN.middleWeights[l], NN.middleNeurons, NN.Mbias, l);
+
+            SumWeights(NN.outputWeights, NN.middleNeurons, NN.outputNeurons, NN.Obias);
         }
 
         /// <summary>
-        /// Forward propogation algorithm for Training Mode
+        /// Forward propagation algorithm with dropout
         /// </summary>
-        /// <param name="NNinput">Current input to the neural network</param>
-        /// <param name="inputNeurons">Input neurons array</param>
-        /// <param name="inputWeights">Input weights array</param>
-        /// <param name="middleNeurons">Middle neurons array</param>
-        /// <param name="middleWeights">Middle weights array</param>
-        /// <param name="middleBiases">Middle biases array</param>
-        /// <param name="outputNeurons">Output neurons array</param>
-        /// <param name="outputBiases">Output biases array</param>
-        /// <param name="outputWeights">Output weights array</param>
+        /// <param name="NN">Neural network</param>
+        /// <param name="input">User input</param>
         /// <param name="dropOutMatrix">DropOut Matrix</param>
-        public void ForwardPropagation(int[] NNinput, int[] inputNeurons, double[,] inputWeights, double[,] middleNeurons, double[][,] middleWeights, double[,] middleBiases,
-            double[] outputNeurons, double[] outputBiases, double[,] outputWeights, float[,] dropOutMatrix)
+        public static void ForwardPropagation(NeuralNetwork NN, int[] input, float[,] dropOutMatrix)
         {
-            WriteToNN(inputNeurons, NNinput);
+            if (!NN.Initialized()) return;
 
-            SumWeights(inputWeights, inputNeurons, middleNeurons, middleBiases);
-            for (int i = 0; i < middleNeurons.GetLength(1); i++)
-                middleNeurons[0, i] *= dropOutMatrix[0, i];
+            NN.WriteToNN(input);
 
-            for (int l = 0; l < _param.layers - 3; l++)
+            SumWeights(NN.inputWeights, NN.inputNeurons, NN.middleNeurons, NN.Mbias);
+            for (int i = 0; i < NN.middleNeurons.GetLength(1); i++)
+                NN.middleNeurons[0, i] *= dropOutMatrix[0, i];
+
+            for (int l = 0; l < NN.middleWeights.GetLength(1) - 1; l++)
             {
-                SumWeights(middleWeights[l], middleNeurons, middleBiases, l);
-                for (int j = 0; j < middleNeurons.GetLength(1); j++)
-                    middleNeurons[l + 1, j] *= dropOutMatrix[l + 1, j];
+                SumWeights(NN.middleWeights[l], NN.middleNeurons, NN.Mbias, l);
+                for (int j = 0; j < NN.middleNeurons.GetLength(1); j++)
+                    NN.middleNeurons[l + 1, j] *= dropOutMatrix[l + 1, j];
             }
 
-            SumWeights(outputWeights, middleNeurons, outputNeurons, outputBiases);
+            SumWeights(NN.outputWeights, NN.middleNeurons, NN.outputNeurons, NN.Obias);
         }
 
         /// <summary>
-        /// Splitting a string into parts using a symbol
+        /// Checks whether the neural network's core variables have been created.
         /// </summary>
-        /// <param name="obj">The string to be splitted</param>
-        /// <param name="symbol">The character by which the string will be splitted</param>
-        /// <returns></returns>
-        public static int[] StringParse(string obj, char symbol)
+        /// <returns>If neural network isn't null, returns true</returns>
+        [MemberNotNullWhen(true, nameof(Mbias), nameof(Obias),
+                              nameof(inputWeights), nameof(outputWeights),
+                              nameof(middleWeights), nameof(inputNeurons),
+                              nameof(outputNeurons), nameof(middleNeurons))]
+        public bool Initialized()
         {
-            string[] strings = obj.Split(symbol);
-            int[] parsedArray = new int[strings.Length];
-            for (int i = 0; i < parsedArray.Length; i++)
-                parsedArray[i] = Convert.ToInt32(strings[i]);
-            return parsedArray;
+            return Mbias != null
+                && Obias != null
+                && inputWeights != null
+                && outputWeights != null
+                && middleWeights != null
+                && inputNeurons != null
+                && outputNeurons != null
+                && middleNeurons != null;
+        }
+
+        #region DisposeSupport
+
+        /// <summary>
+        /// Neural network disposed?
+        /// </summary>
+        public bool isDisposed = false;
+
+        /// <summary>
+        /// Dispose Neural Network
+        /// </summary>
+        public void Dispose()
+        {
+            if (isDisposed) return;
+
+            isDisposed = true;
+
+            Mbias = null;
+            Obias = null;
+            inputWeights = null;
+            outputWeights = null;
+            middleWeights = null;
+            inputNeurons = null;
+            outputNeurons = null;
+            middleNeurons = null;
+
+            GC.SuppressFinalize(this);
         }
     }
+    #endregion
 }

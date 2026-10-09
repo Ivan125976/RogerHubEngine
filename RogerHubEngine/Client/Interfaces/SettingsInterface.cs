@@ -96,12 +96,19 @@ namespace RogerHubEngine.Client.Interfaces
                         Console.WriteLine("*KNOWLEDGE PARAMETER*");
                         Console.Write("STRING> Enter new knowledge file...");
                         string? file = Console.ReadLine();
-                        if (File.Exists(file))
-                            param.knowledgeFile = file;
-                        else if (File.Exists(file + ".know"))
-                            param.knowledgeFile = file + ".know";
-                        else if (File.Exists(file + ".txt"))
-                            param.knowledgeFile = file + ".txt";
+                        if (!string.IsNullOrEmpty(file))
+                        {
+                            string? checkName;
+                            checkName = IO.FileExtensionCheck(file, ".know");
+                            if (!string.IsNullOrEmpty(checkName))
+                                param.knowledgeFile = checkName;
+                            else
+                            {
+                                checkName = IO.FileExtensionCheck(file, ".txt");
+                                if (!string.IsNullOrEmpty(checkName))
+                                    param.knowledgeFile = checkName;
+                            }
+                        }
                         else
                             Send("I couldn't find such a file :(", MessageType.error);
                         break;

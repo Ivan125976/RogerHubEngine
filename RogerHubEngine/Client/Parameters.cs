@@ -1,14 +1,13 @@
-﻿namespace RogerHubEngine.Client
-{
-    /* 
-Yocto Roger ;)
-*****************
-*Emotion Corp ;)*
-*****************
-Copyright 2025-2026 Emotion Corp.
-RogerHub configuration
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
 */
 
+namespace RogerHubEngine.Client
+{
     /// <summary>
     /// contains all RogerHubEngine parameters
     /// </summary>

@@ -1,4 +1,12 @@
-﻿namespace RogerHubEngine.Client
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
+*/
+
+namespace RogerHubEngine.Client
 {
     /// <summary>
     /// Contains immutable variables
@@ -6,64 +14,24 @@
     public class EngineVersion
     {
         /// <summary>
-        /// Major version of RogerHubEngine
+        /// Version of RogerHubEngine
         /// </summary>
-        public const char majorVersion = '2';
-
-        /// <summary>
-        /// Minor version of RogerHubEngine
-        /// </summary>
-        public const char minorVersion = '3';
-
-        /// <summary>
-        /// Patch version of RogerHubEngine
-        /// </summary>
-        public const char patchVersion = '0';
+        public static readonly Version engineVersion = new(2, 3, 0);
 
         /// <summary>
         /// Name of build
         /// </summary>
-        public const Roadmap specialName = Roadmap.D;
+        internal const Roadmap specialName = Roadmap.D;
     }
 
-    /// <summary>
-    /// Enum with name of builds
-    /// </summary>
-    public enum Roadmap
+    internal enum Roadmap
     {
-        /// <summary>
-        /// First stage: highly unstable development. It might not be working.
-        /// </summary>
         D,
-
-        /// <summary>
-        /// Second stage: highly unstable implementation
-        /// </summary>
         D2,
-
-        /// <summary>
-        /// Third stage: initial stabilization and optimization of new functionality.
-        /// </summary>
         BT,
-
-        /// <summary>
-        /// Fourth stage: subsystem improvements and rapid changes
-        /// </summary>
         CRL,
-
-        /// <summary>
-        /// Fifth stage: final adjustments and refinement of the neural network's connection with the subsystems.
-        /// </summary>
         DLT,
-
-        /// <summary>
-        /// possible builds based on stable versions with new functionality, without optimization
-        /// </summary>
         EXP,
-
-        /// <summary>
-        /// Release
-        /// </summary>
         R
     }
 }

@@ -1,9 +1,16 @@
-﻿using System.Globalization;
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
+*/
+
+using System.Globalization;
 using RogerHubEngine.RogerCore.UtilityTools;
 using MemoryPack;
 using RogerHubEngine.Engine.UI;
 using RogerHubEngine.Engine.RogerCore;
-using RogerHubEngine.RogerCore;
 
 #if DEBUG
 using Newtonsoft.Json;
@@ -16,9 +23,8 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(/*IO io*/ MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork, Parameters param)
+    public class NeuralNetworkInterface(MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork, Parameters param)
     {
-        //private readonly IO _io = io;
         private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
         private readonly Parameters _params = param;
 
@@ -30,7 +36,7 @@ namespace RogerHubEngine.Client.Interfaces
         /// <summary>
         /// Calling up the NeuralNetwork manual interface
         /// </summary>
-        public void StartInterface()
+        public static void StartInterface()
         {
             Console.CursorVisible = true;
 
