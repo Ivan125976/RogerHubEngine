@@ -6,6 +6,7 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using RogerHubEngine.Engine.RogerCore;
 using RogerHubEngine.Engine.UI;
 
 using static RogerHubEngine.Client.EngineVersion;
@@ -17,12 +18,12 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// MainMenu interface
     /// </summary>
-    public class MainMenuInterface()
+    public static class MainMenuInterface
     {
         /// <summary>
         /// Calling up the main menu
         /// </summary>
-        public static void StartInterface()
+        public static void StartInterface(Parameters param, NeuralNetwork NN)
         {
             int i = 0;
             while (true)
@@ -56,11 +57,11 @@ namespace RogerHubEngine.Client.Interfaces
                     {
                         case 1:
                             Console.WriteLine("Starting Roger...");
-                            _roger.StartAI(0);
+                            CreateNeuralNetworkInterface.StartAI(0, param, NN);
                             break;
 
                         case 2:
-                            _roger.StartAI(1);
+                            CreateNeuralNetworkInterface.StartAI(1, param, NN);
                             break;
 
                         case 3:

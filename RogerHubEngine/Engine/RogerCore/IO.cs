@@ -27,13 +27,42 @@ Internal I/O lib
         };
 
         /// <summary>
+        /// Attempts to create a file in the same directory; if such a file already exists, it adds an index of attempts until it reaches the index where there is no file with that name.
+        /// </summary>
+        /// <param name="fileName">Can be path + filename. Example: C:\Users\Noob\Desktop\roger, where roger is filename, without extension. Then file will be created in Desktop</param>
+        /// <param name="extension">File extension (without period)</param>
+        /// <exception cref="DirectoryNotFoundException">When directory, which you entered, doesn't exist</exception>
+        /// <exception cref="UnauthorizedAccessException">This exception occurs when there are insufficient rights to create files in a particular directory. For example: The program does not have administrator rights, but the path specified is C:\Windows\System32, which requires administrator rights to write to this directory. </exception>
+        /// <exception cref="IOException"></exception>
+        public static string MakeFileSplitOnIndexIfExists(string extension, string? fileName = "RogerFile")
+        {
+            int index = 0;
+
+            string filenameWithIndex;
+            do
+            {
+                if (index == 0)
+                    filenameWithIndex = $"{fileName}.{extension}";
+                else
+                    filenameWithIndex = $"{fileName}{index}.{extension}";
+                index++;
+            }
+            while (File.Exists(filenameWithIndex));
+
+            FileStream fs = File.Create(filenameWithIndex);
+            fs.Close();
+
+            return filenameWithIndex;
+        }
+
+        /// <summary>
         /// Saving the current Roger settings in the json file, which creating automatedly
         /// </summary>
         public static void SaveRogerToJson(string? fileName, Parameters param)
         {
             Roger roger = new()
             {
-                EngineVersion = $"{engineVersion.Major}.{engineVersion.Minor}",
+                Version = $"{engineVersion.Major}.{engineVersion.Minor}",
                 AIparams = param
             };
 
@@ -99,19 +128,19 @@ Internal I/O lib
         /// <param name="roger">Your object that you need to initialize</param>
         /// <param name="mainClassLink">Your class in which roger will be initialized</param>
         /// <param name="paramClassLink">Link to main Parameters class in which Layers from roger object will be initialized</param>
-        public static void InitNeuralNetwork(NeuralNetworkState roger, NeuralNetworkState mainClassLink, Parameters paramClassLink)
+        public static void InitNeuralNetwork(NeuralNetwork roger, NeuralNetwork mainClassLink, Parameters paramClassLink)
         {
             // If null - Values by default
-            mainClassLink.InputNeurons = roger?.InputNeurons;
-            mainClassLink.MiddleNeurons = roger?.MiddleNeurons;
-            mainClassLink.OutputNeurons = roger?.OutputNeurons;
+            mainClassLink.inputNeurons = roger?.inputNeurons;
+            mainClassLink.middleNeurons = roger?.middleNeurons;
+            mainClassLink.outputNeurons = roger?.outputNeurons;
 
-            mainClassLink.InputWeights = roger?.InputWeights!;
-            mainClassLink.MiddleWeights = roger?.MiddleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
-            mainClassLink.OutputWeights = roger?.OutputWeights!;
+            mainClassLink.inputWeights = roger?.inputWeights!;
+            mainClassLink.middleWeights = roger?.middleWeights ?? null; // Can be null and more likely, will be null anyway, i guess
+            mainClassLink.outputWeights = roger?.outputWeights!;
 
             // If null - values by default
-            paramClassLink.layers = roger?.Layers ?? 3;
+            //paramClassLink.layers = roger?.Layers ?? 3;
 
             mainClassLink.Mbias = roger?.Mbias;
             mainClassLink.Obias = roger?.Obias;
@@ -126,7 +155,7 @@ Internal I/O lib
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="MemoryPackSerializationException"></exception>
-        public static void SaveNeuralNetworkStateToBin(NeuralNetworkState nN, string fileName = "RogerFile")
+        public static void SaveNeuralNetworkStateToBin(NeuralNetwork nN, string fileName = "RogerFile")
         {
 
             byte[] binData = MemoryPackSerializer.Serialize(nN);
@@ -141,25 +170,25 @@ Internal I/O lib
         /// <param name="linkToMainClass">link to the main class from which parameters will be obtained.</param>
         /// <param name="linkToParameters">link to the main class from which parameters will be obtained</param>
         /// <returns></returns>
-        public static NeuralNetworkState FixTheStateOfNeuralNetwork(NeuralNetwork linkToMainClass, Parameters linkToParametersClass)
+        public static NeuralNetwork FixTheStateOfNeuralNetwork(NeuralNetwork linkToMainClass, Parameters linkToParametersClass)
         {
             // just fo comfort
             var ltmc = linkToMainClass;
             var ltp = linkToParametersClass;
-            NeuralNetworkState nN = new()
+            NeuralNetwork nN = new(ltp)
             {
 
                 // If it's null, then it automatedly set to default value
-                InputNeurons = ltmc?.inputNeurons!,
-                MiddleNeurons = ltmc?.middleNeurons!,
-                OutputNeurons = ltmc?.outputNeurons!,
+                inputNeurons = ltmc?.inputNeurons!,
+                middleNeurons = ltmc?.middleNeurons!,
+                outputNeurons = ltmc?.outputNeurons!,
 
-                InputWeights = ltmc?.inputWeights ?? null,
-                MiddleWeights = ltmc?.middleWeights ?? null,
-                OutputWeights = ltmc?.outputWeights ?? null,
+                inputWeights = ltmc?.inputWeights ?? null,
+                middleWeights = ltmc?.middleWeights ?? null,
+                outputWeights = ltmc?.outputWeights ?? null,
 
                 // And here too
-                Layers = ltp.layers,
+                //layers = ltp.layers,
 
                 Obias = ltmc?.Obias ?? null,
                 Mbias = ltmc?.Mbias ?? null
@@ -173,9 +202,9 @@ Internal I/O lib
         /// </summary>
         /// <param name="absolute_path">Absolute path to the file</param>
         /// <returns></returns>
-        public static NeuralNetworkState? LoadNeuralNetworkStateFromBin(string absolute_path)
+        public static NeuralNetwork? LoadNeuralNetworkStateFromBin(string absolute_path)
         {
-            NeuralNetworkState? nNState = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(absolute_path));
+            NeuralNetwork? nNState = MemoryPackSerializer.Deserialize<NeuralNetwork>(File.ReadAllBytes(absolute_path));
 
             return nNState;
         }

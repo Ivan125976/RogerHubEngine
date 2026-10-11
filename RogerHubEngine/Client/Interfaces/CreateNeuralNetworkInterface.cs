@@ -6,6 +6,7 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using MemoryPack;
 using RogerHubEngine.Engine.RogerCore;
 using RogerHubEngine.Engine.UI;
 using System.Globalization;
@@ -131,12 +132,12 @@ namespace RogerHubEngine.Client.Interfaces
                         {
                             if (File.Exists(inputChecked))
                             {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), _neuralNetworkState, param);
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked), NN, param);
                                 NN.rogerIsCreated = true;
                             }
                             else if (File.Exists(inputChecked + ".roger2"))
                             {
-                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), _neuralNetworkState, param);
+                                IO.InitNeuralNetwork(IO.LoadNeuralNetworkStateFromBin(inputChecked + ".roger2"), NN, param);
                                 NN.rogerIsCreated = true;
                             }
                         }
@@ -158,7 +159,7 @@ namespace RogerHubEngine.Client.Interfaces
             Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
             Thread.Sleep(3000);
             if (NN.rogerIsCreated)
-                _neuralNetworkInterface.StartInterface();
+                NeuralNetworkInterface.StartInterface(NN, param);
         }
     }
 }

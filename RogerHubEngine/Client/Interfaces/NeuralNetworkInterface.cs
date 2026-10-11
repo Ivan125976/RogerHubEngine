@@ -23,20 +23,17 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(MainMenuInterface mainMenuInterface, NeuralNetwork neuralNetwork, Parameters param)
+    public class NeuralNetworkInterface(NeuralNetwork neuralNetwork, Parameters param)
     {
-        private readonly MainMenuInterface _mainMenuInterface = mainMenuInterface;
-        private readonly Parameters _params = param;
-
+        //private readonly Parameters _params = param;
         /// <summary>
         /// object of NeuralNetwork class
         /// </summary>
-        public NeuralNetwork _neuralNetwork = neuralNetwork;
-
+        //private readonly NeuralNetwork _neuralNetwork = neuralNetwork;
         /// <summary>
         /// Calling up the NeuralNetwork manual interface
         /// </summary>
-        public static void StartInterface()
+        public static void StartInterface(NeuralNetwork? _neuralNetwork, Parameters _params)
         {
             Console.CursorVisible = true;
 
@@ -52,7 +49,7 @@ namespace RogerHubEngine.Client.Interfaces
                 if (!string.IsNullOrEmpty(userInputString))
                 {
                     if (userInputString == "exit")
-                        _mainMenuInterface.StartInterface();
+                        MainMenuInterface.StartInterface(_params, _neuralNetwork);
                     else if (userInputString == "save")
                     {
                         Console.Write("Please, enter the name of the file without extenshion: ");
@@ -104,8 +101,9 @@ namespace RogerHubEngine.Client.Interfaces
                             int[] userInput = new int[_neuralNetwork.inputNeurons.Length];
                             for (int i = 0; i < userInput.Length; i++)
                                 userInput[i] = Convert.ToInt32(userInputChecked[i], CultureInfo.InvariantCulture);
-                            _neuralNetwork?.ForwardPropagation(userInput, _neuralNetwork.inputNeurons!, _neuralNetwork.inputWeights!, _neuralNetwork.middleNeurons!,
-                                _neuralNetwork.middleWeights!, _neuralNetwork.Mbias!, _neuralNetwork.outputNeurons!, _neuralNetwork.Obias!, _neuralNetwork.outputWeights!);
+
+                            NeuralNetwork.ForwardPropagation(_neuralNetwork, userInput);
+
                             Console.Write("Output>>>");
                             for (int i = 0; i < _neuralNetwork?.outputNeurons?.Length; i++)
                                 Console.Write(_neuralNetwork.outputNeurons?[i] + " ");

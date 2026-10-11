@@ -118,7 +118,7 @@ namespace RogerHubEngine.Engine.RogerCore
                     float[,] dropOut = NN.GenerateDropOut();
 
                     //forward propagation
-                    NN.ForwardPropagation(NN, input, dropOut);
+                    NeuralNetwork.ForwardPropagation(NN, input, dropOut);
 
                     for (int l = 0; l < NN.outputNeurons.Length; l++)
                         output[l] = NN.educationArray[i, l + NN.inputNeurons.Length];

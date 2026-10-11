@@ -1,4 +1,7 @@
-﻿using static RogerHubEngine.Client.EngineVersion;
+﻿using RogerHubEngine.Client;
+using RogerHubEngine.Client.Interfaces;
+using RogerHubEngine.Engine.RogerCore;
+using static RogerHubEngine.Client.EngineVersion;
 
 namespace RogerHubEngine.Engine.UI
 {
@@ -13,7 +16,7 @@ namespace RogerHubEngine.Engine.UI
                     | |__) |___   __ _  ___ _ __| |__| |_   _| |__ | |__   _ __   __ _ _ _ __   ___ 
                     |  _  // _ \ / _` |/ _ \ '__|  __  | | | | '_ \|  __| | '_ \ / _` | | '_ \ / _ \
                     | | \ \ (_) | (_| |  __/ |  | |  | | |_| | |_) | |____| | | | (_| | | | | |  __/
-                    |_|  \_\___/ \__, |\___|_|  |_|  |_|\__,_|_.__/|______|_| |_|\__, |_|_| |_|\___| V{majorVersion}.{minorVersion} {specialName}
+                    |_|  \_\___/ \__, |\___|_|  |_|  |_|\__,_|_.__/|______|_| |_|\__, |_|_| |_|\___| V{engineVersion} {specialName}
                                   __/ |                                           __/ |             
                                  |___/                                           |___/        
                     """);
