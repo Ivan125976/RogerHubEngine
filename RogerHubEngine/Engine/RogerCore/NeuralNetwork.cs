@@ -10,7 +10,7 @@ using RogerHubEngine.Client;
 using RogerHubEngine.Engine.UI;
 using System.Diagnostics.CodeAnalysis;
 using static RogerHubEngine.Engine.UI.CUI;
-using static RogerHubEngine.RogerCore.UtilityTools.RogerMath;
+using static RogerHubEngine.RogerCore.Utils.RogerMath;
 
 namespace RogerHubEngine.Engine.RogerCore
 {
@@ -18,7 +18,7 @@ namespace RogerHubEngine.Engine.RogerCore
     /// Main Neural Network class
     /// </summary>
 
-    public class NeuralNetwork(Parameters param) : IDisposable
+    public sealed class NeuralNetwork(Parameters param) : IDisposable
     {
         private readonly Parameters _param = param;
         /// <summary>
@@ -77,27 +77,16 @@ namespace RogerHubEngine.Engine.RogerCore
         /// <returns></returns>
         public float[,] GenerateDropOut()
         {
-#if DEBUG
-            Console.WriteLine("DropOut Matrix = ");
-#endif
+            ObjectDisposedException.ThrowIf(_disposed, this);
+
             float[,] masks = new float[_param.layers - 2, _param.middleNeuronsCount];
             float keepProb = 1.00f - _param.DropOutPercent * 0.01f;
 
             if (_param.DropOutPercent == 0)
             {
                 for (int i = 0; i < masks.GetLength(0); i++)
-                {
                     for (int j = 0; j < masks.GetLength(1); j++)
-                    {
                         masks[i, j] = 1.0f;
-#if DEBUG
-                        Console.Write(masks[i, j] + " ");
-#endif
-                    }
-#if DEBUG
-                    Console.WriteLine();
-#endif
-                }
                 return masks;
             }
             else
@@ -117,13 +106,7 @@ namespace RogerHubEngine.Engine.RogerCore
                             {
                                 InternalError("Division by zero. The dropout rate cannot be 100.");
                             }
-#if DEBUG
-                        Console.Write(masks[i, j] + " ");
-#endif
                     }
-#if DEBUG
-                    Console.WriteLine();
-#endif
                 }
             }
             return masks;
@@ -221,6 +204,8 @@ namespace RogerHubEngine.Engine.RogerCore
         /// <param name="data">Data.</param>
         public void WriteToNN(int[] data)
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+
             if (inputNeurons != null && inputNeurons.Length == data.Length)
                 for (int i = 0; i < inputNeurons.Length; i++)
                     inputNeurons[i] = data[i];
@@ -290,24 +275,32 @@ namespace RogerHubEngine.Engine.RogerCore
                 && middleWeights != null
                 && inputNeurons != null
                 && outputNeurons != null
-                && middleNeurons != null;
+                && middleNeurons != null
+                && !IsDisposed;
         }
 
+        /// <summary>
+        /// Destroys all neural network data from memory and returns resources to the system
+        /// </summary>
+        public static void UnloadNeuralNetwork() => GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
+
         #region DisposeSupport
+
+        private bool _disposed;
 
         /// <summary>
         /// Neural network disposed?
         /// </summary>
-        public bool isDisposed = false;
+        public bool IsDisposed => _disposed;
 
         /// <summary>
         /// Dispose Neural Network
         /// </summary>
         public void Dispose()
         {
-            if (isDisposed) return;
+            if (IsDisposed) return;
 
-            isDisposed = true;
+            _disposed = true;
 
             Mbias = null;
             Obias = null;
@@ -317,9 +310,8 @@ namespace RogerHubEngine.Engine.RogerCore
             inputNeurons = null;
             outputNeurons = null;
             middleNeurons = null;
-
-            GC.SuppressFinalize(this);
+            educationArray = null;
         }
+        #endregion
     }
-    #endregion
 }

@@ -10,6 +10,7 @@ using System.Drawing;
 
 namespace RogerHubEngine.Client
 {
+
     internal class ConsoleManager
     {
         public static ConsoleColor defaultBackgroundColor = ConsoleColor.Black;
@@ -17,13 +18,7 @@ namespace RogerHubEngine.Client
 
         public static void ResizeConsole(int width, int height)
         {
-            if (OperatingSystem.IsWindows())
-            {
-                Console.SetBufferSize(width, height);
-                Console.SetWindowSize(width, height);
-            }
-            else
-                Console.Write($"\x1b[8;{height};{width}t");
+            Console.Write($"\x1b[8;{height};{width}t");
         }
 
         public static void ResizeConsole(Size consoleSize)
@@ -31,13 +26,7 @@ namespace RogerHubEngine.Client
             int width = consoleSize.Width;
             int height = consoleSize.Height;
 
-            if (OperatingSystem.IsWindows())
-            {
-                Console.SetBufferSize(width, height);
-                Console.SetWindowSize(width, height);
-            }
-            else
-                Console.Write($"\x1b[8;{height};{width}t");
+            Console.Write($"\x1b[8;{height};{width}t");
         }
 
         public static void ResetColor()

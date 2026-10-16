@@ -6,6 +6,7 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using RogerHubEngine.Client.Interfaces;
 using RogerHubEngine.Engine.UI;
 using System.Drawing;
 using System.Text;
@@ -24,7 +25,7 @@ namespace RogerHubEngine.Client
         /// </summary>
         static public void Main()
         {
-            Size ConsoleSize = new(80, 120);
+            Size ConsoleSize = new(120, 40);
 
             Console.Clear();
             ASCIIDraw.Logo(true);
@@ -39,6 +40,8 @@ namespace RogerHubEngine.Client
 
             DrawLine(ConsoleColor.Magenta, "Emotion ;) 2025-2026", "Roger :D");
             Thread.Sleep(3000);
+
+            MainMenuInterface.StartInterface();
         }
     }
 }

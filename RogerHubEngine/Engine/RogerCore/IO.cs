@@ -249,6 +249,13 @@ Internal I/O lib
             else return null;
         }
 
+        /// <summary>
+        /// Splits a string using the specified character.
+        /// </summary>
+        /// <param name="input">Input string.</param>
+        /// <param name="splitChar">The character that will divide the string</param>
+        /// <returns></returns>
+        public static string[] SplitString(string input, char splitChar) => input.Split(splitChar);
 
         /// <summary>
         /// Splitting a string into parts using a symbol

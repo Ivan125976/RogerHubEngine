@@ -7,14 +7,9 @@
 */
 
 using System.Globalization;
-using RogerHubEngine.RogerCore.UtilityTools;
-using MemoryPack;
+using RogerHubEngine.RogerCore.Utils;
 using RogerHubEngine.Engine.UI;
 using RogerHubEngine.Engine.RogerCore;
-
-#if DEBUG
-using Newtonsoft.Json;
-#endif
 
 using static RogerHubEngine.Engine.UI.CUI;
 
@@ -23,13 +18,8 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface(NeuralNetwork neuralNetwork, Parameters param)
+    public class NeuralNetworkInterface()
     {
-        //private readonly Parameters _params = param;
-        /// <summary>
-        /// object of NeuralNetwork class
-        /// </summary>
-        //private readonly NeuralNetwork _neuralNetwork = neuralNetwork;
         /// <summary>
         /// Calling up the NeuralNetwork manual interface
         /// </summary>
@@ -49,7 +39,7 @@ namespace RogerHubEngine.Client.Interfaces
                 if (!string.IsNullOrEmpty(userInputString))
                 {
                     if (userInputString == "exit")
-                        MainMenuInterface.StartInterface(_params, _neuralNetwork);
+                        MainMenuInterface.StartInterface();
                     else if (userInputString == "save")
                     {
                         Console.Write("Please, enter the name of the file without extenshion: ");
@@ -59,38 +49,16 @@ namespace RogerHubEngine.Client.Interfaces
                             string input = Console.ReadLine() ?? string.Empty;
 
                             if (input is string fileName && !string.IsNullOrEmpty(fileName))
-                            {
                                 IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork, _params), fileName);
-#if DEBUG
-                                Thread.Sleep(1000);
-                                string data = JsonConvert.SerializeObject(
-                                    MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(fileName)),
-                                    Formatting.Indented);
-
-                                Console.WriteLine($"Saved data is: {data}");
-                                Console.WriteLine("Enter any button to continue");
-                                Console.ReadLine();
-#endif
-                            }
 
                             else if (input == string.Empty)
-                            {
                                 IO.SaveNeuralNetworkStateToBin(IO.FixTheStateOfNeuralNetwork(_neuralNetwork, _params));
-#if DEBUG
-                                NeuralNetworkState data = MemoryPackSerializer.Deserialize<NeuralNetworkState>(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "NeuralNetworkState.roger2")))!;
-                                Console.WriteLine($"Saved data (in json) is: \n{JsonConvert.SerializeObject(data, Formatting.Indented)});");
-                                Console.WriteLine("Enter any button to continue");
-                                Console.ReadLine();
-#endif
-                            }
                             else
                                 Send("Incorrect input (-_0)", MessageType.error);
                         }
                         catch (Exception e)
                         {
-                            Send("Somethin' wrong with me, here's my exception: ", MessageType.error);
-                            Console.WriteLine($"Error: {e}", ConsoleColor.Red);
-                            Thread.Sleep(5000);
+                            InternalError($"{e}");
                         }
                     }
                     else if (RogerMath.CleanInput(userInputString, out string cleanedUserInputString))

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace RogerHubEngine.RogerCore.UtilityTools
+namespace RogerHubEngine.RogerCore.Utils
 {
     /* 
 Yocto Roger ;)

@@ -23,8 +23,10 @@ namespace RogerHubEngine.Client.Interfaces
         /// <summary>
         /// Calling up the main menu
         /// </summary>
-        public static void StartInterface(Parameters param, NeuralNetwork NN)
+        public static void StartInterface()
         {
+            Parameters parameters = new();
+
             int i = 0;
             while (true)
             {
@@ -57,15 +59,15 @@ namespace RogerHubEngine.Client.Interfaces
                     {
                         case 1:
                             Console.WriteLine("Starting Roger...");
-                            CreateNeuralNetworkInterface.StartAI(0, param, NN);
+                            CreateNeuralNetworkInterface.StartAI(0, parameters);
                             break;
 
                         case 2:
-                            CreateNeuralNetworkInterface.StartAI(1, param, NN);
+                            CreateNeuralNetworkInterface.StartAI(1, parameters);
                             break;
 
                         case 3:
-                            SettingsInterface.StartInterface(param);
+                            SettingsInterface.StartInterface(parameters);
                             break;
 
                         case 4:

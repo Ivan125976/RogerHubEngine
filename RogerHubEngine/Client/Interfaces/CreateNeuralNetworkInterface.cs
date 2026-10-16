@@ -16,8 +16,10 @@ namespace RogerHubEngine.Client.Interfaces
 {
     internal class CreateNeuralNetworkInterface
     {
-        public static void StartAI(int mode, Parameters param, NeuralNetwork NN)
+        public static void StartAI(int mode, Parameters param)
         {
+            NeuralNetwork NN = new(param);
+
             Console.WriteLine("StartAI in mode " + mode);
             switch (mode)
             {
@@ -49,7 +51,7 @@ namespace RogerHubEngine.Client.Interfaces
                         allLines = File.ReadAllLines(param.knowledgeFile);
 
                         parsedString = allLines[0].Split(' ');
-                        input = IO.SplitString(parsedString[0], ';');
+                        input = IO.StringToIntArray(IO.SplitString(parsedString[0], ';'));
                         splitingSecond = parsedString[1].Split(';');
                         output = new double[splitingSecond.Length];
                         for (int j = 0; j < splitingSecond.Length; j++)
@@ -73,7 +75,7 @@ namespace RogerHubEngine.Client.Interfaces
                     for (int i = 0; i < allLines.Length; i++)
                     {
                         parsedString = allLines[i].Split(' ');
-                        input = IO.SplitString(parsedString[0], ';');
+                        input = IO.StringToIntArray(IO.SplitString(parsedString[0], ';'));
                         splitingSecond = parsedString[1].Split(';');
                         for (int j = 0; j < input.Length; j++)
                             NN.educationArray[i, j] = input[j];
