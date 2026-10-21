@@ -10,7 +10,6 @@ using System.Drawing;
 
 namespace RogerHubEngine.Client
 {
-
     internal class ConsoleManager
     {
         public static ConsoleColor defaultBackgroundColor = ConsoleColor.Black;

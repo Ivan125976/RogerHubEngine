@@ -6,6 +6,7 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using RogerHubEngine.Client;
 using System.Runtime.CompilerServices;
 
 namespace RogerHubEngine.Engine.UI
@@ -77,6 +78,7 @@ namespace RogerHubEngine.Engine.UI
                     break;
 
                 case MessageType.warning:
+                    Console.BackgroundColor = ConsoleManager.defaultBackgroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("WARNING>" + message);
                     Console.ResetColor();

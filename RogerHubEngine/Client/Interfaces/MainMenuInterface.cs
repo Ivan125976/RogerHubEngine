@@ -30,6 +30,7 @@ namespace RogerHubEngine.Client.Interfaces
             int i = 0;
             while (true)
             {
+                ConsoleManager.ResetColor();
                 Console.Clear();
 
                 DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine!", DateTime.Now.Date.ToString("dd/MM/yyyy"));
