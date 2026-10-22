@@ -51,6 +51,7 @@ namespace RogerHubEngine.Engine.UI
                 Console.Write(rightText);
             }
 
+            ConsoleManager.ResetColor();
             Console.SetCursorPosition(cursorX, cursorY);
         }
 
@@ -68,26 +69,25 @@ namespace RogerHubEngine.Engine.UI
                 case MessageType.note:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(message);
-                    Console.ResetColor();
+                    ConsoleManager.ResetColor();
                     break;
 
                 case MessageType.message:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(message + "\n");
-                    Console.ResetColor();
+                    ConsoleManager.ResetColor();
                     break;
 
                 case MessageType.warning:
-                    Console.BackgroundColor = ConsoleManager.defaultBackgroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("WARNING>" + message);
-                    Console.ResetColor();
+                    ConsoleManager.ResetColor();
                     break;
 
                 case MessageType.error:
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR>" + message);
-                    Console.ResetColor();
+                    ConsoleManager.ResetColor();
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey(true);
                     break;
@@ -107,7 +107,7 @@ namespace RogerHubEngine.Engine.UI
             Console.WriteLine("[INTERNAL ERROR]");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{filePath}.{methodName}:{lineNumber}> {message}");
-            Console.ResetColor();
+            ConsoleManager.ResetColor();
             Console.WriteLine("Press any key to continue");
             Console.ReadKey(true);
         }
