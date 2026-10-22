@@ -6,6 +6,7 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using RogerHubEngine.Desktop.Resources;
 using RogerHubEngine.Engine.RogerCore;
 using RogerHubEngine.Engine.UI;
 
@@ -76,7 +77,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 5:
-                            ASCIIDraw.Logo(false);
+                            Console.Write(Resource.GetTextResource("RogerLogo1.txt") + '\n');
                             Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{engineVersion.Major}.{engineVersion.Minor}.{engineVersion.Build}\n" +
                                 " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();

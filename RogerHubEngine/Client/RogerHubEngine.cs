@@ -7,7 +7,7 @@
 */
 
 using RogerHubEngine.Client.Interfaces;
-using RogerHubEngine.Engine.UI;
+using RogerHubEngine.Desktop.Resources;
 using System.Drawing;
 using System.Text;
 using static RogerHubEngine.Client.EngineVersion;
@@ -28,7 +28,10 @@ namespace RogerHubEngine.Client
             Size ConsoleSize = new(120, 40);
 
             Console.Clear();
-            ASCIIDraw.Logo(true);
+
+            Resource.ResourcePath = "RogerHubEngine.Resources";
+            Console.Write(Resource.GetTextResource("RogerLogo2.txt") + '\n');
+
             Console.WriteLine("Creating a software environment...");
 
             ConsoleManager.ResizeConsole(ConsoleSize);
