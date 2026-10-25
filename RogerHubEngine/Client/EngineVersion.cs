@@ -19,6 +19,11 @@ namespace RogerHubEngine.Client
         public static readonly Version engineVersion = new(2, 3, 0);
 
         /// <summary>
+        /// Version of Robot Realtime Neural Network system Compilator
+        /// </summary>
+        public static readonly Version RRNNSCompilatorVersion = new(0, 0, 1);
+
+        /// <summary>
         /// Name of build
         /// </summary>
         internal const Roadmap specialName = Roadmap.D;

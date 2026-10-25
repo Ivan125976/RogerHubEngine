@@ -50,7 +50,7 @@ namespace RogerHubEngine.Client.Interfaces
                     1. Start Roger in training mode
                     2. Load your roger (neural network) from the file
                     3. Options for training mode...
-                    4. RRNNs settings...
+                    4. RRNNs Compilator...
                     5. About...
                     6. Exit from RogerHub 
                     >>> 
@@ -73,13 +73,14 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 4:
-                            Send("RRNNs isn't ready! :)", MessageType.error);
+                            RRNNsInterface.StartInterface();
                             break;
 
                         case 5:
                             Console.Write(Resource.GetTextResource("RogerLogo1.txt") + '\n');
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling \n\n RogerHubEngine v.{engineVersion.Major}.{engineVersion.Minor}.{engineVersion.Build}\n" +
-                                " RogerCore v2.2 \n RRNNs isn't ready \n OpenRB isn't ready \n\n Press any key to continue ");
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling " +
+                                $"\n\n RogerHubEngine v{engineVersion.Major}.{engineVersion.Minor}.{engineVersion.Build}\n" +
+                                    $" RRNNs v{RRNNSCompilatorVersion.Major}.{RRNNSCompilatorVersion.Minor}.{RRNNSCompilatorVersion.Build} \n OpenRB isn't ready \n\n Press any key to continue ");
                             Console.ReadKey();
                             break;
 

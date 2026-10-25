@@ -33,5 +33,11 @@ namespace RogerHubEngine.Client
             Console.BackgroundColor = defaultBackgroundColor;
             Console.ForegroundColor = defaultForegroundColor;
         }
+
+        public static void Clear()
+        {
+            Console.ResetColor();
+            Console.Clear();
+        }
     }
 }
