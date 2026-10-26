@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 namespace RogerHubEngine.Engine.UI
 {
     /// <summary>
-    /// Internal library for a beautiful command line
+    /// Public library for a beautiful console
     /// </summary>
     public class CUI()
     {

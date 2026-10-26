@@ -45,6 +45,12 @@ namespace RogerHubEngine.Client.Interfaces
                 Send("This is a DEBUG build. Good luck with the code, developer ;)");
 #endif
 
+                StringList testList = new();
+                testList.Add("Start Roger");
+                testList.Add("Load Roger");
+                testList.borderStyle = StringList.BorderStyles.StarsCorners;
+                testList.Draw();
+
                 Console.Write("""
                     
                     1. Start Roger in training mode

@@ -1,4 +1,12 @@
-﻿namespace RogerHubEngine.Engine.UI
+﻿/* 
+    RogerHubEgnine
+    *****************
+    *Emotion Corp ;)*
+    *****************
+    Copyright 2025-2026 Emotion Corp.
+*/
+
+namespace RogerHubEngine.Engine.UI
 {
     /// <summary>
     /// Draws a beautiful progress bar and can erase it automatically.
