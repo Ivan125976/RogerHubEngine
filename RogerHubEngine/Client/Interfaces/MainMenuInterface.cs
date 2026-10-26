@@ -6,8 +6,8 @@
     Copyright 2025-2026 Emotion Corp.
 */
 
+using RogerHubEngine.Client.Interfaces.RRNNs;
 using RogerHubEngine.Desktop.Resources;
-using RogerHubEngine.Engine.RogerCore;
 using RogerHubEngine.Engine.UI;
 
 using static RogerHubEngine.Client.EngineVersion;
@@ -73,7 +73,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         case 4:
-                            RRNNsInterface.StartInterface();
+                            CreateNewRRNNSProject.StartInterface();
                             break;
 
                         case 5:

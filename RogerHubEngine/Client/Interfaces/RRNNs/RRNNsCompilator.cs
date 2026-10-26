@@ -1,8 +1,8 @@
 ﻿using RogerHubEngine.Engine.UI;
 
-namespace RogerHubEngine.Client.Interfaces
+namespace RogerHubEngine.Client.Interfaces.RRNNs
 {
-    internal class RRNNsInterface
+    internal class RRNNsCompilator
     {
         public static void StartInterface()
         {
