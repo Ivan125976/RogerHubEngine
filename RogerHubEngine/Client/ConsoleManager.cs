@@ -15,6 +15,8 @@ namespace RogerHubEngine.Client
         public static ConsoleColor defaultBackgroundColor = ConsoleColor.Black;
         public static ConsoleColor defaultForegroundColor = ConsoleColor.Gray;
 
+        public static void NewLine() => Console.Write(Environment.NewLine);
+
         public static void ResizeConsole(int width, int height)
         {
             Console.Write($"\x1b[8;{height};{width}t");
@@ -38,6 +40,12 @@ namespace RogerHubEngine.Client
         {
             Console.ResetColor();
             Console.Clear();
+        }
+
+        public static void PressKeyWait()
+        {
+            Console.WriteLine(" Press any key to continue");
+            Console.ReadKey(true);
         }
     }
 }

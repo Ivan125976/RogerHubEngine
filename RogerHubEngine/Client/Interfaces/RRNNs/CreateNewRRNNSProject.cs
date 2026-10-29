@@ -1,4 +1,5 @@
 ﻿using RogerHubEngine.Engine.RRNNs;
+using RogerHubEngine.Engine.UI;
 
 namespace RogerHubEngine.Client.Interfaces.RRNNs
 {
@@ -19,13 +20,20 @@ namespace RogerHubEngine.Client.Interfaces.RRNNs
 
             Console.WriteLine("Welcome to RRNN system Compilator!");
             Console.WriteLine("Step 1: Please select a build type for the new project.");
-            Console.WriteLine("""
-                *--------------------*
-                : P > Physical Build :
-                : V > Virtual Build  :
-                : Q > Quit           :
-                *--------------------*
-                """);
+
+            ConsoleManager.NewLine();
+
+            StringList buildType = new()
+            {
+                borderStyle = StringList.BorderStyles.StarsCorners
+            };
+
+            buildType.Add("P > Physical Build");
+            buildType.Add("V > Virtual Build");
+            buildType.Add("Q > Quit");
+            buildType.Draw();
+
+            ConsoleManager.NewLine();
 
             switch(Console.ReadKey(true).KeyChar.ToString().ToUpper())
             {

@@ -28,11 +28,9 @@ namespace RogerHubEngine.Client.Interfaces
         {
             Parameters parameters = new();
 
-            int i = 0;
             while (true)
             {
-                ConsoleManager.ResetColor();
-                Console.Clear();
+                ConsoleManager.Clear();
 
                 DrawLine(ConsoleColor.DarkMagenta, $"Welcome to the RogerHubEngine!", DateTime.Now.Date.ToString("dd/MM/yyyy"));
 
@@ -45,22 +43,20 @@ namespace RogerHubEngine.Client.Interfaces
                 Send("This is a DEBUG build. Good luck with the code, developer ;)");
 #endif
 
-                StringList testList = new();
-                testList.Add("Start Roger");
-                testList.Add("Load Roger");
-                testList.borderStyle = StringList.BorderStyles.StarsCorners;
-                testList.Draw();
+                StringList mainMenu = new()
+                {
+                    borderStyle = StringList.BorderStyles.None
+                };
 
-                Console.Write("""
-                    
-                    1. Start Roger in training mode
-                    2. Load your roger (neural network) from the file
-                    3. Options for training mode...
-                    4. RRNNs Compilator...
-                    5. About...
-                    6. Exit from RogerHub 
-                    >>> 
-                    """);
+                mainMenu.Add(" 1. Start Roger in training mode");
+                mainMenu.Add(" 2. Load your roger (neural network) from the file");
+                mainMenu.Add(" 3. Options for training mode...");
+                mainMenu.Add(" 4. RRNNs Compilator...");
+                mainMenu.Add(" 5. About...");
+                mainMenu.Add(" 6. Exit from RogerHub");
+                mainMenu.Draw();
+                Console.Write(" > ");
+
                 if (int.TryParse(Console.ReadLine(), out int value))
                 {
                     switch (value)
@@ -84,10 +80,13 @@ namespace RogerHubEngine.Client.Interfaces
 
                         case 5:
                             Console.Write(Resource.GetTextResource("RogerLogo1.txt") + '\n');
-                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n Axolotl512 - AI and RogerHubEngine \n d3ath-script - RRNNs, IO and compiling " +
+                            Console.WriteLine($" Github: https://github.com/Ivan125976/RogerHubEngine\n\n Authors: \n" +
+                                $" Axolotl512 - AI, RRNNs and Client \n" +
+                                $" d3ath-script - IO and compiling " +
                                 $"\n\n RogerHubEngine v{engineVersion.Major}.{engineVersion.Minor}.{engineVersion.Build}\n" +
-                                    $" RRNNs v{RRNNSCompilatorVersion.Major}.{RRNNSCompilatorVersion.Minor}.{RRNNSCompilatorVersion.Build} \n OpenRB isn't ready \n\n Press any key to continue ");
-                            Console.ReadKey();
+                                    $" RRNNs v{RRNNSCompilatorVersion.Major}.{RRNNSCompilatorVersion.Minor}.{RRNNSCompilatorVersion.Build} \n" +
+                                    $" OpenRB does not support your version of the engine ");
+                            ConsoleManager.PressKeyWait();
                             break;
 
                         case 6:
@@ -95,28 +94,7 @@ namespace RogerHubEngine.Client.Interfaces
                             break;
 
                         default:
-                            switch (i++)
-                            {
-                                case 0:
-                                    Console.WriteLine("What?");
-                                    break;
-                                case 1:
-                                    Console.WriteLine("I dont understand... (0-0)");
-                                    break;
-                                case 2:
-                                    Console.WriteLine("Again?");
-                                    break;
-                                case 3:
-                                    Console.WriteLine("PLEASE STOP!!!");
-                                    break;
-                                case 4:
-                                    Console.WriteLine("I'm going disconnect...");
-                                    Thread.Sleep(300);
-                                    Console.WriteLine("Bye ;(");
-                                    Thread.Sleep(1000);
-                                    Environment.Exit(0);
-                                    break;
-                            }
+                            Console.WriteLine("What?");
                             break;
                     }
                 }
