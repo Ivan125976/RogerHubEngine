@@ -38,20 +38,20 @@ namespace RogerHubEngine.Engine.RogerCore
             double grad;
 
             double[,] RMSinputWeights = null!;
-            double[,] RMSoutputWeights = null!;
             double[][,] RMSmiddleWeights = null!;
+            double[,] RMSoutputWeights = null!;
             double[,] RMSmiddleBiases = null!;
             double[] RMSoutputBiases = null!;
 
             if (param.rms_enabled) //RMS cache
             {
                 RMSinputWeights = new double[NN.inputWeights.GetLength(0), NN.inputWeights.GetLength(1)];
-                RMSoutputWeights = new double[NN.outputWeights.GetLength(0), NN.outputWeights.GetLength(1)];
                 RMSmiddleWeights = new double[NN.middleWeights.Length][,];
+                RMSoutputWeights = new double[NN.outputWeights.GetLength(0), NN.outputWeights.GetLength(1)];
                 RMSmiddleBiases = new double[NN.Mbias.GetLength(0), NN.Mbias.GetLength(1)];
                 RMSoutputBiases = new double[NN.Obias.Length];
 
-                Initialization.CreateMiddleWeights(RMSmiddleWeights, param.middleNeuronsCount);
+                Initialization.CreateMiddleWeights(RMSmiddleWeights, NN.middleNeurons.Length);
             }
 
             int[] input = new int[NN.inputNeurons.Length];
@@ -61,12 +61,17 @@ namespace RogerHubEngine.Engine.RogerCore
             double[] errorOut = new double[NN.outputNeurons.Length];
             double[] deltaOut = new double[NN.outputNeurons.Length];
             double[,] oldOutputWeights = new double[NN.outputWeights.GetLength(0), NN.outputWeights.GetLength(1)];
-            double[][,] oldMiddleWeights = new double[param.layers - 3][,];
+            double[][,] oldMiddleWeights = new double[NN.middleWeights.Length][,];
 
             int nextLayer, oldLayer, lastMiddleWeights;
 
+            bool hasMiddleLayers = false;
+
             if (param.layers > 3)
-                lastMiddleWeights = NN.middleNeurons.GetLength(0) - 1;
+            {
+                lastMiddleWeights = NN.middleWeights.GetLength(0) - 1;
+                hasMiddleLayers = true;
+            }
             else
                 lastMiddleWeights = 0;
 
@@ -75,16 +80,16 @@ namespace RogerHubEngine.Engine.RogerCore
 
             Thread uiThread = new(() =>
             {
+                double local;
+
                 while (!done)
                 {
-                    double local;
-
                     lock (lockObj)
                         local = progress;
 
                     status?.Draw((int)(local * 100));
 
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                 }
             })
             {
@@ -117,7 +122,6 @@ namespace RogerHubEngine.Engine.RogerCore
 
                     float[,] dropOut = NN.GenerateDropOut();
 
-                    //forward propagation
                     NeuralNetwork.ForwardPropagation(NN, input, dropOut);
 
                     for (int l = 0; l < NN.outputNeurons.Length; l++)
@@ -161,7 +165,7 @@ namespace RogerHubEngine.Engine.RogerCore
 
                         if (param.rms_enabled)
                         {
-                            if (param.layers - 2 > 1)
+                            if (hasMiddleLayers)
                                 for (int k = 0; k < NN.middleNeurons.GetLength(1); k++)
                                 {
                                     grad = NN.middleNeurons[penultimateLayer, k] * deltaMid[lastMiddleWeights, j];

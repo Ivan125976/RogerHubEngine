@@ -38,7 +38,7 @@ namespace RogerHubEngine.Client
 
         public static void Clear()
         {
-            Console.ResetColor();
+            ResetColor();
             Console.Clear();
         }
 

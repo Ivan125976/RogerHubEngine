@@ -14,7 +14,7 @@ using static RogerHubEngine.Engine.UI.CUI;
 
 namespace RogerHubEngine.Client.Interfaces
 {
-    internal class CreateNeuralNetworkInterface
+    internal class CreateNNInterface
     {
         public static void StartAI(int mode, Parameters param)
         {
@@ -161,7 +161,7 @@ namespace RogerHubEngine.Client.Interfaces
             Console.WriteLine("Hello! I'm Roger, the neuron network from Emotion!");
             Thread.Sleep(3000);
             if (NN.rogerIsCreated)
-                NeuralNetworkInterface.StartInterface(NN, param);
+                NNManualInterface.StartInterface(NN, param);
         }
     }
 }

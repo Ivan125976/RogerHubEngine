@@ -226,7 +226,7 @@ namespace RogerHubEngine.Engine.RogerCore
 
             SumWeights(NN.inputWeights, NN.inputNeurons, NN.middleNeurons, NN.Mbias);
 
-            for (int l = 0; l < NN.middleWeights.GetLength(1) - 1; l++)
+            for (int l = 0; l < NN.middleWeights.Length - 1; l++)
                 SumWeights(NN.middleWeights[l], NN.middleNeurons, NN.Mbias, l);
 
             SumWeights(NN.outputWeights, NN.middleNeurons, NN.outputNeurons, NN.Obias);
@@ -248,7 +248,7 @@ namespace RogerHubEngine.Engine.RogerCore
             for (int i = 0; i < NN.middleNeurons.GetLength(1); i++)
                 NN.middleNeurons[0, i] *= dropOutMatrix[0, i];
 
-            for (int l = 0; l < NN.middleWeights.GetLength(1) - 1; l++)
+            for (int l = 0; l < NN.middleWeights.Length - 1; l++)
             {
                 SumWeights(NN.middleWeights[l], NN.middleNeurons, NN.Mbias, l);
                 for (int j = 0; j < NN.middleNeurons.GetLength(1); j++)

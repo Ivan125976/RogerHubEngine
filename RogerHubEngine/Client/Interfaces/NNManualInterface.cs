@@ -18,7 +18,7 @@ namespace RogerHubEngine.Client.Interfaces
     /// <summary>
     /// NeuralNetwork manual interface
     /// </summary>
-    public class NeuralNetworkInterface()
+    public class NNManualInterface()
     {
         /// <summary>
         /// Calling up the NeuralNetwork manual interface
