@@ -45,7 +45,7 @@ namespace RogerHubEngine.Client.Interfaces
 
                 StringList mainMenu = new()
                 {
-                    borderStyle = StringList.BorderStyles.None
+                    borderStyle = StringList.BorderStyles.NoBorder
                 };
 
                 mainMenu.Add(" 1. Start Roger in training mode");

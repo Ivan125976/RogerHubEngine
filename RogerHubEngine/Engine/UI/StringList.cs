@@ -40,7 +40,7 @@
 
             Console.CursorLeft = cursorX;
 
-            if (borderStyle == BorderStyles.None)
+            if (borderStyle == BorderStyles.NoBorder)
             {
                 foreach (var line in lines)
                 {
@@ -106,9 +106,9 @@
         public enum BorderStyles
         {
             /// <summary>
-            /// Without frame
+            /// Without border
             /// </summary>
-            None,
+            NoBorder,
 
             /// <summary>
             /// A simple border made of sticks, with stars at the corners
@@ -121,7 +121,7 @@
             RoundedCorners,
 
             /// <summary>
-            /// A frame consisting entirely of stars
+            /// A border consisting entirely of stars
             /// </summary>
             FullyStars
         }

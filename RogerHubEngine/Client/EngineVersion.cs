@@ -26,17 +26,17 @@ namespace RogerHubEngine.Client
         /// <summary>
         /// Name of build
         /// </summary>
-        internal const Roadmap specialName = Roadmap.D;
+        internal const Roadmap specialName = Roadmap.D2;
     }
 
     internal enum Roadmap
     {
-        D,
-        D2,
-        BT,
-        CRL,
-        DLT,
-        EXP,
-        R
+        D, //DEV
+        D2, //DEV2
+        BT, //BETA
+        CRL, //CHARLIE
+        DLT, //DELTA
+        EXP, //EXPERIMENT
+        R //RELEASE
     }
 }
