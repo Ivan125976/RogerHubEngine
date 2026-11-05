@@ -187,7 +187,7 @@ namespace RogerHubEngine.Engine.RogerCore
                         }
                         else
                         {
-                            if (param.layers - 2 > 1)
+                            if (hasMiddleLayers)
                                 for (int k = 0; k < NN.middleNeurons.GetLength(1); k++)
                                     NN.middleWeights[penultimateLayer][k, j] -=
                                         NN.middleNeurons[penultimateLayer, k] *
@@ -204,7 +204,7 @@ namespace RogerHubEngine.Engine.RogerCore
                         }
                     }
 
-                    if (param.layers - 2 > 1)
+                    if (hasMiddleLayers)
                     {
                         for (int layer = param.layers - 4; layer >= 0; layer--) //update middle->middle weights
                         {
@@ -244,7 +244,7 @@ namespace RogerHubEngine.Engine.RogerCore
                         }
                     }
 
-                    if (param.layers - 2 > 1)
+                    if (hasMiddleLayers)
                     {
                         for (int j = 0; j < NN.inputNeurons.Length; j++) //update middle->input weights
                         {
