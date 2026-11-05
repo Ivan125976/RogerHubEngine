@@ -220,7 +220,7 @@ namespace RogerHubEngine.Engine.RogerCore
         /// <param name="input">User input</param>
         public static void ForwardPropagation(NeuralNetwork NN, int[] input)
         {
-            if (!NN.Initialized()) return;
+            if (!NN.Initialized) return;
 
             NN.WriteToNN(input);
 
@@ -240,7 +240,7 @@ namespace RogerHubEngine.Engine.RogerCore
         /// <param name="dropOutMatrix">DropOut Matrix</param>
         public static void ForwardPropagation(NeuralNetwork NN, int[] input, float[,] dropOutMatrix)
         {
-            if (!NN.Initialized()) return;
+            if (!NN.Initialized) return;
 
             NN.WriteToNN(input);
 
@@ -266,17 +266,20 @@ namespace RogerHubEngine.Engine.RogerCore
                               nameof(inputWeights), nameof(outputWeights),
                               nameof(middleWeights), nameof(inputNeurons),
                               nameof(outputNeurons), nameof(middleNeurons))]
-        public bool Initialized()
+        public bool Initialized
         {
-            return Mbias != null
-                && Obias != null
-                && inputWeights != null
-                && outputWeights != null
-                && middleWeights != null
-                && inputNeurons != null
-                && outputNeurons != null
-                && middleNeurons != null
-                && !IsDisposed;
+            get
+            {
+                return Mbias != null
+                    && Obias != null
+                    && inputWeights != null
+                    && outputWeights != null
+                    && middleWeights != null
+                    && inputNeurons != null
+                    && outputNeurons != null
+                    && middleNeurons != null
+                    && !IsDisposed;
+            }
         }
 
         /// <summary>

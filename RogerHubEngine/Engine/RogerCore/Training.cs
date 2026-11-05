@@ -27,7 +27,7 @@ namespace RogerHubEngine.Engine.RogerCore
         /// <param name="status">An optional Progressbar object that will display how much the neural network has learned.</param>
         public static void Education(NeuralNetwork NN, Parameters param, Progressbar? status = null)
         {
-            if (!NN.Initialized() || NN.educationArray == null)
+            if (!NN.Initialized || NN.educationArray == null)
                 return;
 
             double progress = 0;
