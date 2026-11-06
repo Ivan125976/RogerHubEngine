@@ -17,18 +17,9 @@ namespace RogerHubEngine.Client
 
         public static void NewLine() => Console.Write(Environment.NewLine);
 
-        public static void ResizeConsole(int width, int height)
-        {
-            Console.Write($"\x1b[8;{height};{width}t");
-        }
+        public static void ResizeConsole(int width, int height) => Console.Write($"\x1b[8;{height};{width}t");
 
-        public static void ResizeConsole(Size consoleSize)
-        {
-            int width = consoleSize.Width;
-            int height = consoleSize.Height;
-
-            Console.Write($"\x1b[8;{height};{width}t");
-        }
+        public static void ResizeConsole(Size consoleSize) => ResizeConsole(consoleSize.Width, consoleSize.Height);
 
         public static void ResetColor()
         {
