@@ -19,7 +19,7 @@ This is a cute little neural network engine for your robot or your Unity game.
 + **RogerHubEngine v2.2** - Major rework of v2.1, added RMS and many other features
 + **RogerHubEngine v2.3** - A minor update, neural network improvements, and the addition of RRNNs.
 
-### :1st_place_medal: What can your neural network do? (v2.2)
+### :1st_place_medal: What can this engine do? (v2.2)
 - MLP neural network
 - DropOut in training
 - Xaiver Uniform in initialization
