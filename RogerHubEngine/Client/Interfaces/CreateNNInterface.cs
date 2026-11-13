@@ -104,10 +104,10 @@ namespace RogerHubEngine.Client.Interfaces
                     NN.Obias = new double[param.outputNeuronsCount];
                     Send("done");
                     Console.Write("Initialization weights...");
-                    Initialization.Init(NN.inputWeights!);
-                    Initialization.CreateMiddleWeights(NN.middleWeights!, param.middleNeuronsCount);
-                    Initialization.Init(NN.middleWeights!);
-                    Initialization.Init(NN.outputWeights!);
+                    Initialization.Init(NN.inputWeights);
+                    Initialization.CreateMiddleWeights(NN.middleWeights, param.middleNeuronsCount);
+                    Initialization.Init(NN.middleWeights);
+                    Initialization.Init(NN.outputWeights);
                     Send("done");
                     Send("Initialization complete", MessageType.message);
                     Console.Write("Education...");

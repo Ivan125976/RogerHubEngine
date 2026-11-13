@@ -4,11 +4,9 @@ RogerHubEgnine
 *Emotion Corp ;)*
 *****************
 Copyright 2025-2026 Emotion Corp.
-Education Algorithm v1.2.1
-Written by Axolotl512
-
-EducationWithTeacher, DropOut, multilayer, biases, RMS
+Education Algorithm v1.3
 */
+
 using RogerHubEngine.Client;
 using RogerHubEngine.Engine.UI;
 
@@ -19,22 +17,27 @@ namespace RogerHubEngine.Engine.RogerCore
     /// </summary>
     public static class Training
     {
+        static Progressbar targetProgressbar = new();
+
         /// <summary>
-        /// Education Algorithm
+        /// Epsilon
         /// </summary>
-        /// <param name="NN">A neural network that needs to be trained</param>
-        /// <param name="param">Neural Network Parameters</param>
-        /// <param name="status">An optional Progressbar object that will display how much the neural network has learned.</param>
-        public static void Education(NeuralNetwork NN, Parameters param, Progressbar? status = null)
+        const double eps = 1e-8;
+
+        static bool done = false;
+        static readonly Lock lockObj = new();
+        static float progress = 0;
+
+        private static void CreateRMSCache(NeuralNetwork NN)
+        {
+
+        }
+
+        private static void Education(NeuralNetwork NN, Parameters param)
         {
             if (!NN.Initialized || NN.educationArray == null)
                 return;
 
-            double progress = 0;
-            bool done = false;
-            object lockObj = new();
-
-            const double eps = 1e-8;
             double grad;
 
             double[,] RMSinputWeights = null!;
@@ -77,25 +80,6 @@ namespace RogerHubEngine.Engine.RogerCore
 
             for (int x = 0; x < NN.middleWeights.Length; x++)
                 oldMiddleWeights[x] = new double[NN.middleWeights[x].GetLength(0), NN.middleWeights[x].GetLength(1)];
-
-            Thread uiThread = new(() =>
-            {
-                double local;
-
-                while (!done)
-                {
-                    lock (lockObj)
-                        local = progress;
-
-                    status?.Draw((int)(local * 100));
-
-                    Thread.Sleep(500);
-                }
-            })
-            {
-                IsBackground = true
-            };
-            uiThread.Start();
 
             for (int passes = 0; passes < param.passes; passes++)
             {
@@ -264,16 +248,49 @@ namespace RogerHubEngine.Engine.RogerCore
                     }
 
                     lock (lockObj)
-                    {
                         progress =
-                            (double)(passes * NN.educationArray.GetLength(0) + i + 1)
+                            (float)(passes * NN.educationArray.GetLength(0) + i + 1)
                             / (param.passes * NN.educationArray.GetLength(0));
-                    }
                 }
             }
+        }
 
-            done = true;
+        /// <summary>
+        /// Education Algorithm
+        /// </summary>
+        /// <param name="NN">A neural network that needs to be trained</param>
+        /// <param name="param">Neural Network Parameters</param>
+        public static void Train(NeuralNetwork NN, Parameters param)
+        {
+            Thread uiThread = new(() =>
+            {
+                double local;
+
+                while (!done)
+                {
+                    lock (lockObj)
+                        local = progress;
+
+                    targetProgressbar.Draw((int)(local * 100));
+
+                    Thread.Sleep(500);
+                }
+            })
+            {
+                IsBackground = true
+            };
+
+            uiThread.Start();
+
+            Education(NN, param);
+
             uiThread.Join();
         }
+
+        /// <summary>
+        /// Specifies a particular progress bar where training progress will be displayed.
+        /// </summary>
+        /// <param name="newProgressbar">New Progressbar Object</param>
+        public static void SetTargetProgressbar(Progressbar newProgressbar) => targetProgressbar = newProgressbar;
     }
 }
