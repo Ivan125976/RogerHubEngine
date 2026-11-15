@@ -33,7 +33,7 @@ namespace RogerHubEngine.Engine.RogerCore
 
         }
 
-        private static void Education(NeuralNetwork NN, Parameters param)
+        public static void Education(NeuralNetwork NN, Parameters param) // Ошибка: System.IndexOutOfRangeException: "Index was outside the bounds of the array."
         {
             if (!NN.Initialized || NN.educationArray == null)
                 return;

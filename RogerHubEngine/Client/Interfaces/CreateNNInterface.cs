@@ -7,6 +7,7 @@
 */
 
 using MemoryPack;
+using RogerHubEngine.Desktop.Resources;
 using RogerHubEngine.Engine.RogerCore;
 using RogerHubEngine.Engine.UI;
 using System.Globalization;
@@ -26,8 +27,11 @@ namespace RogerHubEngine.Client.Interfaces
                 case 0:
                     if (!File.Exists(param.knowledgeFile))
                     {
-                        Send("I can't find the training file! Please enter the path to it, in the settings", MessageType.error);
-                        return;
+                        Send("I can't find the training file! I'll set the file by default, that contains in my memory, you could see the path to this in the settings", MessageType.warning);
+                        string knowledgePath = Path.Combine(Directory.GetCurrentDirectory(), "knowledge.know");
+                        File.WriteAllText(knowledgePath, Resource.GetTextResource("knowledge.know"));
+                        param.knowledgeFile = knowledgePath;
+                        //return;
                     }
 
                     if (param.rms_enabled && param.learningRate > 0.005 && param.layers < 6)
@@ -115,7 +119,7 @@ namespace RogerHubEngine.Client.Interfaces
                     Console.WriteLine();
                     Progressbar educationStatus = new(ConsoleColor.DarkGreen, 20, Console.CursorLeft, Console.CursorTop);
 
-                    Training.Education(NN, param, educationStatus);
+                    Training.Education(NN, param);
 
                     educationStatus.Draw(100);
                     Send("\nEducation Complete");

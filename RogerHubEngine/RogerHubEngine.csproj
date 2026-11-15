@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\knowledge.know" />
     <None Remove="Resources\RogerLogo1.txt" />
     <None Remove="Resources\RogerLogo2.txt" />
   </ItemGroup>
@@ -52,6 +53,10 @@
     <PackageReference Include="MemoryPack.Core" Version="1.21.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Velopack" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\knowledge.know" />
   </ItemGroup>
 
 </Project>
